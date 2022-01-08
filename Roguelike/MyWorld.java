@@ -11,7 +11,7 @@ public class MyWorld extends World
 {
     // Class Variables / Objects
     
-    String[] level = {
+    String[] startLevel = {
         "# #  # #  ",
         "#         ",
         "          ",
@@ -24,13 +24,30 @@ public class MyWorld extends World
         "#       ##",
     };
     
+    String[][] levels = {
+        {
+            "# #  # #  ",
+            "#         ",
+            "          ",
+            "       #  ",
+            "  P       ",
+            "          ",
+            "   #      ",
+            "          ",
+            "#        #",
+            "#       ##",
+        }
+    };
+    
     private Player player;
     
     int[] floorPlan = new int[101];
     int roomCount = 0;
-    Queue<Integer> cellQueue = new LinkedList<>();
+    Queue<Integer> cellQueue = new LinkedList<Integer>();
     int maxRooms = 15;
     int minRooms = 7;
+    int startRoom = 45;
+    int curRoom;
 
     /**
      * Constructor for objects of class MyWorld.
@@ -41,13 +58,23 @@ public class MyWorld extends World
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(800, 800, 1); 
         
-        //createLevel(level);
-        
-        //setPaintOrder(Wall.class, Player.class, Floor.class);
+        curRoom = startRoom;
         
         generateMap();
         
-        Minimap minimap = new Minimap(floorPlan);
+        GreenfootImage tilemap = new GreenfootImage("0x72_16x16DungeonTileset.v3");
+        processTilemap(tilemap);
+        
+        createLevel(curRoom);
+        
+        setPaintOrder(Wall.class, Player.class, Floor.class);
+        
+        //Minimap minimap = new Minimap(floorPlan);
+        //addObject(minimap, 400, 400);
+    }
+    
+    private void processTilemap(GreenfootImage tilemap) {
+        
     }
     
     private void generateMap() {
@@ -92,14 +119,20 @@ public class MyWorld extends World
             return false;
         }
         
-        cellQueue.add(cell);
+        if (cellQueue != null) cellQueue.add(cell);
         floorPlan[cell] = 1;
         roomCount++;
         
         return true;
     }
     
-    private void createLevel(String[] level){
+    private void createLevel(int room){
+        String[] level = null;
+        
+        if (room == startRoom) {
+            level = startLevel;
+        }
+        
         int tileHeight = getHeight() / level.length;
         int tileWidth = getWidth() / level[0].length();
         

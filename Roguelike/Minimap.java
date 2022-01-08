@@ -9,28 +9,34 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class Minimap extends Actor
 {
     int[] floorPlan;
+    int cellWidth = 50;
+    int cellHeight = 50;
     
     public Minimap(int[] floorPlan) {
         this.floorPlan = floorPlan;
         
-        visualizeMap();
+        setImage(visualizeMap());
     }
     
-    private void visualizeMap() {
-        var cellWidth = 10;
-        var cellHeight = 10;
+    private GreenfootImage visualizeMap() {
+        GreenfootImage image = new GreenfootImage(cellWidth * 9, cellWidth * 8);
+        
+        image.setColor(Color.BLUE);
+        image.fill();
+        
+        image.setColor(Color.BLACK);
         
         for (int i = 0; i < floorPlan.length; i++) {
             if (floorPlan[i] == 1) {
                 int x = i % 10;
                 int y = (i - x) / 10;
                 
-                GreenfootImage image = new GreenfootImage(cellWidth, cellHeight);
                 image.setColor(Color.BLACK);
                 image.fillRect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
-                setImage(image);
             }
         }
+        
+        return image;
     }
     
     /**
