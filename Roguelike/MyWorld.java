@@ -11,35 +11,62 @@ public class MyWorld extends World
 {
     // Class Variables / Objects
     
-    String[] startLevel = {
-        "# #  # #  ",
-        "#         ",
-        "          ",
-        "       #  ",
-        "  P       ",
-        "          ",
-        "   #      ",
-        "          ",
+    String[] emptyLevel = {
+        "####UU####",
         "#        #",
-        "#       ##",
+        "#        #",
+        "#        #",
+        "L        R",
+        "L        R",
+        "#        #",
+        "#        #",
+        "#        #",
+        "####DD####",
+    };
+    
+    String[] startLevel = {
+        "####UU####",
+        "#        #",
+        "#        #",
+        "#        #",
+        "L        R",
+        "L        R",
+        "#        #",
+        "#        #",
+        "#        #",
+        "####DD####",
     };
     
     String[][] levels = {
         {
-            "# #  # #  ",
-            "#         ",
-            "          ",
-            "       #  ",
-            "  P       ",
-            "          ",
-            "   #      ",
-            "          ",
+            "####UU####",
             "#        #",
-            "#       ##",
-        }
+            "#        #",
+            "#    ##  #",
+            "L        R",
+            "L        R",
+            "#        #",
+            "#        #",
+            "#        #",
+            "####DD####",
+        },
+        {
+            "####UU####",
+            "#        #",
+            "#        #",
+            "#        #",
+            "L        R",
+            "L        R",
+            "#        #",
+            "#  #     #",
+            "#  #     #",
+            "####DD####",
+        },
     };
     
     private Player player;
+    
+    String wallImagePath = "wall_corner_front_left.png";
     
     int[] floorPlan = new int[101];
     int roomCount = 0;
@@ -48,6 +75,7 @@ public class MyWorld extends World
     int minRooms = 7;
     int startRoom = 45;
     int curRoom;
+    String roomPos;
 
     /**
      * Constructor for objects of class MyWorld.
@@ -59,22 +87,16 @@ public class MyWorld extends World
         super(800, 800, 1); 
         
         curRoom = startRoom;
+        roomPos = "center";
         
         generateMap();
         
-        GreenfootImage tilemap = new GreenfootImage("0x72_16x16DungeonTileset.v3");
-        processTilemap(tilemap);
-        
         createLevel(curRoom);
         
-        setPaintOrder(Wall.class, Player.class, Floor.class);
+        Minimap minimap = new Minimap(floorPlan);
+        addObject(minimap, 50, 50);
         
-        //Minimap minimap = new Minimap(floorPlan);
-        //addObject(minimap, 400, 400);
-    }
-    
-    private void processTilemap(GreenfootImage tilemap) {
-        
+        setPaintOrder(Minimap.class, Wall.class, Player.class, Floor.class);
     }
     
     private void generateMap() {
@@ -133,32 +155,65 @@ public class MyWorld extends World
             level = startLevel;
         }
         
-        int tileHeight = getHeight() / level.length;
-        int tileWidth = getWidth() / level[0].length();
+        int numTilesX = level[0].length();
+        int numTilesY = level.length;
+        int tileWidth = getWidth() / numTilesX;
+        int tileHeight = getHeight() / numTilesY;
         
-        for(int i = 0; i < level.length; i++){
-            for(int j = 0; j < level[i].length(); j++){
+        Player player = new Player(tileWidth, tileHeight);
+        if (roomPos == "center") {
+            addObject(player, getWidth() / 2, getHeight() / 2);
+        }
+        
+        // Create level
+        for(int i = 0; i < numTilesY; i++){
+            for(int j = 0; j < numTilesX; j++){
                 char type = level[i].charAt(j);
                 int x = j * tileWidth + (tileWidth / 2);
                 int y = i * tileHeight + (tileHeight / 2);
                 
                 Floor floor = new Floor(tileWidth, tileHeight);
                 addObject(floor, x, y);
-                
-                switch(type){
-                    case 'P':
-                        player = new Player(tileWidth, tileHeight);
-                        setPaintOrder(Player.class, Floor.class);
-                        addObject(player, x, y);
-                        break;
-                    case '#':
-                        GreenfootImage wallImage = new GreenfootImage("v1.1 dungeon crawler 16x16 pixel pack/tiles/wall/wall_1.png");
+                                    
+                if (type == '#') {
+                    GreenfootImage wallImage = new GreenfootImage(wallImagePath);
+                    wallImage.scale(tileWidth, tileHeight);
+                    Wall wall = new Wall(wallImage);
+                    addObject(wall, x, y);
+                } else if (type == 'L') {
+                    if (floorPlan[room - 1] != 1) {
+                        GreenfootImage wallImage = new GreenfootImage(wallImagePath);
                         wallImage.scale(tileWidth, tileHeight);
                         Wall wall = new Wall(wallImage);
                         addObject(wall, x, y);
-                        break;
+                    }
+                } else if (type == 'R') {
+                    if (floorPlan[room + 1] != 1) {
+                        GreenfootImage wallImage = new GreenfootImage(wallImagePath);
+                        wallImage.scale(tileWidth, tileHeight);
+                        Wall wall = new Wall(wallImage);
+                        addObject(wall, x, y);
+                    }
+                } else if (type == 'U') {
+                    if (floorPlan[room - 10] != 1) {
+                        GreenfootImage wallImage = new GreenfootImage(wallImagePath);
+                        wallImage.scale(tileWidth, tileHeight);
+                        Wall wall = new Wall(wallImage);
+                        addObject(wall, x, y);
+                    }
+                } else if (type == 'D') {
+                    if (floorPlan[room + 10] != 1) {
+                        GreenfootImage wallImage = new GreenfootImage(wallImagePath);
+                        wallImage.scale(tileWidth, tileHeight);
+                        Wall wall = new Wall(wallImage);
+                        addObject(wall, x, y);
+                    }
                 }
             }
         }
+    }
+    
+    public void exitRoom(String exitPos) {
+        
     }
 }

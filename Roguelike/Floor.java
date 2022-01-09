@@ -8,13 +8,11 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Floor extends Actor
 {
-    private GreenfootImage image;
+    private GreenfootImage floorImage = new GreenfootImage("floor_1.png");
     
     public Floor (int width, int height) {
-        
-        image = new GreenfootImage("v1.1 dungeon crawler 16x16 pixel pack/tiles/floor/floor_1.png");
-        image.scale(width, height);
-        setImage(image);
+        floorImage.scale(width, height);
+        setImage(floorImage);
     }
     
     /**

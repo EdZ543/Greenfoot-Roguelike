@@ -9,8 +9,8 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class Minimap extends Actor
 {
     int[] floorPlan;
-    int cellWidth = 50;
-    int cellHeight = 50;
+    int cellWidth = 10;
+    int cellHeight = 10;
     
     public Minimap(int[] floorPlan) {
         this.floorPlan = floorPlan;
@@ -31,7 +31,11 @@ public class Minimap extends Actor
                 int x = i % 10;
                 int y = (i - x) / 10;
                 
-                image.setColor(Color.BLACK);
+                if (i == 45) {
+                    image.setColor(Color.GREEN);
+                } else {
+                    image.setColor(Color.BLACK);
+                }
                 image.fillRect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
             }
         }
