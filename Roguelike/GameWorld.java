@@ -12,55 +12,57 @@ public class GameWorld extends World
     // Class Variables / Objects
     
     private String[] emptyLevel = {
-        "####UU####",
-        "#        #",
-        "#        #",
-        "#        #",
-        "L        R",
-        "L        R",
-        "#        #",
-        "#        #",
-        "#        #",
-        "####DD####",
+        "        ",
+        "        ",
+        "        ",
+        "        ",
+        "        ",
+        "        ",
+        "        ",
+        "        ",
     };
     
     private String[] startRoomLayout = {
-        "####UU####",
-        "#        #",
-        "#        #",
-        "#        #",
-        "L        R",
-        "L        R",
-        "#        #",
-        "#        #",
-        "#        #",
-        "####DD####",
+        "        ",
+        "        ",
+        "        ",
+        "        ",
+        "        ",
+        "        ",
+        "        ",
+        "        ",
     };
     
     private String[][] levels = {
         {
-            "####UU####",
-            "#        #",
-            "#        #",
-            "#    ##  #",
-            "L        R",
-            "L        R",
-            "#        #",
-            "#        #",
-            "#        #",
-            "####DD####",
+            "             ",
+            "             ",
+            "             ",
+            "             ",
+            "             ",
+            "             ",
+            "             ",
+            "             ",
+            "             ",
+            "             ",
+            "             ",
+            "             ",
+            "             ",
         },
         {
-            "####UU####",
-            "#        #",
-            "#        #",
-            "#        #",
-            "L        R",
-            "L        R",
-            "#        #",
-            "#  #     #",
-            "#  #     #",
-            "####DD####",
+            "             ",
+            "             ",
+            "             ",
+            "             ",
+            "             ",
+            "             ",
+            "             ",
+            "             ",
+            "             ",
+            "             ",
+            "             ",
+            "             ",
+            "             ",
         },
     };
     
@@ -75,7 +77,6 @@ public class GameWorld extends World
     private int minRooms = 7;
     private int startRoomNum = 45;
     private int curRoomNum;
-    private ArrayList<Actor> roomObjects = new ArrayList<Actor>();
     private int playerSpawnX;
     private int playerSpawnY;
 
@@ -164,64 +165,56 @@ public class GameWorld extends World
         
         roomLayout = startRoomLayout;
         
-        int numTilesX = roomLayout[0].length();
-        int numTilesY = roomLayout.length;
+        int numTilesX = roomLayout[0].length() + 2;
+        int numTilesY = roomLayout.length + 2;
         int tileWidth = getWidth() / numTilesX;
         int tileHeight = getHeight() / numTilesY;
         
         GreenfootImage floorImage = new GreenfootImage("floor_1.png");
         floorImage.scale(tileWidth, tileHeight);
         
-        // Create level
+        // Draw background
         for(int i = 0; i < numTilesY; i++){
             for(int j = 0; j < numTilesX; j++){
-                char type = roomLayout[i].charAt(j);
                 int x = j * tileWidth;
                 int y = i * tileHeight;
                 
                 getBackground().drawImage(floorImage, x, y);
+            }
+        }
+        
+        // Create boundaries
+        for(int i = 0; i < numTilesY; i++){
+            for(int j = 0; j < numTilesX; j++){
+                if (floorPlan[roomNum - 1] == 1 && j == 0 && (i == 4 || i == 5)) continue;
+                if (floorPlan[roomNum + 1] == 1 && j == numTilesX - 1 && (i == 4 || i == 5)) continue;
+                if (floorPlan[roomNum - 10] == 1 && i == 0 && (j == 4 || j == 5)) continue;
+                if (floorPlan[roomNum + 10] == 1 && i == numTilesY - 1 && (j == 4 || j == 5)) continue;
                 
-                x += tileWidth / 2;
-                y += tileHeight / 2;
+                int x = j * tileWidth + tileWidth / 2;
+                int y = i * tileHeight + tileWidth / 2;
+                
+                if (i == 0 || i == numTilesY - 1 || j == 0 || j == numTilesX - 1) {
+                    GreenfootImage wallImage = new GreenfootImage(wallImagePath);
+                    wallImage.scale(tileWidth, tileHeight);
+                    Wall wall = new Wall(wallImage);
+                    addObject(wall, x, y);
+                }
+            }
+        }
+        
+        // Create room interior
+        for(int i = 1; i < numTilesY - 1; i++){
+            for(int j = 1; j < numTilesX - 1; j++){
+                char type = roomLayout[i - 1].charAt(j - 1);
+                int x = j * tileWidth + tileWidth / 2;
+                int y = i * tileHeight + tileWidth / 2;
                                     
                 if (type == '#') {
                     GreenfootImage wallImage = new GreenfootImage(wallImagePath);
                     wallImage.scale(tileWidth, tileHeight);
                     Wall wall = new Wall(wallImage);
-                    roomObjects.add(wall);
                     addObject(wall, x, y);
-                } else if (type == 'L') {
-                    if (floorPlan[roomNum - 1] != 1) {
-                        GreenfootImage wallImage = new GreenfootImage(wallImagePath);
-                        wallImage.scale(tileWidth, tileHeight);
-                        Wall wall = new Wall(wallImage);
-                        roomObjects.add(wall);
-                        addObject(wall, x, y);
-                    }
-                } else if (type == 'R') {
-                    if (floorPlan[roomNum + 1] != 1) {
-                        GreenfootImage wallImage = new GreenfootImage(wallImagePath);
-                        wallImage.scale(tileWidth, tileHeight);
-                        Wall wall = new Wall(wallImage);
-                        roomObjects.add(wall);
-                        addObject(wall, x, y);
-                    }
-                } else if (type == 'U') {
-                    if (floorPlan[roomNum - 10] != 1) {
-                        GreenfootImage wallImage = new GreenfootImage(wallImagePath);
-                        wallImage.scale(tileWidth, tileHeight);
-                        Wall wall = new Wall(wallImage);
-                        roomObjects.add(wall);
-                        addObject(wall, x, y);
-                    }
-                } else if (type == 'D') {
-                    if (floorPlan[roomNum + 10] != 1) {
-                        GreenfootImage wallImage = new GreenfootImage(wallImagePath);
-                        wallImage.scale(tileWidth, tileHeight);
-                        Wall wall = new Wall(wallImage);
-                        roomObjects.add(wall);
-                        addObject(wall, x, y);
-                    }
                 }
             }
         }
