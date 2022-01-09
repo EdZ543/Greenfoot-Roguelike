@@ -7,11 +7,11 @@ import java.util.*;
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class MyWorld extends World
+public class GameWorld extends World
 {
     // Class Variables / Objects
     
-    String[] emptyLevel = {
+    private String[] emptyLevel = {
         "####UU####",
         "#        #",
         "#        #",
@@ -24,7 +24,7 @@ public class MyWorld extends World
         "####DD####",
     };
     
-    String[] startLevel = {
+    private String[] startRoomLayout = {
         "####UU####",
         "#        #",
         "#        #",
@@ -37,7 +37,7 @@ public class MyWorld extends World
         "####DD####",
     };
     
-    String[][] levels = {
+    private String[][] levels = {
         {
             "####UU####",
             "#        #",
@@ -64,39 +64,50 @@ public class MyWorld extends World
         },
     };
     
-    private Player player;
+    private static Player player;
     
-    String wallImagePath = "wall_corner_front_left.png";
+    private String wallImagePath = "wall_corner_front_left.png";
     
-    int[] floorPlan = new int[101];
-    int roomCount = 0;
-    Queue<Integer> cellQueue = new LinkedList<Integer>();
-    int maxRooms = 15;
-    int minRooms = 7;
-    int startRoom = 45;
-    int curRoom;
-    String roomPos;
+    private int[] floorPlan = new int[101];
+    private int roomCount = 0;
+    private Queue<Integer> cellQueue = new LinkedList<Integer>();
+    private int maxRooms = 15;
+    private int minRooms = 7;
+    private int startRoomNum = 45;
+    private int curRoomNum;
+    private ArrayList<Actor> roomObjects = new ArrayList<Actor>();
+    private int playerSpawnX;
+    private int playerSpawnY;
 
     /**
      * Constructor for objects of class MyWorld.
      * 
      */
-    public MyWorld()
+    public GameWorld()
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(800, 800, 1); 
+        super(800, 800, 1);
         
-        curRoom = startRoom;
-        roomPos = "center";
+        curRoomNum = startRoomNum;
+        playerSpawnX = getWidth() / 2;
+        playerSpawnY = getHeight() / 2;
         
         generateMap();
         
-        createLevel(curRoom);
+        createRoom();
+    }
+    
+    private void createRoom() {
+        createRoomlayout(curRoomNum);
+        spawnPlayer();
         
-        Minimap minimap = new Minimap(floorPlan);
+        Minimap minimap = new Minimap(floorPlan, startRoomNum, curRoomNum);
         addObject(minimap, 50, 50);
-        
-        setPaintOrder(Minimap.class, Wall.class, Player.class, Floor.class);
+    }
+    
+    private void spawnPlayer() {
+        player = new Player(50, 50);
+        addObject(player, playerSpawnX, playerSpawnY);
     }
     
     private void generateMap() {
@@ -148,64 +159,67 @@ public class MyWorld extends World
         return true;
     }
     
-    private void createLevel(int room){
-        String[] level = null;
+    private void createRoomlayout(int roomNum){
+        String[] roomLayout = null;
         
-        if (room == startRoom) {
-            level = startLevel;
-        }
+        roomLayout = startRoomLayout;
         
-        int numTilesX = level[0].length();
-        int numTilesY = level.length;
+        int numTilesX = roomLayout[0].length();
+        int numTilesY = roomLayout.length;
         int tileWidth = getWidth() / numTilesX;
         int tileHeight = getHeight() / numTilesY;
         
-        Player player = new Player(tileWidth, tileHeight);
-        if (roomPos == "center") {
-            addObject(player, getWidth() / 2, getHeight() / 2);
-        }
+        GreenfootImage floorImage = new GreenfootImage("floor_1.png");
+        floorImage.scale(tileWidth, tileHeight);
         
         // Create level
         for(int i = 0; i < numTilesY; i++){
             for(int j = 0; j < numTilesX; j++){
-                char type = level[i].charAt(j);
-                int x = j * tileWidth + (tileWidth / 2);
-                int y = i * tileHeight + (tileHeight / 2);
+                char type = roomLayout[i].charAt(j);
+                int x = j * tileWidth;
+                int y = i * tileHeight;
                 
-                Floor floor = new Floor(tileWidth, tileHeight);
-                addObject(floor, x, y);
+                getBackground().drawImage(floorImage, x, y);
+                
+                x += tileWidth / 2;
+                y += tileHeight / 2;
                                     
                 if (type == '#') {
                     GreenfootImage wallImage = new GreenfootImage(wallImagePath);
                     wallImage.scale(tileWidth, tileHeight);
                     Wall wall = new Wall(wallImage);
+                    roomObjects.add(wall);
                     addObject(wall, x, y);
                 } else if (type == 'L') {
-                    if (floorPlan[room - 1] != 1) {
+                    if (floorPlan[roomNum - 1] != 1) {
                         GreenfootImage wallImage = new GreenfootImage(wallImagePath);
                         wallImage.scale(tileWidth, tileHeight);
                         Wall wall = new Wall(wallImage);
+                        roomObjects.add(wall);
                         addObject(wall, x, y);
                     }
                 } else if (type == 'R') {
-                    if (floorPlan[room + 1] != 1) {
+                    if (floorPlan[roomNum + 1] != 1) {
                         GreenfootImage wallImage = new GreenfootImage(wallImagePath);
                         wallImage.scale(tileWidth, tileHeight);
                         Wall wall = new Wall(wallImage);
+                        roomObjects.add(wall);
                         addObject(wall, x, y);
                     }
                 } else if (type == 'U') {
-                    if (floorPlan[room - 10] != 1) {
+                    if (floorPlan[roomNum - 10] != 1) {
                         GreenfootImage wallImage = new GreenfootImage(wallImagePath);
                         wallImage.scale(tileWidth, tileHeight);
                         Wall wall = new Wall(wallImage);
+                        roomObjects.add(wall);
                         addObject(wall, x, y);
                     }
                 } else if (type == 'D') {
-                    if (floorPlan[room + 10] != 1) {
+                    if (floorPlan[roomNum + 10] != 1) {
                         GreenfootImage wallImage = new GreenfootImage(wallImagePath);
                         wallImage.scale(tileWidth, tileHeight);
                         Wall wall = new Wall(wallImage);
+                        roomObjects.add(wall);
                         addObject(wall, x, y);
                     }
                 }
@@ -213,7 +227,33 @@ public class MyWorld extends World
         }
     }
     
+    private void clearRoom() {
+        removeObjects(getObjects(null));
+        getBackground().fill();
+    }
+    
     public void exitRoom(String exitPos) {
+        int spaceFromExit = 5;
         
+        if (exitPos == "left") {
+            curRoomNum--;
+            playerSpawnX = getWidth() - spaceFromExit;
+            playerSpawnY = player.getY();
+        } else if(exitPos == "right") {
+            curRoomNum++;
+            playerSpawnX = spaceFromExit;
+            playerSpawnY = player.getY();
+        } else if(exitPos == "up") {
+            curRoomNum -= 10;
+            playerSpawnX = player.getX();
+            playerSpawnY = getHeight() - spaceFromExit;
+        } else if(exitPos == "down") {
+            curRoomNum += 10;
+            playerSpawnX = player.getX();
+            playerSpawnY = spaceFromExit;
+        }
+        
+        clearRoom();
+        createRoom();
     }
 }

@@ -13,13 +13,9 @@ public class Player extends Actor
     private int speed;
     
     public Player (int width, int height) {
-        image = new GreenfootImage(width, height);
-        
         GreenfootImage playerImage = new GreenfootImage("elf_f_run_anim_f1.png");
-        playerImage.scale(width, (int)Math.round(height * 1.75));
-        image.drawImage(playerImage, 0, -50);
-        
-        setImage(image);
+        playerImage.scale(width, height);
+        setImage(playerImage);
         
         speed = 6;
     }
@@ -36,7 +32,7 @@ public class Player extends Actor
     }
     
     private void checkExit() {
-        MyWorld g = (MyWorld)getWorld();
+        GameWorld g = (GameWorld)getWorld();
         
         if (getX() <= 0) g.exitRoom("left");
         else if (getX() >= getWorld().getWidth() - 1) g.exitRoom("right");

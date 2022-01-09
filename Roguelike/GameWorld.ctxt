@@ -1,0 +1,23 @@
+#BlueJ class context
+comment0.target=GameWorld
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ MyWorld\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=
+comment1.target=GameWorld()
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ MyWorld.\r\n\ \r\n
+comment2.params=
+comment2.target=void\ createRoom()
+comment3.params=
+comment3.target=void\ spawnPlayer()
+comment4.params=
+comment4.target=void\ generateMap()
+comment5.params=cell
+comment5.target=int\ neighbourCount(int)
+comment6.params=cell
+comment6.target=boolean\ visit(int)
+comment7.params=roomNum
+comment7.target=void\ createRoomlayout(int)
+comment8.params=
+comment8.target=void\ clearRoom()
+comment9.params=exitPos
+comment9.target=void\ exitRoom(java.lang.String)
+numComments=10
