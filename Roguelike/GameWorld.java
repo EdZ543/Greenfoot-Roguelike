@@ -9,66 +9,10 @@ import java.util.*;
  */
 public class GameWorld extends World
 {
-    // Class Variables / Objects
+    // Class Variables / Objects    
+    private Player player;
     
-    private String[] emptyLevel = {
-        "        ",
-        "        ",
-        "        ",
-        "        ",
-        "        ",
-        "        ",
-        "        ",
-        "        ",
-    };
-    
-    private String[] startRoomLayout = {
-        "        ",
-        "        ",
-        "        ",
-        "        ",
-        "        ",
-        "        ",
-        "        ",
-        "        ",
-    };
-    
-    private String[][] levels = {
-        {
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-        },
-        {
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-            "             ",
-        },
-    };
-    
-    private static Player player;
-    
-    private String wallImagePath = "wall_corner_front_left.png";
+    private int score = 0;
     
     private int[] floorPlan = new int[101];
     private int roomCount = 0;
@@ -96,6 +40,23 @@ public class GameWorld extends World
         generateMap();
         
         createRoom();
+    }
+    
+    /**
+     * Static method that gets the distance between the x,y coordinates of two Actors
+     * using Pythagorean Theorum.
+     * 
+     * @param a     First Actor
+     * @param b     Second Actor
+     * @return float
+     */
+    public static float getDistance (Actor a, Actor b)
+    {
+        double distance;
+        double xLength = a.getX() - b.getX();
+        double yLength = a.getY() - b.getY();
+        distance = Math.sqrt(Math.pow(xLength, 2) + Math.pow(yLength, 2));
+        return (float)distance;
     }
     
     private void createRoom() {
@@ -163,7 +124,7 @@ public class GameWorld extends World
     private void createRoomlayout(int roomNum){
         String[] roomLayout = null;
         
-        roomLayout = startRoomLayout;
+        roomLayout = Layouts.startRoomLayout;
         
         int numTilesX = roomLayout[0].length() + 2;
         int numTilesY = roomLayout.length + 2;
@@ -195,9 +156,7 @@ public class GameWorld extends World
                 int y = i * tileHeight + tileWidth / 2;
                 
                 if (i == 0 || i == numTilesY - 1 || j == 0 || j == numTilesX - 1) {
-                    GreenfootImage wallImage = new GreenfootImage(wallImagePath);
-                    wallImage.scale(tileWidth, tileHeight);
-                    Wall wall = new Wall(wallImage);
+                    Wall wall = new Wall(tileWidth, tileHeight);
                     addObject(wall, x, y);
                 }
             }
@@ -210,11 +169,14 @@ public class GameWorld extends World
                 int x = j * tileWidth + tileWidth / 2;
                 int y = i * tileHeight + tileWidth / 2;
                                     
-                if (type == '#') {
-                    GreenfootImage wallImage = new GreenfootImage(wallImagePath);
-                    wallImage.scale(tileWidth, tileHeight);
-                    Wall wall = new Wall(wallImage);
-                    addObject(wall, x, y);
+                switch (type) {
+                    case '#':
+                        Wall wall = new Wall(tileWidth, tileHeight);
+                        addObject(wall, x, y);
+                        break;
+                    case 'E':
+                        Goblin goblin = new Goblin(tileWidth, tileHeight);
+                        addObject(goblin, x, y);
                 }
             }
         }
@@ -248,5 +210,9 @@ public class GameWorld extends World
         
         clearRoom();
         createRoom();
+    }
+    
+    public void gameOver () {
+        Greenfoot.setWorld(new EndWorld());
     }
 }

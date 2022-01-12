@@ -10,17 +10,9 @@ public class Wall extends Actor
 {
     private GreenfootImage image;
     
-    public Wall (GreenfootImage image) {
-        this.image = image;
+    public Wall (int tileWidth, int tileHeight) {
+        image = new GreenfootImage("wall_corner_front_left.png");
+        image.scale(tileWidth, tileHeight);
         setImage(image);
-    }
-    
-    /**
-     * Act - do whatever the Tile wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
-    public void act()
-    {
-        // Add your action code here.
     }
 }

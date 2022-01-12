@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=Player
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ Player\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment0.text=\r\n\ The\ Player\ class.\ This\ is\ the\ actor\ that\ the\ user\ controls.\r\n\ \r\n\ @author\ Eddie\ Zhuang\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
 comment1.params=width\ height
 comment1.target=Player(int,\ int)
 comment2.params=
@@ -12,4 +12,8 @@ comment4.params=
 comment4.target=void\ checkKeys()
 comment5.params=xDir\ yDir
 comment5.target=void\ move(int,\ int)
-numComments=6
+comment5.text=\r\n\ Moves\ in\ increments\ so\ object\ will\ stop\ if\ it\ touches\ a\ wall\r\n
+comment6.params=attackDamage
+comment6.target=void\ getAttacked(int)
+comment6.text=\r\n\ Attack\ the\ player.\r\n
+numComments=7
