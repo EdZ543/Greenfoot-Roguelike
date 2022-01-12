@@ -13,16 +13,21 @@ public class GameWorld extends World
     private Player player;
     
     private int score = 0;
-    
-    private int[] floorPlan = new int[101];
-    private int roomCount = 0;
-    private Queue<Integer> cellQueue = new LinkedList<Integer>();
-    private int maxRooms = 15;
-    private int minRooms = 7;
-    private int startRoomNum = 45;
     private int curRoomNum;
+    private int startRoomNum = 45;
     private int playerSpawnX;
     private int playerSpawnY;
+    
+    // Procedural map generation
+    private int[] floorPlan;
+    private int roomCount;
+    private Queue<Integer> cellQueue;
+    private Queue<Integer> endRooms;
+    private int maxRooms = 15;
+    private int minRooms = 7;
+    private boolean started = false;
+    private int bossl;
+    private boolean placedSpecial;
 
     /**
      * Constructor for objects of class MyWorld.
@@ -62,25 +67,52 @@ public class GameWorld extends World
     private void createRoom() {
         createRoomlayout(curRoomNum);
         
-        Minimap minimap = new Minimap(floorPlan, startRoomNum, curRoomNum);
-        addObject(minimap, 50, 50);
+        Minimap minimap = new Minimap(floorPlan, startRoomNum, curRoomNum, bossl);
+        addObject(minimap, minimap.getImage().getWidth() / 2, minimap.getImage().getHeight() / 2);
     }
     
-    private void generateMap() {
+    private void initMap() {
+        started = true;
+        placedSpecial = false;
+        floorPlan = new int[101];
         for (int i = 0; i <= 100; i++) {
             floorPlan[i] = 0;
         }
+        roomCount = 0;
+        cellQueue = new LinkedList<Integer>();
+        endRooms = new LinkedList<Integer>();
         
         visit(45);
+    }
+    
+    private void generateMap() {
+        initMap();
         
-        while (cellQueue.size() > 0) {
-            int cell = cellQueue.remove();
-            int x = cell % 10;
-            
-            if (x > 1) visit(cell - 1);
-            if (x < 9) visit(cell + 1);
-            if (cell > 20) visit(cell - 10);
-            if (cell < 70) visit(cell + 10);
+        while (started) {
+            if (cellQueue.size() > 0) {
+                int cell = cellQueue.remove();
+                int x = cell % 10;
+                
+                boolean created = false;
+                if (x > 1) created |= visit(cell - 1);
+                if (x < 9) created |= visit(cell + 1);
+                if (cell > 20) created |= visit(cell - 10);
+                if (cell < 70) created |= visit(cell + 10);
+                
+                if (!created) {
+                    endRooms.add(cell);
+                }
+            } else if (!placedSpecial) {
+                if (roomCount < minRooms) {
+                    initMap();
+                    continue;
+                }
+                
+                placedSpecial = true;
+                bossl = endRooms.remove();
+            } else {
+                started = false;
+            }
         }
     }
     
