@@ -12,6 +12,8 @@ public class Player extends Actor
     
     private int speed = 6;
     private int health = 100;
+    private int shootDelay = 20;
+    private int shootDelayTimer = 0;
     
     public Player (int width, int height) {
         this.getImage().scale(width, height);
@@ -60,14 +62,24 @@ public class Player extends Actor
             move();
         }
         
-        if (Greenfoot.isKeyDown("Up")){
-            shoot(270);
-        } else if (Greenfoot.isKeyDown("Down")){
-            shoot(180);
-        } else if (Greenfoot.isKeyDown("Left")){
-            shoot(90);
-        } else if (Greenfoot.isKeyDown("Right")){
-            shoot(0);
+        if (shootDelayTimer != 0) {
+            shootDelayTimer--;
+        }
+        
+        if (shootDelayTimer == 0) {
+            if (Greenfoot.isKeyDown("Up")){
+                shoot(270);
+                shootDelayTimer = shootDelay;
+            } else if (Greenfoot.isKeyDown("Down")){
+                shoot(90);
+                shootDelayTimer = shootDelay;
+            } else if (Greenfoot.isKeyDown("Left")){
+                shoot(180);
+                shootDelayTimer = shootDelay;
+            } else if (Greenfoot.isKeyDown("Right")){
+                shoot(0);
+                shootDelayTimer = shootDelay;
+            }
         }
     }
     
@@ -86,8 +98,8 @@ public class Player extends Actor
     }
     
     private void shoot(int rotation) {
-        Projectile projectile = new Projectile(true, rotation, 50, 5);
-        getWorld().addObject(projectile, getX(), getY());
+        Bullet bullet = new Bullet(true, rotation);
+        getWorld().addObject(bullet, getX(), getY());
     }
     
     /**

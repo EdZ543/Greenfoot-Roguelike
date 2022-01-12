@@ -13,7 +13,6 @@ public class Projectile extends Actor
     private int damage;
     
     public Projectile(boolean playerShot, int rotation, int speed, int damage) {
-        setImage (drawProjectile());
         this.playerShot = playerShot;
         this.speed = speed;
         this.damage = damage;
@@ -49,14 +48,5 @@ public class Projectile extends Actor
             g.removeObject(e);
             g.removeObject(this);
         }
-    }
-    
-    private GreenfootImage drawProjectile () {
-        GreenfootImage temp = new GreenfootImage (16, 16);
-        temp.setColor(Color.RED);
-        temp.fillOval (0, 0, 15, 15);
-        temp.setColor(Color.WHITE);
-        temp.drawOval (0, 0, 15, 15);
-        return temp;
     }
 }

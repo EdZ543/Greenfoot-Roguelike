@@ -8,6 +8,4 @@ comment2.target=void\ act()
 comment2.text=\r\n\ Act\ -\ do\ whatever\ the\ Projectile\ wants\ to\ do.\ This\ method\ is\ called\ whenever\r\n\ the\ 'Act'\ or\ 'Run'\ button\ gets\ pressed\ in\ the\ environment.\r\n
 comment3.params=
 comment3.target=void\ hitEnemy()
-comment4.params=
-comment4.target=greenfoot.GreenfootImage\ drawProjectile()
-numComments=5
+numComments=4
