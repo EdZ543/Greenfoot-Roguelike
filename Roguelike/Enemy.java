@@ -16,11 +16,7 @@ public class Enemy extends Actor
     /**
      * Enemy constructor
      */
-    public Enemy(int width, int height, int health, String imagePath) {
+    public Enemy(int health) {
         this.health = health;
-        
-        image = new GreenfootImage(imagePath);
-        image.scale(width, height);
-        setImage(image);
     }
 }

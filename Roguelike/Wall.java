@@ -11,8 +11,6 @@ public class Wall extends Actor
     private GreenfootImage image;
     
     public Wall (int tileWidth, int tileHeight) {
-        image = new GreenfootImage("wall_corner_front_left.png");
-        image.scale(tileWidth, tileHeight);
-        setImage(image);
+        this.getImage().scale(tileWidth, tileHeight);
     }
 }

@@ -15,7 +15,8 @@ public class Goblin extends Enemy
     private int attackDamage = 10;
     
     public Goblin(int width, int height) {
-        super(width, height, 20, "goblin_idle_anim_f0.png");
+        super(20);
+        this.getImage().scale(width, height);
     }
     
     /**
@@ -36,7 +37,7 @@ public class Goblin extends Enemy
         
         if (GameWorld.getDistance(this, player) <= attackRange)
         {
-            player.getAttacked(attackDamage);
+            player.damageMe(attackDamage);
         }
         else
         {

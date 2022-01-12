@@ -14,9 +14,7 @@ public class Player extends Actor
     private int health = 100;
     
     public Player (int width, int height) {
-        GreenfootImage playerImage = new GreenfootImage("elf_f_run_anim_f1.png");
-        playerImage.scale(width, height);
-        setImage(playerImage);
+        this.getImage().scale(width, height);
     }
     
     /**
@@ -42,41 +40,60 @@ public class Player extends Actor
     private void checkKeys() {
         String key = Greenfoot.getKey();
         
-        if (Greenfoot.isKeyDown("up")){
-            move(0, -1);
+        if (Greenfoot.isKeyDown("W")){
+            setRotation(270);
+            move();
         }
         
-        if (Greenfoot.isKeyDown("down")){
-            move(0, 1);
+        if (Greenfoot.isKeyDown("A")){
+            setRotation(180);
+            move();
         }
         
-        if (Greenfoot.isKeyDown("left")){
-            move(-1, 0);
+        if (Greenfoot.isKeyDown("S")){
+            setRotation(90);
+            move();
         }
         
-        if (Greenfoot.isKeyDown("right")){
-            move(1, 0);
+        if (Greenfoot.isKeyDown("D")){
+            setRotation(0);
+            move();
+        }
+        
+        if (Greenfoot.isKeyDown("Up")){
+            shoot(270);
+        } else if (Greenfoot.isKeyDown("Down")){
+            shoot(180);
+        } else if (Greenfoot.isKeyDown("Left")){
+            shoot(90);
+        } else if (Greenfoot.isKeyDown("Right")){
+            shoot(0);
         }
     }
     
     /**
-     * Moves in increments so object will stop if it touches a wall
+     * Moves in increments for smooth wall collision
      */
-    private void move(int xDir, int yDir){
+    private void move(){
         for(int i = 0; i < speed; i++){
-                setLocation(getX() + xDir, getY() + yDir);
+                move(1);
                 
                 if(isTouching(Wall.class)){
-                    setLocation(getX() - xDir, getY() - yDir);
+                    move(-1);
                     break;
                 }
             }
     }
     
+    private void shoot(int rotation) {
+        Projectile projectile = new Projectile(true, rotation, 50, 5);
+        getWorld().addObject(projectile, getX(), getY());
+    }
+    
     /**
      * Attack the player.
      */
-    public void getAttacked(int attackDamage) {
+    public void damageMe(int attackDamage) {
         health = Math.max(0, health - attackDamage);
         if (health == 0) {
             GameWorld g = (GameWorld)getWorld();

@@ -61,15 +61,9 @@ public class GameWorld extends World
     
     private void createRoom() {
         createRoomlayout(curRoomNum);
-        spawnPlayer();
         
         Minimap minimap = new Minimap(floorPlan, startRoomNum, curRoomNum);
         addObject(minimap, 50, 50);
-    }
-    
-    private void spawnPlayer() {
-        player = new Player(50, 50);
-        addObject(player, playerSpawnX, playerSpawnY);
     }
     
     private void generateMap() {
@@ -131,16 +125,14 @@ public class GameWorld extends World
         int tileWidth = getWidth() / numTilesX;
         int tileHeight = getHeight() / numTilesY;
         
-        GreenfootImage floorImage = new GreenfootImage("floor_1.png");
-        floorImage.scale(tileWidth, tileHeight);
-        
         // Draw background
         for(int i = 0; i < numTilesY; i++){
             for(int j = 0; j < numTilesX; j++){
-                int x = j * tileWidth;
-                int y = i * tileHeight;
+                int x = j * tileWidth + tileWidth / 2;
+                int y = i * tileHeight + tileHeight / 2;
                 
-                getBackground().drawImage(floorImage, x, y);
+                Floor floor = new Floor(tileWidth, tileHeight);
+                addObject(floor, x, y);
             }
         }
         
@@ -180,6 +172,9 @@ public class GameWorld extends World
                 }
             }
         }
+        
+        player = new Player(tileWidth, tileHeight);
+        addObject(player, playerSpawnX, playerSpawnY);
     }
     
     private void clearRoom() {
