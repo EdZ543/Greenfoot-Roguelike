@@ -20,6 +20,7 @@ public class GameWorld extends World
     
     // Procedural map generation
     private int[] floorPlan;
+    private int[] roomLayoutPlan;
     private int roomCount;
     private Queue<Integer> cellQueue;
     private Queue<Integer> endRooms;
@@ -67,8 +68,8 @@ public class GameWorld extends World
     private void createRoom() {
         createRoomlayout(curRoomNum);
         
-        Minimap minimap = new Minimap(floorPlan, startRoomNum, curRoomNum, bossl);
-        addObject(minimap, minimap.getImage().getWidth() / 2, minimap.getImage().getHeight() / 2);
+        Minimap minimap = new Minimap(floorPlan, curRoomNum, bossl);
+        addObject(minimap, getWidth() - minimap.getImage().getWidth() / 2, minimap.getImage().getHeight() / 2);
     }
     
     private void initMap() {
@@ -85,9 +86,7 @@ public class GameWorld extends World
         visit(45);
     }
     
-    private void generateMap() {
-        initMap();
-        
+    private void fillMap() {
         while (started) {
             if (cellQueue.size() > 0) {
                 int cell = cellQueue.remove();
@@ -114,6 +113,30 @@ public class GameWorld extends World
                 started = false;
             }
         }
+    }
+    
+    private void assignRoomLayouts() {
+        roomLayoutPlan = new int[101];
+        
+        List<Integer> randomRooms = new ArrayList();
+        for (int i = 0; i < Layouts.roomLayouts.length; i++) {
+            randomRooms.add(i);
+        }
+        Collections.shuffle(randomRooms);
+        
+        int randomRoomIndex = 0;
+        for (int i = 0; i < floorPlan.length; i++) {
+            if (floorPlan[i] == 1) {
+                roomLayoutPlan[i] = randomRooms.get(randomRoomIndex++);
+                randomRoomIndex %= randomRooms.size();
+            }
+        }
+    }
+    
+    private void generateMap() {
+        initMap();
+        fillMap();
+        assignRoomLayouts();
     }
     
     private int neighbourCount(int cell) {
@@ -150,7 +173,12 @@ public class GameWorld extends World
     private void createRoomlayout(int roomNum){
         String[] roomLayout = null;
         
-        roomLayout = Layouts.startRoomLayout;
+        if (roomNum == startRoomNum) {
+            roomLayout = Layouts.startRoomLayout;
+        } else {
+            int roomLayoutIndex = roomLayoutPlan[roomNum];
+            roomLayout = Layouts.roomLayouts[roomLayoutIndex];
+        }
         
         int numTilesX = roomLayout[0].length() + 2;
         int numTilesY = roomLayout.length + 2;

@@ -9,7 +9,8 @@ import java.util.List;
  */
 public class Enemy extends Actor
 {
-    protected GreenfootImage image;
+    private GreenfootImage image;
+    private StatBar stats;
     
     protected int health;
     
@@ -18,5 +19,21 @@ public class Enemy extends Actor
      */
     public Enemy(int health) {
         this.health = health;
+        
+        stats = new StatBar​(health, this);
+    }
+    
+    public void addedToWorld (World w) {
+        w.addObject(stats, 0, 0);
+    }
+    
+    public void damageMe(int attackDamage) {
+        health = Math.max(0, health - attackDamage);
+        stats.update(health);
+        if (health == 0) {
+            GameWorld g = (GameWorld)getWorld();
+            
+            g.removeObject(this);
+        }
     }
 }

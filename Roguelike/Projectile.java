@@ -45,7 +45,7 @@ public class Projectile extends Actor
         if (e != null){
             GameWorld g = (GameWorld)getWorld();
 
-            g.removeObject(e);
+            e.damageMe(damage);
             g.removeObject(this);
         }
     }

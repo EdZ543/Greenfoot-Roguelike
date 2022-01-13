@@ -9,6 +9,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class Player extends Actor
 {
     private GreenfootImage image;
+    private StatBar stats;
     
     private int speed = 6;
     private int health = 100;
@@ -17,6 +18,12 @@ public class Player extends Actor
     
     public Player (int width, int height) {
         this.getImage().scale(width, height);
+        
+        stats = new StatBar​(health, health, null, 150, 25, 0, Color.GREEN, Color.RED, false);
+    }
+    
+    public void addedToWorld (World w) {
+        w.addObject(stats, 100, 50);
     }
     
     /**
@@ -107,6 +114,7 @@ public class Player extends Actor
      */
     public void damageMe(int attackDamage) {
         health = Math.max(0, health - attackDamage);
+        stats.update(health);
         if (health == 0) {
             GameWorld g = (GameWorld)getWorld();
             g.gameOver();
