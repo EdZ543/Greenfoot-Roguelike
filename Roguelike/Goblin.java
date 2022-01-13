@@ -10,9 +10,9 @@ import java.util.*;
 public class Goblin extends Enemy
 {
     private int visionRange = 300;
-    private int attackRange = 50;
+    private int attackRange = 100;
     private int speed = 1;
-    private int attackDamage = 10;
+    private int attackDamage = 1;
     
     public Goblin(int width, int height) {
         super(20);

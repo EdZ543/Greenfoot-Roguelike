@@ -68,4 +68,9 @@ public class Minimap extends Actor
         
         setImage(image);
     }
+    
+    public void updateCurRoomNum(int curRoomNum) {
+        this.curRoomNum = curRoomNum;
+        drawMinimap();
+    }
 }

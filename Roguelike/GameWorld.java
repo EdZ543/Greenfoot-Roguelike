@@ -11,12 +11,13 @@ public class GameWorld extends World
 {
     // Class Variables / Objects    
     private Player player;
+    private Minimap minimap;
     
     private int score = 0;
     private int curRoomNum;
     private int startRoomNum = 45;
-    private int playerSpawnX;
-    private int playerSpawnY;
+    private int tileWidth = 80;
+    private int tileHeight = 80;
     
     // Procedural map generation
     private int[] floorPlan;
@@ -40,12 +41,18 @@ public class GameWorld extends World
         super(800, 800, 1);
         
         curRoomNum = startRoomNum;
-        playerSpawnX = getWidth() / 2;
-        playerSpawnY = getHeight() / 2;
         
         generateMap();
         
         createRoom();
+        
+        player = new Player(tileWidth, tileHeight);
+        addObject(player, getWidth() / 2, getHeight() / 2);
+        
+        minimap = new Minimap(floorPlan, curRoomNum, bossl);
+        addObject(minimap, getWidth() - minimap.getImage().getWidth() / 2, minimap.getImage().getHeight() / 2);
+        
+        setPaintOrder(Minimap.class, StatBar.class, Projectile.class, Player.class, Enemy.class, Wall.class, Floor.class);
     }
     
     /**
@@ -63,13 +70,6 @@ public class GameWorld extends World
         double yLength = a.getY() - b.getY();
         distance = Math.sqrt(Math.pow(xLength, 2) + Math.pow(yLength, 2));
         return (float)distance;
-    }
-    
-    private void createRoom() {
-        createRoomlayout(curRoomNum);
-        
-        Minimap minimap = new Minimap(floorPlan, curRoomNum, bossl);
-        addObject(minimap, getWidth() - minimap.getImage().getWidth() / 2, minimap.getImage().getHeight() / 2);
     }
     
     private void initMap() {
@@ -170,13 +170,13 @@ public class GameWorld extends World
         return true;
     }
     
-    private void createRoomlayout(int roomNum){
+    private void createRoom(){
         String[] roomLayout = null;
         
-        if (roomNum == startRoomNum) {
+        if (curRoomNum == startRoomNum) {
             roomLayout = Layouts.startRoomLayout;
         } else {
-            int roomLayoutIndex = roomLayoutPlan[roomNum];
+            int roomLayoutIndex = roomLayoutPlan[curRoomNum];
             roomLayout = Layouts.roomLayouts[roomLayoutIndex];
         }
         
@@ -199,10 +199,10 @@ public class GameWorld extends World
         // Create boundaries
         for(int i = 0; i < numTilesY; i++){
             for(int j = 0; j < numTilesX; j++){
-                if (floorPlan[roomNum - 1] == 1 && j == 0 && (i == 4 || i == 5)) continue;
-                if (floorPlan[roomNum + 1] == 1 && j == numTilesX - 1 && (i == 4 || i == 5)) continue;
-                if (floorPlan[roomNum - 10] == 1 && i == 0 && (j == 4 || j == 5)) continue;
-                if (floorPlan[roomNum + 10] == 1 && i == numTilesY - 1 && (j == 4 || j == 5)) continue;
+                if (floorPlan[curRoomNum - 1] == 1 && j == 0 && (i == 4 || i == 5)) continue;
+                if (floorPlan[curRoomNum + 1] == 1 && j == numTilesX - 1 && (i == 4 || i == 5)) continue;
+                if (floorPlan[curRoomNum - 10] == 1 && i == 0 && (j == 4 || j == 5)) continue;
+                if (floorPlan[curRoomNum + 10] == 1 && i == numTilesY - 1 && (j == 4 || j == 5)) continue;
                 
                 int x = j * tileWidth + tileWidth / 2;
                 int y = i * tileHeight + tileWidth / 2;
@@ -232,13 +232,17 @@ public class GameWorld extends World
                 }
             }
         }
-        
-        player = new Player(tileWidth, tileHeight);
-        addObject(player, playerSpawnX, playerSpawnY);
     }
     
     private void clearRoom() {
-        removeObjects(getObjects(null));
+        List<Actor> actors = getObjects(null);
+        for (Actor a : actors) {
+            Class c = a.getClass();
+            if (c != Player.class && c != Minimap.class && c != StatBar.class) {
+                removeObject(a);
+            }
+        }
+        
         getBackground().fill();
     }
     
@@ -247,21 +251,19 @@ public class GameWorld extends World
         
         if (exitPos == "left") {
             curRoomNum--;
-            playerSpawnX = getWidth() - spaceFromExit;
-            playerSpawnY = player.getY();
+            player.setLocation(getWidth() - spaceFromExit, player.getY());
         } else if(exitPos == "right") {
             curRoomNum++;
-            playerSpawnX = spaceFromExit;
-            playerSpawnY = player.getY();
+            player.setLocation(spaceFromExit, player.getY());
         } else if(exitPos == "up") {
             curRoomNum -= 10;
-            playerSpawnX = player.getX();
-            playerSpawnY = getHeight() - spaceFromExit;
+            player.setLocation(player.getX(), getHeight() - spaceFromExit);
         } else if(exitPos == "down") {
             curRoomNum += 10;
-            playerSpawnX = player.getX();
-            playerSpawnY = spaceFromExit;
+            player.setLocation(player.getX(), spaceFromExit);
         }
+        
+        minimap.updateCurRoomNum(curRoomNum);
         
         clearRoom();
         createRoom();
