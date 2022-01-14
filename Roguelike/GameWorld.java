@@ -12,6 +12,7 @@ public class GameWorld extends World
     // Class Variables / Objects    
     private Player player;
     private Minimap minimap;
+    private Label scoreText;
     
     private int score = 0;
     private int curRoomNum;
@@ -46,13 +47,16 @@ public class GameWorld extends World
         
         createRoom();
         
-        player = new Player(45, tileHeight);
+        player = new Player(-1, tileHeight);
         addObject(player, getWidth() / 2, getHeight() / 2);
         
         minimap = new Minimap(floorPlan, curRoomNum, bossl);
         addObject(minimap, getWidth() - minimap.getImage().getWidth() / 2, minimap.getImage().getHeight() / 2);
         
-        setPaintOrder(Minimap.class, StatBar.class, Projectile.class, Player.class, Enemy.class, Wall.class, Floor.class);
+        scoreText = new Label("Score: 0", 50);
+        addObject(scoreText, scoreText.getImage().getWidth() / 2, getHeight() - scoreText.getImage().getHeight() / 2);
+        
+        setPaintOrder(Minimap.class, Label.class, StatBar.class, Projectile.class, Player.class, Enemy.class, Wall.class, Floor.class);
     }
     
     /**
@@ -189,6 +193,7 @@ public class GameWorld extends World
         Floor floor;
         Goblin goblin;
         SpikedFloor spikedFloor;
+        Boss boss;
         
         // Create boundaries
         for(int i = 0; i < numTilesY; i++){
@@ -238,6 +243,13 @@ public class GameWorld extends World
                         spikedFloor = new SpikedFloor(tileWidth, tileHeight);
                         addObject(spikedFloor, x, y);
                         break;
+                    case 'B':
+                        boss = new Boss(-1, tileHeight * 2);
+                        addObject(boss, x, y);
+                        
+                        floor = new Floor(tileWidth, tileHeight);
+                        addObject(floor, x, y);
+                        break;
                 }
             }
         }
@@ -247,7 +259,7 @@ public class GameWorld extends World
         List<Actor> actors = getObjects(null);
         for (Actor a : actors) {
             Class c = a.getClass();
-            if (c != Player.class && c != Minimap.class && c != StatBar.class) {
+            if (c != Player.class && c != Minimap.class && c != StatBar.class && c != Label.class) {
                 removeObject(a);
             }
         }
@@ -278,7 +290,30 @@ public class GameWorld extends World
         createRoom();
     }
     
-    public void gameOver () {
-        Greenfoot.setWorld(new EndWorld());
+    public void gameOver (boolean won) {
+        Greenfoot.setWorld(new EndWorld(score, won));
+    }
+    
+    public void updateScore(int scoreChange) {
+        score += scoreChange;
+        scoreText.setValue("Score: " + score);
+        scoreText.setLocation(scoreText.getImage().getWidth() / 2, getHeight() - scoreText.getImage().getHeight() / 2);
+    }
+    
+    /**
+     * Scales image while preserving aspect ratio
+     * 
+     * @param image     image to scale
+     * @param width     if -1, adjust based on aspect ratio and new height
+     * @param height    if -1, adjust based on aspect ratio and new width
+     */
+    public static void scaleWithAspectRatio(GreenfootImage image, int width, int height) {
+        if (width == -1) {
+            float heightToWidth = (float)image.getWidth() / image.getHeight();
+            image.scale(Math.round(height * heightToWidth), height);
+        } else if (height == -1) {
+            float widthToHeight = (float)image.getHeight() / image.getWidth();
+            image.scale(width, Math.round(width * widthToHeight));
+        }
     }
 }

@@ -26,8 +26,6 @@ public class Player extends Actor
         this.width = width;
         this.height = height;
         
-        this.getImage().scale(width, height);
-        
         stats = new StatBar​(health, health, null, 150, 25, 0, Color.GREEN, Color.RED, false);
         
         initAnimations();
@@ -38,7 +36,7 @@ public class Player extends Actor
             String framePath = "player/idle/knight_f_idle_anim_f" + i + ".png";
             GreenfootImage frame = new GreenfootImage(framePath);
             
-            frame.scale(width, height);
+            GameWorld.scaleWithAspectRatio(frame, width, height);
             idleFrames[i] = frame;
         }
         
@@ -46,7 +44,7 @@ public class Player extends Actor
             String framePath = "player/run/knight_f_run_anim_f" + i + ".png";
             GreenfootImage frame = new GreenfootImage(framePath);
             
-            frame.scale(width, height);
+            GameWorld.scaleWithAspectRatio(frame, width, height);
             runningFrames[i] = frame;
         }
         
@@ -168,7 +166,7 @@ public class Player extends Actor
         stats.update(health);
         if (health == 0) {
             GameWorld g = (GameWorld)getWorld();
-            g.gameOver();
+            g.gameOver(false);
         }
     }
 }

@@ -8,12 +8,23 @@ public class Layouts
 {
     static final String[] startRoomLayout = {
         "        ",
-        " #    # ",
         "        ",
         "        ",
         "        ",
         "        ",
-        " #    # ",
+        "        ",
+        " B      ",
+        "        ",
+    };
+    
+    static final String[] bossRoomLayout = {
+        "        ",
+        " ^    ^ ",
+        "        ",
+        "   B    ",
+        "        ",
+        "        ",
+        " ^    ^ ",
         "        ",
     };
     

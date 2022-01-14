@@ -15,7 +15,7 @@ public class Goblin extends Enemy
     private int attackDamage = 1;
     
     public Goblin(int width, int height) {
-        super(20);
+        super(20, 10);
         this.getImage().scale(width, height);
     }
     

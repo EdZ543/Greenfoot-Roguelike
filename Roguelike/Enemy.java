@@ -9,16 +9,17 @@ import java.util.List;
  */
 public class Enemy extends Actor
 {
-    private GreenfootImage image;
-    private StatBar stats;
-    
+    protected GreenfootImage image;
+    protected StatBar stats;
+    protected int points;
     protected int health;
     
     /**
      * Enemy constructor
      */
-    public Enemy(int health) {
+    public Enemy(int health, int points) {
         this.health = health;
+        this.points = points;
         
         stats = new StatBar​(health, this);
     }
@@ -31,9 +32,13 @@ public class Enemy extends Actor
         health = Math.max(0, health - attackDamage);
         stats.update(health);
         if (health == 0) {
-            GameWorld g = (GameWorld)getWorld();
-            
-            g.removeObject(this);
+            die();
         }
+    }
+    
+    private void die() {
+        GameWorld g = (GameWorld)getWorld();
+        g.removeObject(this);
+        g.updateScore(points);
     }
 }
