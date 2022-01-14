@@ -28,7 +28,11 @@ public class Projectile extends Actor
         // Add your action code here.
         move(speed);
         
-        hitEnemy();
+        if (playerShot) {
+            hitEnemy();
+        } else {
+            hitPlayer();
+        }
         
         if (getWorld() == null) {
             return;
@@ -46,6 +50,16 @@ public class Projectile extends Actor
             GameWorld g = (GameWorld)getWorld();
 
             e.damageMe(damage);
+            g.removeObject(this);
+        }
+    }
+    
+    private void hitPlayer () {
+        Player p = (Player)getOneIntersectingObject(Player.class);
+        if (p != null){
+            GameWorld g = (GameWorld)getWorld();
+
+            p.damageMe(damage);
             g.removeObject(this);
         }
     }

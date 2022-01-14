@@ -25,7 +25,7 @@ public class GameWorld extends World
     private int[] roomLayoutPlan;
     private int roomCount;
     private Queue<Integer> cellQueue;
-    private Queue<Integer> endRooms;
+    private List<Integer> endRooms;
     private int maxRooms = 15;
     private int minRooms = 7;
     private boolean started = false;
@@ -112,7 +112,7 @@ public class GameWorld extends World
                 }
                 
                 placedSpecial = true;
-                bossl = endRooms.remove();
+                bossl = endRooms.remove(endRooms.size() - 1);
             } else {
                 started = false;
             }
@@ -130,7 +130,7 @@ public class GameWorld extends World
         
         int randomRoomIndex = 0;
         for (int i = 0; i < floorPlan.length; i++) {
-            if (floorPlan[i] == 1) {
+            if (floorPlan[i] == 1 && i != startRoomNum && i != bossl) {
                 roomLayoutPlan[i] = randomRooms.get(randomRoomIndex++);
                 randomRoomIndex %= randomRooms.size();
             }
@@ -179,6 +179,8 @@ public class GameWorld extends World
         
         if (curRoomNum == startRoomNum) {
             roomLayout = Layouts.startRoomLayout;
+        } else if(curRoomNum == bossl) {
+            roomLayout = Layouts.bossRoomLayout;
         } else {
             int roomLayoutIndex = roomLayoutPlan[curRoomNum];
             roomLayout = Layouts.roomLayouts[roomLayoutIndex];

@@ -46,6 +46,7 @@ public class Boss extends Enemy
     {
         // Add your action code here.
         animation.run();
+        spreadShot();
     }
     
     private void die() {
@@ -53,5 +54,12 @@ public class Boss extends Enemy
         g.removeObject(this);
         g.updateScore(points);
         g.gameOver(true);
+    }
+    
+    private void spreadShot() {
+        for (int i = 0; i < 360; i += 45) {
+            Bullet bullet = new Bullet(false, i);
+            getWorld().addObject(bullet, getX(), getY());
+        }
     }
 }
