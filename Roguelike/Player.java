@@ -8,18 +8,34 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Player extends Actor
 {
+    static GreenfootImage[] runFrames = new GreenfootImage[4];
+    
     private GreenfootImage image;
     private StatBar stats;
+    private Animation animation;
     
     private int speed = 6;
     private int health = 100;
     private int shootDelay = 20;
     private int shootDelayTimer = 0;
+    private String facingDir = "right";
     
     public Player (int width, int height) {
         this.getImage().scale(width, height);
         
         stats = new StatBar​(health, health, null, 150, 25, 0, Color.GREEN, Color.RED, false);
+        
+        for (int i = 0; i < runFrames.length; i++) {
+            String framePath = "player/run/knight_f_run_anim_f" + i + ".png";
+            GreenfootImage frame = new GreenfootImage(framePath);
+            
+            frame.scale(width, height);
+            runFrames[i] = frame;
+        }
+        
+        animation = new Animation(this, runFrames);
+        animation.setCycleActs(25);
+        animation.setActiveState(true);
     }
     
     public void addedToWorld (World w) {
@@ -33,6 +49,7 @@ public class Player extends Actor
     public void act()
     {
         // Add your action code here.
+        animation.run();
         checkKeys();
         checkExit();
     }
@@ -50,23 +67,21 @@ public class Player extends Actor
         String key = Greenfoot.getKey();
         
         if (Greenfoot.isKeyDown("W")){
-            setRotation(270);
-            move();
+            moveInDir(0, -1);
         }
         
         if (Greenfoot.isKeyDown("A")){
-            setRotation(180);
-            move();
+            faceDir("left");
+            moveInDir(-1, 0);
         }
         
         if (Greenfoot.isKeyDown("S")){
-            setRotation(90);
-            move();
+            moveInDir(0, 1);
         }
         
         if (Greenfoot.isKeyDown("D")){
-            setRotation(0);
-            move();
+            faceDir("right");
+            moveInDir(1, 0);
         }
         
         if (shootDelayTimer != 0) {
@@ -90,6 +105,29 @@ public class Player extends Actor
         }
     }
     
+    private void moveInDir(int x, int y) {
+        for(int i = 0; i < speed; i++){
+            setLocation(getX() + x, getY() + y);
+                
+            if(isTouching(Wall.class)){
+                setLocation(getX() - x, getY() - y);
+                break;
+            }
+        }
+    }
+    
+    private void faceDir(String dir) {
+        if (dir == facingDir) return;
+        
+        facingDir = dir;
+        
+        for (int i = 0; i < runFrames.length; i++) {
+            runFrames[i].mirrorHorizontally();
+        }
+        
+        animation.setFrames(runFrames);
+    }
+    
     /**
      * Moves in increments for smooth wall collision
      */
@@ -97,11 +135,11 @@ public class Player extends Actor
         for(int i = 0; i < speed; i++){
                 move(1);
                 
-                if(isTouching(Wall.class)){
-                    move(-1);
-                    break;
-                }
+            if(isTouching(Wall.class)){
+                move(-1);
+                break;
             }
+        }
     }
     
     private void shoot(int rotation) {

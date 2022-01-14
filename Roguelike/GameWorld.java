@@ -46,7 +46,7 @@ public class GameWorld extends World
         
         createRoom();
         
-        player = new Player(tileWidth, tileHeight);
+        player = new Player(45, tileHeight);
         addObject(player, getWidth() / 2, getHeight() / 2);
         
         minimap = new Minimap(floorPlan, curRoomNum, bossl);
@@ -185,31 +185,28 @@ public class GameWorld extends World
         int tileWidth = getWidth() / numTilesX;
         int tileHeight = getHeight() / numTilesY;
         
-        // Draw background
-        for(int i = 0; i < numTilesY; i++){
-            for(int j = 0; j < numTilesX; j++){
-                int x = j * tileWidth + tileWidth / 2;
-                int y = i * tileHeight + tileHeight / 2;
-                
-                Floor floor = new Floor(tileWidth, tileHeight);
-                addObject(floor, x, y);
-            }
-        }
+        Wall wall;
+        Floor floor;
+        Goblin goblin;
+        SpikedFloor spikedFloor;
         
         // Create boundaries
         for(int i = 0; i < numTilesY; i++){
             for(int j = 0; j < numTilesX; j++){
-                if (floorPlan[curRoomNum - 1] == 1 && j == 0 && (i == 4 || i == 5)) continue;
-                if (floorPlan[curRoomNum + 1] == 1 && j == numTilesX - 1 && (i == 4 || i == 5)) continue;
-                if (floorPlan[curRoomNum - 10] == 1 && i == 0 && (j == 4 || j == 5)) continue;
-                if (floorPlan[curRoomNum + 10] == 1 && i == numTilesY - 1 && (j == 4 || j == 5)) continue;
-                
-                int x = j * tileWidth + tileWidth / 2;
-                int y = i * tileHeight + tileWidth / 2;
-                
                 if (i == 0 || i == numTilesY - 1 || j == 0 || j == numTilesX - 1) {
-                    Wall wall = new Wall(tileWidth, tileHeight);
-                    addObject(wall, x, y);
+                    int x = j * tileWidth + tileWidth / 2;
+                    int y = i * tileHeight + tileWidth / 2;
+                    
+                    if ((floorPlan[curRoomNum - 1] == 1 && j == 0 && (i == 4 || i == 5)) ||
+                    (floorPlan[curRoomNum + 1] == 1 && j == numTilesX - 1 && (i == 4 || i == 5)) ||
+                    (floorPlan[curRoomNum - 10] == 1 && i == 0 && (j == 4 || j == 5)) ||
+                    (floorPlan[curRoomNum + 10] == 1 && i == numTilesY - 1 && (j == 4 || j == 5))) {
+                        floor = new Floor(tileWidth, tileHeight);
+                        addObject(floor, x, y);
+                    } else {
+                        wall = new Wall(tileWidth, tileHeight);
+                        addObject(wall, x, y);
+                    }
                 }
             }
         }
@@ -222,13 +219,25 @@ public class GameWorld extends World
                 int y = i * tileHeight + tileWidth / 2;
                                     
                 switch (type) {
+                    case ' ':
+                        floor = new Floor(tileWidth, tileHeight);
+                        addObject(floor, x, y);
+                        break;
                     case '#':
-                        Wall wall = new Wall(tileWidth, tileHeight);
+                        wall = new Wall(tileWidth, tileHeight);
                         addObject(wall, x, y);
                         break;
                     case 'E':
-                        Goblin goblin = new Goblin(tileWidth, tileHeight);
+                        goblin = new Goblin(tileWidth, tileHeight);
                         addObject(goblin, x, y);
+                        
+                        floor = new Floor(tileWidth, tileHeight);
+                        addObject(floor, x, y);
+                        break;
+                    case '^':
+                        spikedFloor = new SpikedFloor(tileWidth, tileHeight);
+                        addObject(spikedFloor, x, y);
+                        break;
                 }
             }
         }

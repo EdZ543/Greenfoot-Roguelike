@@ -6,13 +6,9 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Floor extends Actor
+public class Floor extends FloorTile
 {
-    private GreenfootImage image;
-    
     public Floor (int tileWidth, int tileHeight) {
-        image = new GreenfootImage("corkboard.jpg");
-        image.scale(tileWidth, tileHeight);
-        setImage(image);
+        super(tileWidth, tileHeight);
     }
 }
