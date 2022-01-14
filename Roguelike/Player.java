@@ -8,7 +8,8 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Player extends Actor
 {
-    static GreenfootImage[] runFrames = new GreenfootImage[4];
+    static GreenfootImage[] runningFrames = new GreenfootImage[4];
+    static GreenfootImage[] idleFrames = new GreenfootImage[4];
     
     private GreenfootImage image;
     private StatBar stats;
@@ -18,23 +19,41 @@ public class Player extends Actor
     private int health = 100;
     private int shootDelay = 20;
     private int shootDelayTimer = 0;
-    private String facingDir = "right";
+    private int width;
+    private int height;
     
     public Player (int width, int height) {
+        this.width = width;
+        this.height = height;
+        
         this.getImage().scale(width, height);
         
         stats = new StatBar​(health, health, null, 150, 25, 0, Color.GREEN, Color.RED, false);
         
-        for (int i = 0; i < runFrames.length; i++) {
+        initAnimations();
+    }
+    
+    private void initAnimations() {
+        for (int i = 0; i < idleFrames.length; i++) {
+            String framePath = "player/idle/knight_f_idle_anim_f" + i + ".png";
+            GreenfootImage frame = new GreenfootImage(framePath);
+            
+            frame.scale(width, height);
+            idleFrames[i] = frame;
+        }
+        
+        for (int i = 0; i < runningFrames.length; i++) {
             String framePath = "player/run/knight_f_run_anim_f" + i + ".png";
             GreenfootImage frame = new GreenfootImage(framePath);
             
             frame.scale(width, height);
-            runFrames[i] = frame;
+            runningFrames[i] = frame;
         }
         
-        animation = new Animation(this, runFrames);
-        animation.setCycleActs(25);
+        animation = new Animation(this, runningFrames);
+        animation.addState("idle", idleFrames, 40, "right");
+        animation.addState("running", runningFrames, 15, "right");
+        animation.setState("idle");
         animation.setActiveState(true);
     }
     
@@ -66,13 +85,19 @@ public class Player extends Actor
     private void checkKeys() {
         String key = Greenfoot.getKey();
         
+        if (!Greenfoot.isKeyDown("W") && !Greenfoot.isKeyDown("A") && !Greenfoot.isKeyDown("S") && !Greenfoot.isKeyDown("D")) {
+            animation.setState("idle");
+        } else {
+            animation.setState("running");
+        }
+        
         if (Greenfoot.isKeyDown("W")){
             moveInDir(0, -1);
         }
         
         if (Greenfoot.isKeyDown("A")){
-            faceDir("left");
             moveInDir(-1, 0);
+            animation.setDir("left");
         }
         
         if (Greenfoot.isKeyDown("S")){
@@ -80,8 +105,8 @@ public class Player extends Actor
         }
         
         if (Greenfoot.isKeyDown("D")){
-            faceDir("right");
             moveInDir(1, 0);
+            animation.setDir("right");
         }
         
         if (shootDelayTimer != 0) {
@@ -114,18 +139,6 @@ public class Player extends Actor
                 break;
             }
         }
-    }
-    
-    private void faceDir(String dir) {
-        if (dir == facingDir) return;
-        
-        facingDir = dir;
-        
-        for (int i = 0; i < runFrames.length; i++) {
-            runFrames[i].mirrorHorizontally();
-        }
-        
-        animation.setFrames(runFrames);
     }
     
     /**

@@ -1,6 +1,7 @@
 import greenfoot.*;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.*;
 
 /**
  * CLASS: Animation (subclass of Object)
@@ -11,6 +12,18 @@ import java.util.Collections;
  * it is intended that each object that is to be animated create its own Animation object and also run it;
  * it is also intended that each object that is to be animated have only one Animation object assigned to it 
  */
+class AnimationState {
+    public GreenfootImage imgSet[];
+    public int actsInAnimation;
+    public String originalDir;
+    
+    public AnimationState(GreenfootImage[] imgSet, int actsInAnimation, String originalDir) {
+        this.imgSet = imgSet;
+        this.actsInAnimation = actsInAnimation;
+        this.originalDir = originalDir;
+    }
+}
+
 public class Animation
 {
     private Object animated; // the World or Actor object that to be animated
@@ -18,6 +31,9 @@ public class Animation
     private int cycleActs; // number of acts to complete a cycle of images
     private boolean active; // on-off switch
     private int timer; // internal timer
+    private Hashtable<String, AnimationState> animationStates = new Hashtable<String, AnimationState>();
+    private String dir;
+    private String curAnimationState;
     
     /**
      * creates an animation object that uses the given images for the given object;
@@ -31,13 +47,45 @@ public class Animation
         setFrames(imgSet);
     }
     
+    public Animation(Object object)
+    {
+        animated = object;
+    }
+    
+    public void addState(String stateName, GreenfootImage imgSet[], int actsInAnimation, String originalDir) {
+        AnimationState animationState = new AnimationState(imgSet, actsInAnimation, originalDir);
+        animationStates.put(stateName, animationState);
+    }
+    
+    public void setState(String state) {
+        if (state == curAnimationState) return;
+        
+        AnimationState animationState = animationStates.get(state);
+        frames = animationState.imgSet;
+        cycleActs = animationState.actsInAnimation;
+        curAnimationState = state;
+        if (dir == null) {
+            dir = animationState.originalDir;
+        }
+    }
+    
+    public void setDir(String dir) {
+        this.dir = dir;
+    }
+    
     /**
      * internal method that updates the image of the animation
      */
     private void setFrame(int index)
     {
-        if (animated instanceof Actor) ((Actor)animated).setImage(frames[index]);
-        else if (animated instanceof World) ((World)animated).setBackground(frames[index]);
+        GreenfootImage frame = new GreenfootImage(frames[index]);
+        
+        if (curAnimationState != null && animationStates.get(curAnimationState).originalDir != dir) {
+            frame.mirrorHorizontally();
+        }
+        
+        if (animated instanceof Actor) ((Actor)animated).setImage(frame);
+        else if (animated instanceof World) ((World)animated).setBackground(frame);
     }
     
     /**
