@@ -18,7 +18,7 @@ public class GameWorld extends World
     private int curRoomNum;
     private int startRoomNum = 45;
     private int tileWidth = 80;
-    private int tileHeight = 80;
+    private int tileHeight = tileWidth;
     
     // Procedural map generation
     private int[] floorPlan;
@@ -47,7 +47,7 @@ public class GameWorld extends World
         
         createRoom();
         
-        player = new Player(-1, tileHeight);
+        player = new Player(-1, 80);
         addObject(player, getWidth() / 2, getHeight() / 2);
         
         minimap = new Minimap(floorPlan, curRoomNum, bossl);
@@ -191,30 +191,68 @@ public class GameWorld extends World
         int tileWidth = getWidth() / numTilesX;
         int tileHeight = getHeight() / numTilesY;
         
-        Wall wall;
-        Floor floor;
-        Goblin goblin;
-        SpikedFloor spikedFloor;
-        Boss boss;
-        
-        // Create boundaries
         for(int i = 0; i < numTilesY; i++){
             for(int j = 0; j < numTilesX; j++){
-                if (i == 0 || i == numTilesY - 1 || j == 0 || j == numTilesX - 1) {
-                    int x = j * tileWidth + tileWidth / 2;
-                    int y = i * tileHeight + tileWidth / 2;
-                    
-                    if ((floorPlan[curRoomNum - 1] == 1 && j == 0 && (i == 4 || i == 5)) ||
-                    (floorPlan[curRoomNum + 1] == 1 && j == numTilesX - 1 && (i == 4 || i == 5)) ||
-                    (floorPlan[curRoomNum - 10] == 1 && i == 0 && (j == 4 || j == 5)) ||
-                    (floorPlan[curRoomNum + 10] == 1 && i == numTilesY - 1 && (j == 4 || j == 5))) {
-                        floor = new Floor(tileWidth, tileHeight);
-                        addObject(floor, x, y);
-                    } else {
-                        wall = new Wall(tileWidth, tileHeight);
-                        addObject(wall, x, y);
-                    }
+                char type = Layouts.boundaryLayout[i].charAt(j);
+                int x = j * tileWidth + tileWidth / 2;
+                int y = i * tileHeight + tileWidth / 2;
+                
+                Actor object = null;
+                                    
+                switch (type) {
+                    case 'l': 
+                        object = new Wall("boundary-edge.png", tileWidth, tileHeight, 270); 
+                        break;
+                    case 'r': 
+                        object = new Wall("boundary-edge.png", tileWidth, tileHeight, 90); 
+                        break;
+                    case 'u': 
+                        object = new Wall("boundary-edge.png", tileWidth, tileHeight, 0); 
+                        break;
+                    case 'd':
+                        object = new Wall("boundary-edge.png", tileWidth, tileHeight, 180);
+                        break;
+                    case 'c':
+                        object = new Wall("boundary-corner.png", tileWidth, tileHeight, 0);
+                        break;
+                    case 'C':
+                        object = new Wall("boundary-corner.png", tileWidth, tileHeight, 90);
+                        break;
+                    case '1':
+                        if (floorPlan[curRoomNum - 10] == 1)  object = new Door("door-left.png", tileWidth, tileHeight, 0, "up");
+                        else object = new Wall("boundary-edge.png", tileWidth, tileHeight, 0);
+                        break;
+                    case '2':
+                        if (floorPlan[curRoomNum - 10] == 1) object = new Door("door-right.png", tileWidth, tileHeight, 0, "up");
+                        else object = new Wall("boundary-edge.png", tileWidth, tileHeight, 0);
+                        break;
+                    case '3':
+                        if (floorPlan[curRoomNum + 1] == 1) object = new Door("door-left.png", tileWidth, tileHeight, 90, "right");
+                        else object = new Wall("boundary-edge.png", tileWidth, tileHeight, 90);
+                        break;
+                    case '4':
+                        if (floorPlan[curRoomNum + 1] == 1) object = new Door("door-right.png", tileWidth, tileHeight, 90, "right");
+                        else object = new Wall("boundary-edge.png", tileWidth, tileHeight, 90);
+                        break;
+                    case '5':
+                        if (floorPlan[curRoomNum + 10] == 1) object = new Door("door-left.png", tileWidth, tileHeight, 180, "down");
+                        else object = new Wall("boundary-edge.png", tileWidth, tileHeight, 180);
+                        break;
+                    case '6':
+                        if (floorPlan[curRoomNum + 10] == 1) object = new Door("door-right.png", tileWidth, tileHeight, 180, "down");
+                        else object = new Wall("boundary-edge.png", tileWidth, tileHeight, 180);
+                        break;
+                    case '7':
+                        if (floorPlan[curRoomNum - 1] == 1) object = new Door("door-left.png", tileWidth, tileHeight, 270, "left");
+                        else object = new Wall("boundary-edge.png", tileWidth, tileHeight, 270);
+                        break;
+                    case '8':
+                        if (floorPlan[curRoomNum - 1] == 1) object = new Door("door-right.png", tileWidth, tileHeight, 270, "left");
+                        else object = new Wall("boundary-edge.png", tileWidth, tileHeight, 270);
+                        break;
                 }
+                
+                if (object != null) addObject(object, x, y);
             }
         }
         
@@ -224,35 +262,35 @@ public class GameWorld extends World
                 char type = roomLayout[i - 1].charAt(j - 1);
                 int x = j * tileWidth + tileWidth / 2;
                 int y = i * tileHeight + tileWidth / 2;
+                
+                Actor object = null;
+                Floor floor;
                                     
                 switch (type) {
                     case ' ':
-                        floor = new Floor(tileWidth, tileHeight);
-                        addObject(floor, x, y);
+                        object = new Floor(tileWidth, tileHeight);
                         break;
                     case '#':
-                        wall = new Wall(tileWidth, tileHeight);
-                        addObject(wall, x, y);
+                        object = new Wall("wall_mid.png", tileWidth, tileHeight, 0);
                         break;
                     case 'E':
-                        goblin = new Goblin(tileWidth, tileHeight);
-                        addObject(goblin, x, y);
+                        object = new Goblin(tileWidth, tileHeight);
                         
                         floor = new Floor(tileWidth, tileHeight);
                         addObject(floor, x, y);
                         break;
                     case '^':
-                        spikedFloor = new SpikedFloor(tileWidth, tileHeight);
-                        addObject(spikedFloor, x, y);
+                        object = new SpikedFloor(tileWidth, tileHeight);
                         break;
                     case 'B':
-                        boss = new Boss(-1, tileHeight * 2);
-                        addObject(boss, x, y);
+                        object = new Boss(-1, tileHeight * 2);
                         
                         floor = new Floor(tileWidth, tileHeight);
                         addObject(floor, x, y);
                         break;
                 }
+                
+                addObject(object, x, y);
             }
         }
     }
@@ -270,20 +308,18 @@ public class GameWorld extends World
     }
     
     public void exitRoom(String exitPos) {
-        int spaceFromExit = 5;
-        
         if (exitPos == "left") {
             curRoomNum--;
-            player.setLocation(getWidth() - spaceFromExit, player.getY());
+            player.setLocation(getWidth() - 130, player.getY());
         } else if(exitPos == "right") {
             curRoomNum++;
-            player.setLocation(spaceFromExit, player.getY());
+            player.setLocation(130, player.getY());
         } else if(exitPos == "up") {
             curRoomNum -= 10;
-            player.setLocation(player.getX(), getHeight() - spaceFromExit);
+            player.setLocation(player.getX(), getHeight() - 130);
         } else if(exitPos == "down") {
             curRoomNum += 10;
-            player.setLocation(player.getX(), spaceFromExit);
+            player.setLocation(player.getX(), 130);
         }
         
         minimap.updateCurRoomNum(curRoomNum);

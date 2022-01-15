@@ -68,16 +68,17 @@ public class Player extends Actor
         // Add your action code here.
         animation.run();
         checkKeys();
-        checkExit();
+        checkDoor();
     }
     
-    private void checkExit() {
-        GameWorld g = (GameWorld)getWorld();
+    private void checkDoor() {
+        Door door = (Door)getOneIntersectingObject(Door.class);
         
-        if (getX() <= 0) g.exitRoom("left");
-        else if (getX() >= getWorld().getWidth() - 1) g.exitRoom("right");
-        else if (getY() <= 0) g.exitRoom("up");
-        else if (getY() >= getWorld().getHeight() - 1) g.exitRoom("down");
+        if (door != null) {
+            GameWorld g = (GameWorld)getWorld();
+        
+            g.exitRoom(door.getDir());
+        }
     }
     
     private void checkKeys() {

@@ -6,6 +6,19 @@
  */
 public class Layouts  
 {
+    static final String[] boundaryLayout = {
+        "cuuu12uuuC",
+        "l        r",
+        "l        r",
+        "l        r",
+        "8        3",
+        "7        4",
+        "l        r",
+        "l        r",
+        "l        r",
+        "Cddd65dddc",
+    };
+    
     static final String[] startRoomLayout = {
         "        ",
         "        ",
