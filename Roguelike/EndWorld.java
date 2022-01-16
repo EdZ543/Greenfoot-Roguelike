@@ -10,12 +10,14 @@ public class EndWorld extends World
 {
     private Label titleText;
     private Label scoreText;
+    private Label highScoreText;
+    private ScoreBoard scoreBoard;
 
     /**
      * Constructor for objects of class EndWorld.
      * 
      */
-    public EndWorld(int score, boolean won)
+    public EndWorld(int score, int highScore, boolean newHighScore, boolean won)
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(800, 800, 1); 
@@ -25,9 +27,20 @@ public class EndWorld extends World
         } else {
             titleText = new Label("You died, nice!", 100);
         }
-        addObject(titleText, getWidth() / 2, getHeight() / 2);
+        addObject(titleText, 400, 50);
         
         scoreText = new Label("Score: " + score, 50);
-        addObject(scoreText, getWidth() / 2, getHeight() / 2 + 50);
+        addObject(scoreText, 400, 125);
+            
+        if (newHighScore) {
+            highScoreText = new Label("New High Score: " + highScore + "!!", 50);
+        } else {
+            highScoreText = new Label("High Score: " + highScore, 50);
+        }
+        
+        addObject(highScoreText, 400, 175);
+        
+        scoreBoard = new ScoreBoard(600, 600);
+        addObject(scoreBoard, 400, 500);
     }
 }

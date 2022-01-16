@@ -13,8 +13,11 @@ public class GameWorld extends World
     private Player player;
     private Minimap minimap;
     private Label scoreText;
+    private UserInfo userInfo;
+    private GreenfootSound bgMusic;
     
     private int score = 0;
+    private int highScore = 0;
     private int curRoomNum;
     private int startRoomNum = 45;
     private int tileWidth = 80;
@@ -41,7 +44,19 @@ public class GameWorld extends World
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(800, 800, 1);
         
+        bgMusic = new GreenfootSound("BoxCat-Games-Battle-Boss.mp3");
+        bgMusic.setVolume(25);
+        bgMusic.playLoop();
+        
         curRoomNum = startRoomNum;
+        
+        if (UserInfo.isStorageAvailable()) {
+            userInfo = UserInfo.getMyInfo();
+        }
+        
+        if (userInfo != null) {
+            highScore = userInfo.getScore();
+        }
         
         generateMap();
         
@@ -57,6 +72,14 @@ public class GameWorld extends World
         addObject(scoreText, scoreText.getImage().getWidth() / 2, getHeight() - scoreText.getImage().getHeight() / 2);
         
         setPaintOrder(Minimap.class, Label.class, StatBar.class, Projectile.class, Player.class, Enemy.class, Wall.class, Floor.class);
+    }
+    
+    public void started() {
+        bgMusic.playLoop();
+    }
+    
+    public void stopped() {
+        bgMusic.stop();
     }
     
     /**
@@ -329,7 +352,19 @@ public class GameWorld extends World
     }
     
     public void gameOver (boolean won) {
-        Greenfoot.setWorld(new EndWorld(score, won));
+        boolean newHighScore = false;
+        
+        if (score > highScore) {
+            highScore = score;
+            newHighScore = true;
+        }
+        
+        if (userInfo != null) {
+            userInfo.setScore(highScore);
+            userInfo.store();
+        }
+        
+        Greenfoot.setWorld(new EndWorld(score, highScore, newHighScore, won));
     }
     
     public void updateScore(int scoreChange) {

@@ -7,38 +7,26 @@ import java.util.List;
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Enemy extends Actor
+public abstract class Enemy extends Entity
 {
-    protected GreenfootImage image;
-    protected StatBar stats;
-    protected int points;
-    protected int health;
+    protected int pointsValue;
     
-    /**
-     * Enemy constructor
-     */
-    public Enemy(int health, int points) {
-        this.health = health;
-        this.points = points;
-        
-        stats = new StatBar​(health, this);
+    public Enemy(int width, int height, int speed, int health, int pointsValue) {
+        super(width, height, speed, health);
+        this.pointsValue = pointsValue;
     }
     
     public void addedToWorld (World w) {
+        stats = new StatBar​(health, this);
+        
         w.addObject(stats, 0, 0);
     }
     
-    public void damageMe(int attackDamage) {
-        health = Math.max(0, health - attackDamage);
-        stats.update(health);
-        if (health == 0) {
-            die();
-        }
-    }
-    
-    private void die() {
+    protected void die() {
         GameWorld g = (GameWorld)getWorld();
         g.removeObject(this);
-        g.updateScore(points);
+        g.updateScore(pointsValue);
     }
+    
+    protected abstract void initAnimations();
 }

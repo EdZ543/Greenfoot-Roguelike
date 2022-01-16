@@ -11,18 +11,12 @@ public class Goblin extends Enemy
 {
     private int visionRange = 300;
     private int attackRange = 100;
-    private int speed = 1;
     private int attackDamage = 1;
     
     public Goblin(int width, int height) {
-        super(20, 10);
-        this.getImage().scale(width, height);
+        super(width, height, 1, 50, 16);
     }
     
-    /**
-     * Act - do whatever the Goblin wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
     public void act()
     {
         List<Player> players = getObjectsInRange(visionRange, Player.class);
@@ -30,6 +24,10 @@ public class Goblin extends Enemy
         if (!players.isEmpty()) {
             moveTowardsOrAttackPlayer(players.get(0));
         }
+    }
+    
+    protected void initAnimations() {
+        
     }
     
     private void moveTowardsOrAttackPlayer(Player player) {

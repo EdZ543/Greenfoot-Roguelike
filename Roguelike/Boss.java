@@ -8,22 +8,19 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Boss extends Enemy
 {
-    private GreenfootImage runningFrames[] = new GreenfootImage[4];
-    private Animation animation;
-    
-    private int width;
-    private int height;
+    private static GreenfootImage runningFrames[] = new GreenfootImage[4];
     
     public Boss(int width, int height) {
-        super(500, 1000);
-        
-        this.width = width;
-        this.height = height;
-        
-        initAnimation();
+        super(width, height, 5, 1000, 69420);
     }
     
-    private void initAnimation() {
+    public void act()
+    {
+        animation.run();
+        spreadShot();
+    }
+    
+    protected void initAnimations() {
         for (int i = 0; i < runningFrames.length; i++) {
             String framePath = "boss/run/big_demon_run_anim_f" + i + ".png";
             GreenfootImage frame = new GreenfootImage(framePath);
@@ -36,24 +33,6 @@ public class Boss extends Enemy
         animation.setState("running");
         
         animation.setActiveState(true);
-    }
-    
-    /**
-     * Act - do whatever the Boss wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
-    public void act()
-    {
-        // Add your action code here.
-        animation.run();
-        spreadShot();
-    }
-    
-    private void die() {
-        GameWorld g = (GameWorld)getWorld();
-        g.removeObject(this);
-        g.updateScore(points);
-        g.gameOver(true);
     }
     
     private void spreadShot() {

@@ -9,6 +9,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class StartWorld extends World
 {
     private GreenfootImage image;
+    
     /**
      * Constructor for objects of class StartWorld.
      * 
