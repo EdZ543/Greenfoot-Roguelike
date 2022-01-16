@@ -8,7 +8,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Boss extends Enemy
 {
-    private static GreenfootImage runningFrames[] = new GreenfootImage[4];
+    private GreenfootImage runningFrames[];
     
     public Boss(int width, int height) {
         super(width, height, 5, 1000, 69420);
@@ -21,6 +21,7 @@ public class Boss extends Enemy
     }
     
     protected void initAnimations() {
+        runningFrames = new GreenfootImage[4];
         for (int i = 0; i < runningFrames.length; i++) {
             String framePath = "boss/run/big_demon_run_anim_f" + i + ".png";
             GreenfootImage frame = new GreenfootImage(framePath);

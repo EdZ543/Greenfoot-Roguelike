@@ -8,8 +8,8 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Player extends Entity
 {
-    private static GreenfootImage[] runningFrames = new GreenfootImage[4];
-    private static GreenfootImage[] idleFrames = new GreenfootImage[4];
+    private GreenfootImage[] idleFrames;
+    private GreenfootImage[] runningFrames;
     
     private int shootDelay = 20;
     private int shootDelayTimer = 0;
@@ -19,6 +19,7 @@ public class Player extends Entity
     }
     
     protected void initAnimations() {
+        idleFrames = new GreenfootImage[4];
         for (int i = 0; i < idleFrames.length; i++) {
             String framePath = "player/idle/knight_f_idle_anim_f" + i + ".png";
             GreenfootImage frame = new GreenfootImage(framePath);
@@ -27,6 +28,7 @@ public class Player extends Entity
             idleFrames[i] = frame;
         }
         
+        runningFrames = new GreenfootImage[4];
         for (int i = 0; i < runningFrames.length; i++) {
             String framePath = "player/run/knight_f_run_anim_f" + i + ".png";
             GreenfootImage frame = new GreenfootImage(framePath);
@@ -78,28 +80,32 @@ public class Player extends Entity
     private void checkKeys() {
         String key = Greenfoot.getKey();
         
-        if (!Greenfoot.isKeyDown("W") && !Greenfoot.isKeyDown("A") && !Greenfoot.isKeyDown("S") && !Greenfoot.isKeyDown("D")) {
-            animation.setState("idle");
-        } else {
+        if (Greenfoot.isKeyDown("W") || Greenfoot.isKeyDown("A") || Greenfoot.isKeyDown("S") || Greenfoot.isKeyDown("D")) {
             animation.setState("running");
+        } else {
+            animation.setState("idle");
         }
         
         if (Greenfoot.isKeyDown("W")){
-            moveInDir(270);
+            setRotation(270);
+            move(speed);
         }
         
         if (Greenfoot.isKeyDown("A")){
-            moveInDir(180);
             animation.setDir("left");
+            setRotation(180);
+            move(speed);
         }
         
         if (Greenfoot.isKeyDown("S")){
-            moveInDir(90);
+            setRotation(90);
+            move(speed);
         }
         
         if (Greenfoot.isKeyDown("D")){
-            moveInDir(0);
             animation.setDir("right");
+            setRotation(0);
+            move(speed);
         }
         
         if (shootDelayTimer != 0) {

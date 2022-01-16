@@ -297,7 +297,7 @@ public class GameWorld extends World
                         object = new Wall("wall_mid.png", tileWidth, tileHeight, 0);
                         break;
                     case 'E':
-                        object = new Goblin(tileWidth, tileHeight);
+                        object = new Goblin(-1, tileHeight);
                         
                         floor = new Floor(tileWidth, tileHeight);
                         addObject(floor, x, y);
@@ -383,10 +383,12 @@ public class GameWorld extends World
     public static void scaleWithAspectRatio(GreenfootImage image, int width, int height) {
         if (width == -1) {
             float heightToWidth = (float)image.getWidth() / image.getHeight();
-            image.scale(Math.round(height * heightToWidth), height);
+            width = Math.round(height * heightToWidth);
         } else if (height == -1) {
             float widthToHeight = (float)image.getHeight() / image.getWidth();
-            image.scale(width, Math.round(width * widthToHeight));
+            height = Math.round(width * widthToHeight);
         }
+        
+        image.scale(width, height);
     }
 }
