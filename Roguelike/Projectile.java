@@ -6,17 +6,18 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Projectile extends Actor
+public abstract class Projectile extends Actor
 {
-    private int speed;
-    private boolean playerShot;
-    private int damage;
+    protected int speed;
+    protected boolean playerShot;
+    protected int damage;
     
-    public Projectile(boolean playerShot, int rotation, int speed, int damage) {
+    public Projectile(int width, int height, boolean playerShot, int rotation, int speed, int damage) {
         this.playerShot = playerShot;
         this.speed = speed;
         this.damage = damage;
         setRotation(rotation);
+        GameWorld.scaleWithAspectRatio(getImage(), width, height);
     }
     
     /**
@@ -38,13 +39,13 @@ public class Projectile extends Actor
             return;
         }
         
-        if (isAtEdge()){ // When I reach the edge, remove me from the World
+        if (isAtEdge() || isTouching(WallTile.class)){ // When I reach the edge, remove me from the World
             getWorld().removeObject(this);
         } 
     }
 
     
-    private void hitEnemy () {
+    protected void hitEnemy () {
         Enemy e = (Enemy)getOneIntersectingObject(Enemy.class);
         if (e != null){
             GameWorld g = (GameWorld)getWorld();
@@ -54,7 +55,7 @@ public class Projectile extends Actor
         }
     }
     
-    private void hitPlayer () {
+    protected void hitPlayer () {
         Player p = (Player)getOneIntersectingObject(Player.class);
         if (p != null){
             GameWorld g = (GameWorld)getWorld();

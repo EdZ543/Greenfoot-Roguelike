@@ -38,8 +38,8 @@ public class Boss extends Enemy
     
     private void spreadShot() {
         for (int i = 0; i < 360; i += 45) {
-            Bullet bullet = new Bullet(false, i);
-            getWorld().addObject(bullet, getX(), getY());
+            Arrow arrow = new Arrow(false, i);
+            getWorld().addObject(arrow, getX(), getY());
         }
     }
 }

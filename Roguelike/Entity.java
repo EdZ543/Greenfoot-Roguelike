@@ -27,27 +27,17 @@ public abstract class Entity extends Actor
         initAnimations();
     }
     
-    protected void moveInDir(double angle) {
-        int xVel = (int)Math.cos(angle);
-        int yVel = (int)Math.sin(angle);
-        
-        for(int i = 0; i < speed; i++){
-            setLocation(getX() + xVel, getY() + yVel);
-                
-            if(isTouching(Wall.class)){
-                setLocation(getX() - xVel, getY() - yVel);
-                break;
-            }
+    public void setRotation(double rotation) {
+        this.rotation = rotation;
+        if (rotation > Math.toRadians(-90) && rotation < Math.toRadians(90)) {
+            animation.setDir("right");
+        } else if (rotation < Math.toRadians(-90) || rotation > Math.toRadians(90)) {
+            animation.setDir("left");
         }
     }
     
-    public void setRotation(int rotation) {
-        this.rotation = Math.toRadians(rotation);
-    }
-    
     public void turnTowards(int x, int y) {
-        rotation = Math.atan2(y - getY(), x - getX());
-        System.out.println(rotation);
+        setRotation(Math.atan2(y - getY(), x - getX()));
     }
     
     public void move(int distance) {

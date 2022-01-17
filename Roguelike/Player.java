@@ -10,12 +10,19 @@ public class Player extends Entity
 {
     private GreenfootImage[] idleFrames;
     private GreenfootImage[] runningFrames;
+    private GreenfootSound[] shootSounds;
     
     private int shootDelay = 20;
     private int shootDelayTimer = 0;
+    private int shootSoundsIndex = 0;
     
     public Player (int width, int height) {
         super(width, height, 5, 100);
+        
+        shootSounds = new GreenfootSound[20];
+        for (int i = 0; i < shootSounds.length; i++) {
+            shootSounds[i] = new GreenfootSound("bow_fire.wav");
+        }
     }
     
     protected void initAnimations() {
@@ -87,24 +94,24 @@ public class Player extends Entity
         }
         
         if (Greenfoot.isKeyDown("W")){
-            setRotation(270);
+            setRotation(Math.toRadians(270));
             move(speed);
         }
         
         if (Greenfoot.isKeyDown("A")){
             animation.setDir("left");
-            setRotation(180);
+            setRotation(Math.toRadians(180));
             move(speed);
         }
         
         if (Greenfoot.isKeyDown("S")){
-            setRotation(90);
+            setRotation(Math.toRadians(90));
             move(speed);
         }
         
         if (Greenfoot.isKeyDown("D")){
             animation.setDir("right");
-            setRotation(0);
+            setRotation(Math.toRadians(0));
             move(speed);
         }
         
@@ -130,7 +137,10 @@ public class Player extends Entity
     }
     
     private void shoot(int rotation) {
-        Bullet bullet = new Bullet(true, rotation);
-        getWorld().addObject(bullet, getX(), getY());
+        Arrow arrow = new Arrow(true, rotation);
+        getWorld().addObject(arrow, getX(), getY());
+        
+        shootSounds[shootSoundsIndex++].play();
+        shootSoundsIndex %= shootSounds.length;
     }
 }

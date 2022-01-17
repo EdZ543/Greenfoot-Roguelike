@@ -6,9 +6,11 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Bullet extends Projectile
+public class Arrow extends Projectile
 {
-    public Bullet(boolean playerShot, int rotation) {
-        super(playerShot, rotation, 10, 10);
+    private GreenfootImage image;
+    
+    public Arrow(boolean playerShot, int rotation) {
+        super(50, -1, playerShot, rotation, 10, 10);
     }
 }
