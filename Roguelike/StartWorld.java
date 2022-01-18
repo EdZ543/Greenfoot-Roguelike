@@ -24,6 +24,7 @@ public class StartWorld extends World
     
     public void act () {
         if (Greenfoot.isKeyDown("enter")){
+            GameWorld.startOver();
             Greenfoot.setWorld (new GameWorld());
         }
     }

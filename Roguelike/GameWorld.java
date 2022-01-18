@@ -10,30 +10,32 @@ import java.util.*;
 public class GameWorld extends World
 {
     // Class Variables / Objects    
-    private Player player;
-    private Minimap minimap;
-    private Label scoreText;
-    private UserInfo userInfo;
-    private GreenfootSound bgMusic;
+    private static Player player;
+    private static Minimap minimap;
+    private static Label scoreText;
+    private static UserInfo userInfo;
+    private static GreenfootSound bgMusic;
     
-    private int score = 0;
-    private int highScore = 0;
-    private int curRoomNum;
-    private int startRoomNum = 45;
-    private int tileWidth = 80;
-    private int tileHeight = tileWidth;
+    private static int score;
+    private static int highScore;
+    private static int curRoomNum;
+    private static int startRoomNum;
+    private static int tileWidth;
+    private static int tileHeight;
+    private static int playerSpawnX;
+    private static int playerSpawnY;
     
-    // Procedural map generation
-    private int[] floorPlan;
-    private int[] roomLayoutPlan;
-    private int roomCount;
-    private Queue<Integer> cellQueue;
-    private List<Integer> endRooms;
-    private int maxRooms = 15;
-    private int minRooms = 7;
-    private boolean started = false;
-    private int bossl;
-    private boolean placedSpecial;
+    private static int[] floorPlan;
+    private static int[] roomLayoutPlan;
+    private static GameWorld[] roomWorlds;
+    private static int roomCount;
+    private static Queue<Integer> cellQueue;
+    private static List<Integer> endRooms;
+    private static int maxRooms;
+    private static int minRooms;
+    private static boolean started;
+    private static int bossl;
+    private static boolean placedSpecial;
 
     /**
      * Constructor for objects of class MyWorld.
@@ -43,13 +45,37 @@ public class GameWorld extends World
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(800, 800, 1);
+            
+        createRoom();
+        updateRoom();
+        
+        setPaintOrder(Minimap.class, Label.class, StatBar.class, Projectile.class, Player.class, Enemy.class, Wall.class, Floor.class);
+        roomWorlds[curRoomNum] = this;
+    }
+    
+    public void updateRoom() {
+        addObject(player, playerSpawnX, playerSpawnY);
+        addObject(minimap, getWidth() - minimap.getImage().getWidth() / 2, minimap.getImage().getHeight() / 2);
+        addObject(scoreText, scoreText.getImage().getWidth() / 2, getHeight() - scoreText.getImage().getHeight() / 2);
+    }
+    
+    public static void startOver() {
+        score = 0;
+        startRoomNum = 45;
+        tileWidth = 80;
+        tileHeight = 80;
+        maxRooms = 15;
+        minRooms = 7;
+        started = false;
+        playerSpawnX = 400;
+        playerSpawnY = 400;
         
         bgMusic = new GreenfootSound("BoxCat-Games-Battle-Boss.mp3");
         bgMusic.setVolume(25);
         bgMusic.playLoop();
         
         curRoomNum = startRoomNum;
-        
+    
         if (UserInfo.isStorageAvailable()) {
             userInfo = UserInfo.getMyInfo();
         }
@@ -57,29 +83,14 @@ public class GameWorld extends World
         if (userInfo != null) {
             highScore = userInfo.getScore();
         }
-        
+    
         generateMap();
         
-        createRoom();
-        
         player = new Player(-1, 80);
-        addObject(player, getWidth() / 2, getHeight() / 2);
-        
         minimap = new Minimap(floorPlan, curRoomNum, bossl);
-        addObject(minimap, getWidth() - minimap.getImage().getWidth() / 2, minimap.getImage().getHeight() / 2);
-        
         scoreText = new Label("Score: 0", 50);
-        addObject(scoreText, scoreText.getImage().getWidth() / 2, getHeight() - scoreText.getImage().getHeight() / 2);
         
-        setPaintOrder(Minimap.class, Label.class, StatBar.class, Projectile.class, Player.class, Enemy.class, Wall.class, Floor.class);
-    }
-    
-    public void started() {
-        bgMusic.playLoop();
-    }
-    
-    public void stopped() {
-        bgMusic.stop();
+        roomWorlds = new GameWorld[101];
     }
     
     /**
@@ -99,7 +110,7 @@ public class GameWorld extends World
         return (float)distance;
     }
     
-    private void initMap() {
+    private static void initMap() {
         started = true;
         placedSpecial = false;
         floorPlan = new int[101];
@@ -113,7 +124,7 @@ public class GameWorld extends World
         visit(45);
     }
     
-    private void fillMap() {
+    private static void fillMap() {
         while (started) {
             if (cellQueue.size() > 0) {
                 int cell = cellQueue.remove();
@@ -142,7 +153,7 @@ public class GameWorld extends World
         }
     }
     
-    private void assignRoomLayouts() {
+    private static void assignRoomLayouts() {
         roomLayoutPlan = new int[101];
         
         List<Integer> randomRooms = new ArrayList();
@@ -160,17 +171,17 @@ public class GameWorld extends World
         }
     }
     
-    private void generateMap() {
+    private static void generateMap() {
         initMap();
         fillMap();
         assignRoomLayouts();
     }
     
-    private int neighbourCount(int cell) {
+    private static int neighbourCount(int cell) {
         return floorPlan[cell - 10] + floorPlan[cell - 1] + floorPlan[cell + 1] + floorPlan[cell + 10];
     }
     
-    private boolean visit(int cell) {
+    private static boolean visit(int cell) {
         if (floorPlan[cell] != 0) {
             return false;
         }
@@ -318,37 +329,32 @@ public class GameWorld extends World
         }
     }
     
-    private void clearRoom() {
-        List<Actor> actors = getObjects(null);
-        for (Actor a : actors) {
-            Class c = a.getClass();
-            if (c != Player.class && c != Minimap.class && c != StatBar.class && c != Label.class) {
-                removeObject(a);
-            }
-        }
-        
-        getBackground().fill();
-    }
-    
     public void exitRoom(String exitPos) {
         if (exitPos == "left") {
             curRoomNum--;
-            player.setLocation(getWidth() - 130, player.getY());
+            playerSpawnX = getWidth() - 130;
+            playerSpawnY = player.getY();
         } else if(exitPos == "right") {
             curRoomNum++;
-            player.setLocation(130, player.getY());
+            playerSpawnX = 130;
+            playerSpawnY = player.getY();
         } else if(exitPos == "up") {
             curRoomNum -= 10;
-            player.setLocation(player.getX(), getHeight() - 130);
+            playerSpawnX = player.getX();
+            playerSpawnY = getHeight() - 130;
         } else if(exitPos == "down") {
             curRoomNum += 10;
-            player.setLocation(player.getX(), 130);
+            playerSpawnX = player.getX();
+            playerSpawnY = 130;
         }
-        
         minimap.updateCurRoomNum(curRoomNum);
         
-        clearRoom();
-        createRoom();
+        if (roomWorlds[curRoomNum] == null) {
+            roomWorlds[curRoomNum] = new GameWorld();
+        }
+        
+        roomWorlds[curRoomNum].updateRoom();
+        Greenfoot.setWorld(roomWorlds[curRoomNum]);
     }
     
     public void gameOver (boolean won) {
