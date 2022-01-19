@@ -76,8 +76,8 @@ public class Player extends Entity
     
     private void checkDoor() {
         double radians = Math.toRadians(rotation);
-        int halfWidth = getImage().getWidth() / 2 + 1;
-        int halfHeight = getImage().getHeight() / 2 + 1;
+        int halfWidth = getImage().getWidth() / 2 + (int)Math.ceil(collisionPrecision);
+        int halfHeight = getImage().getHeight() / 2 + (int)Math.ceil(collisionPrecision);
         int dx = (int)Math.cos(radians) * halfWidth;
         int dy = (int)Math.sin(radians) * halfHeight;
         

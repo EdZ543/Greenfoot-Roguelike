@@ -20,7 +20,7 @@ public abstract class Entity extends Actor
     protected double exactX;
     protected double exactY;
     protected double rotation = 0;
-    protected double collisionPrecision = 1;
+    protected double collisionPrecision = 0.01;
     
     public Entity(int width, int height, int speed, int health) {
         this.width = width;
@@ -50,10 +50,17 @@ public abstract class Entity extends Actor
     public void move(double distance)
     {
         double radians = Math.toRadians(rotation);
-        double dx = Math.cos(radians) * distance;
-        double dy = Math.sin(radians) * distance;
-        setLocation(exactX + dx, exactY + dy);
-        checkWalls();
+        double dx = Math.cos(radians);
+        double dy = Math.sin(radians);
+        
+        // move x and y seperately, so enemies don't stick to walls
+        for (double i = 0; i < distance; i += collisionPrecision) {
+            setLocation(exactX + dx * collisionPrecision, exactY);
+            if (isTouching(Wall.class)) setLocation(exactX - dx * collisionPrecision, exactY);
+            
+            setLocation(exactX, exactY + dy * collisionPrecision);
+            if (isTouching(Wall.class)) setLocation(exactX, exactY - dy * collisionPrecision);
+        }
     }
     
     @Override
@@ -86,12 +93,6 @@ public abstract class Entity extends Actor
             animation.setDir("right");
         } else if (rotation < -90 || rotation > 90) {
             animation.setDir("left");
-        }
-    }
-    
-    protected void checkWalls() {
-        while (isTouching(Wall.class)) {
-            move(-collisionPrecision);
         }
     }
     

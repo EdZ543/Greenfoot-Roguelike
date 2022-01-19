@@ -62,8 +62,8 @@ public class GameWorld extends World
     }
     
     public void updateRoom() {
-        int offsetX = tileWidth + player.getImage().getWidth() / 2;
-        int offsetY = tileHeight + player.getImage().getHeight() / 2;
+        int offsetX = tileWidth + (int)Math.ceil((double)player.getImage().getWidth() / 2);
+        int offsetY = tileHeight + (int)Math.ceil((double)player.getImage().getHeight() / 2);
         
         if (enterPos == "center") addObject(player, getWidth() / 2, getHeight() / 2);
         else if (enterPos == "right") addObject(player, getWidth() - offsetX, player.getY());
