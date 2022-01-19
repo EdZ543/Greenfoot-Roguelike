@@ -17,7 +17,7 @@ public class StartWorld extends World
     public StartWorld()
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(800, 800, 1); 
+        super(1024, 800, 1); 
         image = new GreenfootImage("welcome.png");
         setBackground(image);
     }

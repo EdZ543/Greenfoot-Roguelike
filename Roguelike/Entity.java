@@ -82,15 +82,15 @@ public abstract class Entity extends Actor
     }
     
     protected void checkFacingDir() {
-        if (rotation > Math.toRadians(-90) && rotation < Math.toRadians(90)) {
+        if (rotation > -90 && rotation < 90) {
             animation.setDir("right");
-        } else if (rotation < Math.toRadians(-90) || rotation > Math.toRadians(90)) {
+        } else if (rotation < -90 || rotation > 90) {
             animation.setDir("left");
         }
     }
     
     protected void checkWalls() {
-        while (isTouching(WallTile.class)) {
+        while (isTouching(Wall.class)) {
             move(-collisionPrecision);
         }
     }

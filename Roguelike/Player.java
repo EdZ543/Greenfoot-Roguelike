@@ -54,7 +54,7 @@ public class Player extends Entity
     public void addedToWorld(World w) {
         stats = new StatBar​(maxHealth, health, null, 150, 25, 0, Color.GREEN, Color.RED, false);
         
-        w.addObject(stats, 100, 25);
+        w.addObject(stats, stats.getImage().getWidth() / 2, stats.getImage().getHeight() / 2);
     }
     
     protected void die() {

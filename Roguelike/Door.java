@@ -6,13 +6,13 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Door extends WallTile
+public class Door extends Wall
 {
     private String dir;
     private boolean locked = false;
     
-    public Door (String imagePath, int width, int height, int rotation, String dir) {
-        super(imagePath, width, height, rotation);
+    public Door (int width, int height, int rotation, String dir) {
+        super("door-open.png", width, height, rotation);
         
         this.dir = dir;
     }
@@ -27,11 +27,11 @@ public class Door extends WallTile
     
     public void lock() {
         locked = true;
-        getImage().setTransparency(100);
+        setImage(drawImage("door-closed.png"));
     }
     
     public void unlock() {
         locked = false;
-        getImage().setTransparency(255);
+        setImage(drawImage("door-open.png"));
     }
 }

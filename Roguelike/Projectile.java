@@ -39,7 +39,7 @@ public abstract class Projectile extends Actor
             return;
         }
         
-        if (isAtEdge() || isTouching(WallTile.class)){ // When I reach the edge, remove me from the World
+        if (isAtEdge() || isTouching(Wall.class)){ // When I reach the edge, remove me from the World
             getWorld().removeObject(this);
         } 
     }
