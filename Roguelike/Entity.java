@@ -88,6 +88,10 @@ public abstract class Entity extends Actor
         super.setLocation((int) (x + 0.5), (int) (y + 0.5));
     }
     
+    protected int getAngleTo (Actor a){
+        return (int) (Math.toDegrees(Math.atan2(a.getY() - getY() , a.getX() - getX())) + 0.5);
+    }
+    
     protected void checkFacingDir() {
         if (rotation > -90 && rotation < 90) {
             animation.setDir("right");

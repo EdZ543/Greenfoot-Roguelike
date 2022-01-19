@@ -1,0 +1,6 @@
+#BlueJ class context
+comment0.target=HugeBaller
+comment0.text=\n\ Write\ a\ description\ of\ class\ HugeBaller\ here.\n\ \n\ @author\ (your\ name)\ \n\ @version\ (a\ version\ number\ or\ a\ date)\n
+comment1.params=playerShot\ rotation
+comment1.target=HugeBaller(boolean,\ int)
+numComments=2

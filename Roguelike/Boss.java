@@ -11,9 +11,13 @@ public class Boss extends Enemy
 {
     private GreenfootImage runningFrames[];
     private Random random = new Random();
+    private int attackDelay = 100;
+    private int attackTimer = attackDelay;
+    private int jumpDelay = 5;
+    private int jumpTimer = jumpDelay;
     
     public Boss(int width, int height) {
-        super(width, height, 5, 100, 69420);
+        super(width, height, 5, 200, 69420);
         
         setRotation(random.nextInt(360));
     }
@@ -21,7 +25,25 @@ public class Boss extends Enemy
     public void act()
     {
         animation.run();
-        bounceAround();
+        
+        if (attackTimer == 0) {
+            attackTimer = attackDelay;
+            if (jumpTimer == 0) {
+                jumpTimer = jumpDelay;
+                jump();
+            } else {
+                int prob = random.nextInt(100);
+                if (prob < 37) {
+                    spawnMinions();
+                } else {
+                    megaEpicAttack();
+                }
+                jumpTimer--;
+            }
+        } else {
+            bounceAround();
+            attackTimer--;
+        }
     }
     
     protected void initAnimations() {
@@ -38,6 +60,14 @@ public class Boss extends Enemy
         animation.setState("running");
         
         animation.setActiveState(true);
+    }
+    
+    private void spawnMinions() {
+        
+    }
+    
+    private void jump() {
+        
     }
     
     private void bounceAround() {
@@ -70,12 +100,19 @@ public class Boss extends Enemy
         
         double newRadians = Math.atan2(sin, cos);
         setRotation(Math.toDegrees(newRadians));
+        
+        megaEpicAttack();
+    }
+    
+    private void megaEpicAttack() {
+        Player player = getWorld().getObjects(Player.class).get(0);
+        int angleToPlayer = getAngleTo(player);
+        getWorld().addObject(new HugeBaller(false, angleToPlayer), getX(), getY());
     }
     
     private void spreadShot() {
         for (int i = 0; i < 360; i += 45) {
-            Arrow arrow = new Arrow(false, i);
-            getWorld().addObject(arrow, getX(), getY());
+            getWorld().addObject(new Arrow(false, i), getX(), getY());
         }
     }
 }
