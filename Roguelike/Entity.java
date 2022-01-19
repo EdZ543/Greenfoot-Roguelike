@@ -11,6 +11,7 @@ public abstract class Entity extends Actor
     protected Animation animation;
     protected StatBar stats;
     
+    protected int maxHealth;
     protected int speed;
     protected int health;
     protected int width;
@@ -23,6 +24,7 @@ public abstract class Entity extends Actor
         this.height = height;
         this.speed = speed;
         this.health = health;
+        maxHealth = health;
         
         initAnimations();
     }
@@ -47,13 +49,13 @@ public abstract class Entity extends Actor
         for(int i = 0; i < distance; i++){
             setLocation(getX() + dx, getY());
                 
-            if(isTouching(Wall.class)){
+            if(isTouching(WallTile.class)){
                 setLocation(getX() - dx, getY());
             }
             
             setLocation(getX(), getY() + dy);
                 
-            if(isTouching(Wall.class)){
+            if(isTouching(WallTile.class)){
                 setLocation(getX(), getY() - dy);
             }
         }

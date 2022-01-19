@@ -52,7 +52,7 @@ public class Player extends Entity
     }
     
     public void addedToWorld(World w) {
-        stats = new StatBar​(health, health, null, 150, 25, 0, Color.GREEN, Color.RED, false);
+        stats = new StatBar​(maxHealth, health, null, 150, 25, 0, Color.GREEN, Color.RED, false);
         
         w.addObject(stats, 100, 25);
     }
@@ -77,7 +77,7 @@ public class Player extends Entity
     private void checkDoor() {
         Door door = (Door)getOneIntersectingObject(Door.class);
         
-        if (door != null) {
+        if (door != null && !door.isLocked()) {
             GameWorld g = (GameWorld)getWorld();
         
             g.exitRoom(door.getDir());

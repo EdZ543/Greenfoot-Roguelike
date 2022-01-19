@@ -52,6 +52,7 @@ public abstract class Projectile extends Actor
 
             e.damageMe(damage);
             g.removeObject(this);
+            g.updateDoors();
         }
     }
     

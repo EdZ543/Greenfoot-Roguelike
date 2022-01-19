@@ -19,11 +19,8 @@ public class GameWorld extends World
     private static int score;
     private static int highScore;
     private static int curRoomNum;
-    private static int startRoomNum;
-    private static int tileWidth;
-    private static int tileHeight;
-    private static int playerSpawnX;
-    private static int playerSpawnY;
+    private static int startRoomNum = 45;
+    private static String enterPos;
     
     private static int[] floorPlan;
     private static int[] roomLayoutPlan;
@@ -31,11 +28,19 @@ public class GameWorld extends World
     private static int roomCount;
     private static Queue<Integer> cellQueue;
     private static List<Integer> endRooms;
-    private static int maxRooms;
-    private static int minRooms;
+    private static int maxRooms = 15;
+    private static int minRooms = 7;
     private static boolean started;
     private static int bossl;
     private static boolean placedSpecial;
+    
+    private int numTilesX = 10;
+    private int numTilesY = 10;
+    private int tileWidth = getWidth() / numTilesX;
+    private int tileHeight = getHeight() / numTilesY;
+    
+    private List<Enemy> enemies = new LinkedList<Enemy>();
+    private List<Door> doors = new LinkedList<Door>();
 
     /**
      * Constructor for objects of class MyWorld.
@@ -53,22 +58,24 @@ public class GameWorld extends World
         roomWorlds[curRoomNum] = this;
     }
     
+    public void stopped() {
+        bgMusic.stop();
+    }
+    
     public void updateRoom() {
-        addObject(player, playerSpawnX, playerSpawnY);
+        if (enterPos == "center") addObject(player, getWidth() / 2, getHeight() / 2);
+        else if (enterPos == "right") addObject(player, getWidth() - 130, player.getY());
+        else if(enterPos == "left") addObject(player, 130, player.getY());
+        else if(enterPos == "down") addObject(player, player.getX(), getHeight() - 130);
+        else if(enterPos == "up") addObject(player, player.getX(), 130);
         addObject(minimap, getWidth() - minimap.getImage().getWidth() / 2, minimap.getImage().getHeight() / 2);
         addObject(scoreText, scoreText.getImage().getWidth() / 2, getHeight() - scoreText.getImage().getHeight() / 2);
     }
     
     public static void startOver() {
         score = 0;
-        startRoomNum = 45;
-        tileWidth = 80;
-        tileHeight = 80;
-        maxRooms = 15;
-        minRooms = 7;
         started = false;
-        playerSpawnX = 400;
-        playerSpawnY = 400;
+        enterPos = "center";
         
         bgMusic = new GreenfootSound("BoxCat-Games-Battle-Boss.mp3");
         bgMusic.setVolume(25);
@@ -220,11 +227,6 @@ public class GameWorld extends World
             roomLayout = Layouts.roomLayouts[roomLayoutIndex];
         }
         
-        int numTilesX = roomLayout[0].length() + 2;
-        int numTilesY = roomLayout.length + 2;
-        int tileWidth = getWidth() / numTilesX;
-        int tileHeight = getHeight() / numTilesY;
-        
         for(int i = 0; i < numTilesY; i++){
             for(int j = 0; j < numTilesX; j++){
                 char type = Layouts.boundaryLayout[i].charAt(j);
@@ -298,7 +300,6 @@ public class GameWorld extends World
                 int y = i * tileHeight + tileWidth / 2;
                 
                 Actor object = null;
-                Floor floor;
                                     
                 switch (type) {
                     case ' ':
@@ -308,23 +309,27 @@ public class GameWorld extends World
                         object = new Wall("wall_mid.png", tileWidth, tileHeight, 0);
                         break;
                     case 'E':
-                        object = new Goblin(-1, tileHeight);
-                        
-                        floor = new Floor(tileWidth, tileHeight);
-                        addObject(floor, x, y);
+                        Goblin goblin = new Goblin(-1, tileHeight);
+                        addObject(goblin, x, y);
+                        enemies.add(goblin);
                         break;
                     case '^':
                         object = new SpikedFloor(tileWidth, tileHeight);
                         break;
                     case 'B':
                         object = new Boss(-1, tileHeight * 2);
-                        
-                        floor = new Floor(tileWidth, tileHeight);
-                        addObject(floor, x, y);
                         break;
                 }
                 
-                addObject(object, x, y);
+                if (object != null) addObject(object, x, y);
+            }
+        }
+        
+        if (!getObjects(Enemy.class).isEmpty()) {
+            for (Door door : getObjects(Door.class)) {
+                if (door.getDir() != enterPos) {
+                    door.lock();
+                }
             }
         }
     }
@@ -332,20 +337,16 @@ public class GameWorld extends World
     public void exitRoom(String exitPos) {
         if (exitPos == "left") {
             curRoomNum--;
-            playerSpawnX = getWidth() - 130;
-            playerSpawnY = player.getY();
+            enterPos = "right";
         } else if(exitPos == "right") {
             curRoomNum++;
-            playerSpawnX = 130;
-            playerSpawnY = player.getY();
+            enterPos = "left";
         } else if(exitPos == "up") {
             curRoomNum -= 10;
-            playerSpawnX = player.getX();
-            playerSpawnY = getHeight() - 130;
+            enterPos = "down";
         } else if(exitPos == "down") {
             curRoomNum += 10;
-            playerSpawnX = player.getX();
-            playerSpawnY = 130;
+            enterPos = "up";
         }
         minimap.updateCurRoomNum(curRoomNum);
         
@@ -396,5 +397,15 @@ public class GameWorld extends World
         }
         
         image.scale(width, height);
+    }
+    
+    public void updateDoors() {
+        if (getObjects(Enemy.class).isEmpty()) {
+            for (Door door : getObjects(Door.class)) {
+                if (door.getDir() != enterPos) {
+                    door.unlock();
+                }
+            }
+        }
     }
 }
