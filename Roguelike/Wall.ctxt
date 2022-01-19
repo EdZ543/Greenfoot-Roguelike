@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=Wall
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ Tile\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment0.text=\n\ Write\ a\ description\ of\ class\ Tile\ here.\n\ \n\ @author\ (your\ name)\ \n\ @version\ (a\ version\ number\ or\ a\ date)\n
 comment1.params=imagePath\ width\ height\ rotation
 comment1.target=Wall(java.lang.String,\ int,\ int,\ int)
 numComments=2

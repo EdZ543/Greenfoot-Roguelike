@@ -75,11 +75,16 @@ public class Player extends Entity
     }
     
     private void checkDoor() {
-        Door door = (Door)getOneIntersectingObject(Door.class);
+        double radians = Math.toRadians(rotation);
+        int halfWidth = getImage().getWidth() / 2 + 1;
+        int halfHeight = getImage().getHeight() / 2 + 1;
+        int dx = (int)Math.cos(radians) * halfWidth;
+        int dy = (int)Math.sin(radians) * halfHeight;
         
-        if (door != null && !door.isLocked()) {
+        Door door = (Door)getOneObjectAtOffset(dx, dy, Door.class);
+        
+        if (door != null && !door.isLocked()){
             GameWorld g = (GameWorld)getWorld();
-        
             g.exitRoom(door.getDir());
         }
     }
@@ -94,24 +99,24 @@ public class Player extends Entity
         }
         
         if (Greenfoot.isKeyDown("W")){
-            setRotation(Math.toRadians(270));
+            setRotation(270);
             move(speed);
         }
         
         if (Greenfoot.isKeyDown("A")){
             animation.setDir("left");
-            setRotation(Math.toRadians(180));
+            setRotation(180);
             move(speed);
         }
         
         if (Greenfoot.isKeyDown("S")){
-            setRotation(Math.toRadians(90));
+            setRotation(90);
             move(speed);
         }
         
         if (Greenfoot.isKeyDown("D")){
             animation.setDir("right");
-            setRotation(Math.toRadians(0));
+            setRotation(0);
             move(speed);
         }
         

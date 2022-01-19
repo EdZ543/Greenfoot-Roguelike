@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=Player
-comment0.text=\r\n\ The\ Player\ class.\ This\ is\ the\ actor\ that\ the\ user\ controls.\r\n\ \r\n\ @author\ Eddie\ Zhuang\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment0.text=\n\ The\ Player\ class.\ This\ is\ the\ actor\ that\ the\ user\ controls.\n\ \n\ @author\ Eddie\ Zhuang\n\ @version\ (a\ version\ number\ or\ a\ date)\n
 comment1.params=width\ height
 comment1.target=Player(int,\ int)
 comment2.params=
@@ -11,7 +11,7 @@ comment4.params=
 comment4.target=void\ die()
 comment5.params=
 comment5.target=void\ act()
-comment5.text=\r\n\ Act\ -\ do\ whatever\ the\ Player\ wants\ to\ do.\ This\ method\ is\ called\ whenever\r\n\ the\ 'Act'\ or\ 'Run'\ button\ gets\ pressed\ in\ the\ environment.\r\n
+comment5.text=\n\ Act\ -\ do\ whatever\ the\ Player\ wants\ to\ do.\ This\ method\ is\ called\ whenever\n\ the\ 'Act'\ or\ 'Run'\ button\ gets\ pressed\ in\ the\ environment.\n
 comment6.params=
 comment6.target=void\ checkDoor()
 comment7.params=

@@ -16,8 +16,11 @@ public abstract class Entity extends Actor
     protected int health;
     protected int width;
     protected int height;
+    
+    protected double exactX;
+    protected double exactY;
     protected double rotation = 0;
-    protected int stepWidth = 1;
+    protected double collisionPrecision = 1;
     
     public Entity(int width, int height, int speed, int health) {
         this.width = width;
@@ -29,8 +32,56 @@ public abstract class Entity extends Actor
         initAnimations();
     }
     
-    public void setRotation(double rotation) {
+    public void turnTowards (Actor a){
+        turnTowards (a.getX(), a.getY());
+    }
+    
+    @Override
+    public void turnTowards (int x, int y){
+        setRotation( Math.toDegrees(Math.atan2(y - getY() , x - getX())));
+    }
+    
+    @Override
+    public void move(int distance)
+    {
+        move((double)distance);
+    }
+    
+    public void move(double distance)
+    {
+        double radians = Math.toRadians(rotation);
+        double dx = Math.cos(radians) * distance;
+        double dy = Math.sin(radians) * distance;
+        setLocation(exactX + dx, exactY + dy);
+        checkWalls();
+    }
+    
+    @Override
+    public void setRotation (int rotation){
+        setRotation((double)rotation);
+    }
+    
+    public void setRotation (double rotation){
         this.rotation = rotation;
+        checkFacingDir();
+    }
+    
+    @Override
+    public void setLocation(int x, int y) 
+    {
+        exactX = x;
+        exactY = y;
+        super.setLocation(x, y);
+    }
+    
+    public void setLocation(double x, double y) 
+    {
+        exactX = x;
+        exactY = y;
+        super.setLocation((int) (x + 0.5), (int) (y + 0.5));
+    }
+    
+    protected void checkFacingDir() {
         if (rotation > Math.toRadians(-90) && rotation < Math.toRadians(90)) {
             animation.setDir("right");
         } else if (rotation < Math.toRadians(-90) || rotation > Math.toRadians(90)) {
@@ -38,26 +89,9 @@ public abstract class Entity extends Actor
         }
     }
     
-    public void turnTowards(int x, int y) {
-        setRotation(Math.atan2(y - getY(), x - getX()));
-    }
-    
-    public void move(int distance) {
-        int dx = (int)Math.round(Math.cos((double)rotation) * stepWidth);
-        int dy = (int)Math.round(Math.sin((double)rotation) * stepWidth);
-        
-        for(int i = 0; i < distance; i++){
-            setLocation(getX() + dx, getY());
-                
-            if(isTouching(WallTile.class)){
-                setLocation(getX() - dx, getY());
-            }
-            
-            setLocation(getX(), getY() + dy);
-                
-            if(isTouching(WallTile.class)){
-                setLocation(getX(), getY() - dy);
-            }
+    protected void checkWalls() {
+        while (isTouching(WallTile.class)) {
+            move(-collisionPrecision);
         }
     }
     

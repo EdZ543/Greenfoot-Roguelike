@@ -17,7 +17,7 @@ public class Goblin extends Enemy
     private int attackDamage = 1;
     
     public Goblin(int width, int height) {
-        super(width, height, 1, 50, 16);
+        super(width, height, 1, 30, 16);
     }
     
     public void act()
