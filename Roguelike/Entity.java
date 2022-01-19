@@ -20,7 +20,7 @@ public abstract class Entity extends Actor
     protected double exactX;
     protected double exactY;
     protected double rotation = 0;
-    protected double collisionPrecision = 0.01;
+    protected double collisionPrecision = 1;
     
     public Entity(int width, int height, int speed, int health) {
         this.width = width;

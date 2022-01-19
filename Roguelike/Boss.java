@@ -1,4 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import java.util.*;
 
 /**
  * Write a description of class Boss here.
@@ -9,15 +10,18 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class Boss extends Enemy
 {
     private GreenfootImage runningFrames[];
+    private Random random = new Random();
     
     public Boss(int width, int height) {
-        super(width, height, 5, 1000, 69420);
+        super(width, height, 5, 100, 69420);
+        
+        setRotation(random.nextInt(360));
     }
     
     public void act()
     {
         animation.run();
-        spreadShot();
+        bounceAround();
     }
     
     protected void initAnimations() {
@@ -34,6 +38,38 @@ public class Boss extends Enemy
         animation.setState("running");
         
         animation.setActiveState(true);
+    }
+    
+    private void bounceAround() {
+        move(speed);
+        
+        setLocation(exactX + collisionPrecision, exactY);
+        if (isTouching(Wall.class)) bounce("left");
+        setLocation(exactX - collisionPrecision, exactY);
+        
+        setLocation(exactX - collisionPrecision, exactY);
+        if (isTouching(Wall.class)) bounce("right");
+        setLocation(exactX + collisionPrecision, exactY);
+        
+        setLocation(exactX, exactY + collisionPrecision);
+        if (isTouching(Wall.class)) bounce("up");
+        setLocation(exactX, exactY - collisionPrecision);
+        
+        setLocation(exactX, exactY - collisionPrecision);
+        if (isTouching(Wall.class)) bounce("down");
+        setLocation(exactX, exactY + collisionPrecision);
+    }
+    
+    private void bounce(String dir) {
+        double radians = Math.toRadians(rotation);
+        double cos = Math.cos(radians);
+        double sin = Math.sin(radians);
+        
+        if (dir == "left" || dir == "right") cos = -cos;
+        else if (dir == "up" || dir == "down") sin = -sin;
+        
+        double newRadians = Math.atan2(sin, cos);
+        setRotation(Math.toDegrees(newRadians));
     }
     
     private void spreadShot() {

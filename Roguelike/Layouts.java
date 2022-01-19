@@ -21,7 +21,7 @@ public class Layouts
     static final String[] startRoomLayout = {
         "             ",
         "             ",
-        "             ",
+        "  B          ",
         "             ",
         "             ",
         "             ",
