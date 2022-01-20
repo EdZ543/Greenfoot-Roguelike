@@ -21,7 +21,7 @@ public class Layouts
     static final String[] startRoomLayout = {
         "             ",
         "             ",
-        "  B          ",
+        "             ",
         "             ",
         "             ",
         "             ",
@@ -32,7 +32,7 @@ public class Layouts
         "             ",
         "             ",
         "             ",
-        "             ",
+        "      B      ",
         "             ",
         "             ",
         "             ",
@@ -50,11 +50,20 @@ public class Layouts
         },
         {
             "             ",
-            "  #   E   #  ",
+            "  #       #  ",
             "             ",
-            "  E   E   E  ",
+            "     E E     ",
             "             ",
-            "  #   E   #  ",
+            "  #       #  ",
+            "             ",
+        },
+        {
+            "             ",
+            "      #      ",
+            "             ",
+            " #  S   S  # ",
+            "             ",
+            "      #      ",
             "             ",
         }
     };

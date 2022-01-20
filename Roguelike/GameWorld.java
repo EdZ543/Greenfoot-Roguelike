@@ -263,6 +263,7 @@ public class GameWorld extends World
                     case '#': addObject(new Wall("wall_mid.png", tileWidth, tileHeight, 0), x, y); break;
                     case '^': addObject(new SpikedFloor(tileWidth, tileHeight), x, y);break;
                     case 'B': addObject(new Boss(-1, tileHeight * 2), x, y); addObject(new Floor(tileWidth, tileHeight), x, y); break;
+                    case 'S': addObject(new Skelebro(-1, tileHeight), x, y); addObject(new Floor(tileWidth, tileHeight), x, y); break;
                 }
             }
         }

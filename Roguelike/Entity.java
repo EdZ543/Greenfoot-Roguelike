@@ -38,7 +38,7 @@ public abstract class Entity extends Actor
     
     @Override
     public void turnTowards (int x, int y){
-        setRotation( Math.toDegrees(Math.atan2(y - getY() , x - getX())));
+        setRotation(Math.toDegrees(Math.atan2(y - getY() , x - getX())));
     }
     
     @Override
@@ -70,7 +70,7 @@ public abstract class Entity extends Actor
     
     public void setRotation (double rotation){
         this.rotation = rotation;
-        checkFacingDir();
+        checkFacingDir(rotation);
     }
     
     @Override
@@ -92,10 +92,11 @@ public abstract class Entity extends Actor
         return (int) (Math.toDegrees(Math.atan2(a.getY() - getY() , a.getX() - getX())) + 0.5);
     }
     
-    protected void checkFacingDir() {
-        if (rotation > -90 && rotation < 90) {
+    protected void checkFacingDir(double angle) {
+        double radians = Math.toRadians(angle);
+        if (Math.cos(radians) > 0) {
             animation.setDir("right");
-        } else if (rotation < -90 || rotation > 90) {
+        } else if (Math.cos(radians) < 0) {
             animation.setDir("left");
         }
     }

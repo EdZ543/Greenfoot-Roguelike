@@ -13,7 +13,7 @@ public class Goblin extends Enemy
     private GreenfootImage[] runningFrames;
     
     private int visionRange = 300;
-    private int attackRange = 100;
+    private int attackRange = 25;
     private int attackDamage = 1;
     
     public Goblin(int width, int height) {
@@ -46,7 +46,7 @@ public class Goblin extends Enemy
             runningFrames[i] = frame;
         }
         
-        animation = new Animation(this, runningFrames);
+        animation = new Animation(this, idleFrames);
         animation.addState("idle", idleFrames, 40, "right");
         animation.addState("running", runningFrames, 15, "right");
         animation.setState("idle");

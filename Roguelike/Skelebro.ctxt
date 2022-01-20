@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.target=Skelebro
+comment0.text=\n\ Write\ a\ description\ of\ class\ Skelebro\ here.\n\ \n\ @author\ (your\ name)\ \n\ @version\ (a\ version\ number\ or\ a\ date)\n
+comment1.params=width\ height
+comment1.target=Skelebro(int,\ int)
+comment2.params=
+comment2.target=void\ initAnimations()
+comment3.params=
+comment3.target=void\ act()
+comment4.params=
+comment4.target=void\ shootAtPlayer()
+numComments=5
