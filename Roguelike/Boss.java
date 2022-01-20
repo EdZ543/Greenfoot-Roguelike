@@ -13,8 +13,10 @@ public class Boss extends Enemy
     private Random random = new Random();
     private int attackDelay = 100;
     private int attackTimer = attackDelay;
-    private int jumpDelay = 5;
-    private int jumpTimer = jumpDelay;
+    private int chargeDelay = 2;
+    private int chargeTimer = chargeDelay;
+    private boolean attacking = false;
+    private int spawnTimer = 0, shootTimer = 0, chargingTimer = 0;
     
     public Boss(int width, int height) {
         super(width, height, 5, 200, 69420);
@@ -26,11 +28,21 @@ public class Boss extends Enemy
     {
         animation.run();
         
-        if (attackTimer == 0) {
+        System.out.println(chargeTimer);
+        
+        if (spawnTimer > 0) {
+            spawnMinions();
+            spawnTimer--;
+        } else if (shootTimer > 0) {
+            megaEpicAttack();
+            shootTimer--;
+        } else if (chargingTimer > 0) {
+            charge();
+        } else if (attackTimer == 0) {
             attackTimer = attackDelay;
-            if (jumpTimer == 0) {
-                jumpTimer = jumpDelay;
-                jump();
+            if (chargeTimer == 0) {
+                chargeTimer = chargeDelay;
+                charge();
             } else {
                 int prob = random.nextInt(100);
                 if (prob < 37) {
@@ -38,7 +50,7 @@ public class Boss extends Enemy
                 } else {
                     megaEpicAttack();
                 }
-                jumpTimer--;
+                chargeTimer--;
             }
         } else {
             bounceAround();
@@ -62,12 +74,31 @@ public class Boss extends Enemy
         animation.setActiveState(true);
     }
     
-    private void spawnMinions() {
-        
+    private void charge() {
+        if (chargingTimer == 0) {
+            chargingTimer = 100;
+        } else if (chargingTimer >= 50) {
+            Player player = ((GameWorld)getWorld()).getPlayer();
+            turnTowards(player);
+            animation.setCycleActs(5);
+            chargingTimer--;
+        } else if (isTouching(Player.class)) {
+            Player player = ((GameWorld)getWorld()).getPlayer();
+            player.damageMe(50);
+            chargingTimer = 0;
+            animation.setCycleActs(20);
+        } else if (checkTouching(Wall.class) != "none") {
+            spreadShot();
+            chargingTimer = 0;
+            animation.setCycleActs(20);
+        } else {
+            move(speed * 3);
+        }
     }
     
-    private void jump() {
-        
+    private void spawnMinions() {
+        if (spawnTimer == 0) spawnTimer = 50;
+        else if (spawnTimer == 25) getWorld().addObject(new Goblin(64, -1), getX(), getY());
     }
     
     private void bounceAround() {
@@ -100,19 +131,27 @@ public class Boss extends Enemy
         
         double newRadians = Math.atan2(sin, cos);
         setRotation(Math.toDegrees(newRadians));
-        
-        megaEpicAttack();
     }
     
     private void megaEpicAttack() {
-        Player player = getWorld().getObjects(Player.class).get(0);
-        int angleToPlayer = getAngleTo(player);
-        getWorld().addObject(new HugeBaller(false, angleToPlayer), getX(), getY());
+        if (shootTimer == 0) shootTimer = 50;
+        else if (shootTimer == 25) {
+            Player player = getWorld().getObjects(Player.class).get(0);
+            int angleToPlayer = getAngleTo(player);
+            getWorld().addObject(new HugeBaller(false, angleToPlayer), getX(), getY());
+        }
     }
     
     private void spreadShot() {
         for (int i = 0; i < 360; i += 45) {
             getWorld().addObject(new Arrow(false, i), getX(), getY());
         }
+    }
+    
+    protected void die() {
+        GameWorld g = (GameWorld)getWorld();
+        g.removeObject(this);
+        g.updateScore(pointsValue);
+        g.gameOver(true);
     }
 }

@@ -50,16 +50,16 @@ public abstract class Entity extends Actor
     public void move(double distance)
     {
         double radians = Math.toRadians(rotation);
-        double dx = Math.cos(radians);
-        double dy = Math.sin(radians);
+        double dx = Math.cos(radians) * collisionPrecision;
+        double dy = Math.sin(radians) * collisionPrecision;
         
         // move x and y seperately, so enemies don't stick to walls
-        for (double i = 0; i < distance; i += collisionPrecision) {
-            setLocation(exactX + dx * collisionPrecision, exactY);
-            if (isTouching(Wall.class)) setLocation(exactX - dx * collisionPrecision, exactY);
+        for (double i = 0; i <= distance; i += collisionPrecision) {
+            setLocation(exactX + dx, exactY);
+            while (isTouching(Wall.class)) setLocation(exactX - dx, exactY);
             
-            setLocation(exactX, exactY + dy * collisionPrecision);
-            if (isTouching(Wall.class)) setLocation(exactX, exactY - dy * collisionPrecision);
+            setLocation(exactX, exactY + dy);
+            while (isTouching(Wall.class)) setLocation(exactX, exactY - dy);
         }
     }
     
@@ -107,6 +107,26 @@ public abstract class Entity extends Actor
         if (health == 0) {
             die();
         }
+    }
+    
+    protected String checkTouching(Class cls) {
+        setLocation(exactX + collisionPrecision, exactY);
+        if (isTouching(cls)) return "left";
+        setLocation(exactX - collisionPrecision, exactY);
+        
+        setLocation(exactX - collisionPrecision, exactY);
+        if (isTouching(cls)) return "right";
+        setLocation(exactX + collisionPrecision, exactY);
+        
+        setLocation(exactX, exactY + collisionPrecision);
+        if (isTouching(cls)) return "up";
+        setLocation(exactX, exactY - collisionPrecision);
+        
+        setLocation(exactX, exactY - collisionPrecision);
+        if (isTouching(cls)) return "down";
+        setLocation(exactX, exactY + collisionPrecision);
+        
+        return "none";
     }
     
     protected abstract void initAnimations();

@@ -102,6 +102,10 @@ public class GameWorld extends World
         roomWorlds = new GameWorld[101];
     }
     
+    public Player getPlayer() {
+        return player;
+    }
+    
     /**
      * Static method that gets the distance between the x,y coordinates of two Actors
      * using Pythagorean Theorum.
