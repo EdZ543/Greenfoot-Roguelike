@@ -56,10 +56,8 @@ public class Player extends Entity
             runningFrames[i] = frame;
         }
             
-        animation = new Animation(this, idleFrames);
-        animation.addState(characters[characterIndex] + " idle", idleFrames, 40, "right");
+        animation = new Animation(this, characters[characterIndex] + " idle", idleFrames, 40, "right");
         animation.addState(characters[characterIndex] + " running", runningFrames, 15, "right");
-        animation.setState(characters[characterIndex] + " idle");
         animation.setActiveState(true);
     }
     

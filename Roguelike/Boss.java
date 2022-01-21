@@ -67,10 +67,7 @@ public class Boss extends Enemy
             runningFrames[i] = frame;
         }
         
-        animation = new Animation(this, runningFrames);
-        animation.addState("running", runningFrames, 20, "right");
-        animation.setState("running");
-        
+        animation = new Animation(this, "running", runningFrames, 20, "right");
         animation.setActiveState(true);
     }
     

@@ -52,7 +52,7 @@ public class Minimap extends Actor
      */
     private GreenfootImage drawImage () {
         // Sets image dimensions to only contain non-empty rooms
-        GreenfootImage image = new GreenfootImage(maxX - minX + cellWidth, maxY - minY + cellHeight);
+        GreenfootImage image = new GreenfootImage(maxX - minX + cellWidth + 1, maxY - minY + cellHeight + 1);
         
         for (int i = 0; i < floorPlan.length; i++) {
             // 0 represents no room at this position, so skip those

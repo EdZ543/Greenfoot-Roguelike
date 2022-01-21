@@ -1,10 +1,11 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class Entity here.
+ * Code common to all entities, including players and enemies.
+ * Keeps track of position and rotation using doubles for more precise movement.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Eddie Zhuang
+ * @version Jan. 21, 2022
  */
 public abstract class Entity extends Actor
 {

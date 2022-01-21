@@ -46,10 +46,8 @@ public class Goblin extends Enemy
             runningFrames[i] = frame;
         }
         
-        animation = new Animation(this, idleFrames);
-        animation.addState("idle", idleFrames, 40, "right");
+        animation = new Animation(this, "idle", idleFrames, 40, "right");
         animation.addState("running", runningFrames, 15, "right");
-        animation.setState("idle");
         animation.setActiveState(true);
     }
     

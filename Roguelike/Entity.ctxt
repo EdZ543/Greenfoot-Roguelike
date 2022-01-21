@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=Entity
-comment0.text=\n\ Write\ a\ description\ of\ class\ Entity\ here.\n\ \n\ @author\ (your\ name)\ \n\ @version\ (a\ version\ number\ or\ a\ date)\n
+comment0.text=\n\ Code\ common\ to\ all\ entities,\ including\ players\ and\ enemies.\n\ Keeps\ track\ of\ position\ and\ rotation\ using\ doubles\ for\ more\ precise\ movement.\n\ \n\ @author\ Eddie\ Zhuang\n\ @version\ Jan.\ 21,\ 2022\n
 comment1.params=width\ height\ speed\ health
 comment1.target=Entity(int,\ int,\ int,\ int)
 comment10.params=a

@@ -1,12 +1,17 @@
 #BlueJ class context
 comment0.target=Skelebro
-comment0.text=\n\ Write\ a\ description\ of\ class\ Skelebro\ here.\n\ \n\ @author\ (your\ name)\ \n\ @version\ (a\ version\ number\ or\ a\ date)\n
+comment0.text=\n\ An\ enemy\ that\ shoots\ at\ the\ player\ and\ runs\ around\ randomly\n\ \n\ @author\ Eddie\ Zhuang\n\ @version\ Jan.\ 21,\ 2022\n
 comment1.params=width\ height
 comment1.target=Skelebro(int,\ int)
 comment2.params=
 comment2.target=void\ initAnimations()
+comment2.text=\n\ Initialize\ animations\n
 comment3.params=
 comment3.target=void\ act()
 comment4.params=
-comment4.target=void\ shootAtPlayer()
-numComments=5
+comment4.target=void\ turnRandomly()
+comment4.text=\n\ Turns\ skelebro\ in\ a\ random\ direction.\ Helps\ him\ dodge\ the\ player\ and\ be\ unpredictable.\n
+comment5.params=
+comment5.target=void\ shootAtPlayer()
+comment5.text=\n\ Shoot\ an\ arrow\ at\ the\ player\n
+numComments=6
