@@ -74,7 +74,7 @@ public class GameWorld extends World
         addObject(scoreText, scoreText.getImage().getWidth() / 2, getHeight() - scoreText.getImage().getHeight() / 2);
     }
     
-    public static void startOver(int playerSelection) {
+    public static void startOver() {
         score = 0;
         started = false;
         enterPos = "center";
@@ -95,7 +95,7 @@ public class GameWorld extends World
     
         generateMap();
         
-        player = new Player(-1, tileHeight, playerSelection, false);
+        player = new Player(-1, tileHeight, StartWorld.playerSelection, false);
         minimap = new Minimap(floorPlan, curRoomNum, bossl);
         scoreText = new Label("Score: 0", 50);
         

@@ -10,8 +10,6 @@ public class EndWorld extends World
 {
     private Label titleText;
     private Label scoreText;
-    private Label highScoreText;
-    private ScoreBoard scoreBoard;
 
     /**
      * Constructor for objects of class EndWorld.
@@ -20,7 +18,9 @@ public class EndWorld extends World
     public EndWorld(int score, int highScore, boolean newHighScore, boolean won)
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(800, 800, 1); 
+        super(800, 800, 1);
+        
+        setBackground(drawBackground());
         
         if (won) {
             titleText = new Label("You won, congrats!", 100);
@@ -32,15 +32,34 @@ public class EndWorld extends World
         scoreText = new Label("Score: " + score, 50);
         addObject(scoreText, 400, 125);
             
+        Label highScoreText = new Label("", 50);
         if (newHighScore) {
-            highScoreText = new Label("New High Score: " + highScore + "!!", 50);
+            highScoreText.setValue("New High Score: " + highScore + "!!");
         } else {
             highScoreText = new Label("High Score: " + highScore, 50);
         }
         
         addObject(highScoreText, 400, 175);
         
-        scoreBoard = new ScoreBoard(600, 600);
+        ScoreBoard scoreBoard = new ScoreBoard(600, 600);
         addObject(scoreBoard, 400, 500);
+    }
+    
+    /**
+     * Paints background!
+     */
+    private GreenfootImage drawBackground() {
+        GreenfootImage background = new GreenfootImage(getWidth(), getHeight());
+        background.setColor(Color.BLACK);
+        background.fillRect(0, 0, getWidth(), getHeight());
+        return background;
+    }
+    
+    public void act() {
+        // Restarts game if enter is pressed!
+        if (Greenfoot.isKeyDown("enter")){
+            GameWorld.startOver();
+            Greenfoot.setWorld (new GameWorld());
+        }
     }
 }

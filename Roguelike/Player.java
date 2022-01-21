@@ -37,36 +37,35 @@ public class Player extends Entity
     protected void initAnimations() {
         characters = new String[]{"knight", "female elf", "male elf"};
         characterPrefixes = new String[]{"knight_f", "elf_f", "elf_m"};
-        animation = new Animation(this);
         
-        for (int ch = 0; ch < characters.length; ch++) {
-            idleFrames = new GreenfootImage[4];
-            for (int i = 0; i < idleFrames.length; i++) {
-                String framePath = characters[ch] + "/idle/" + characterPrefixes[ch] + "_idle_anim_f" + i + ".png";
-                GreenfootImage frame = new GreenfootImage(framePath);
-                
-                GameWorld.scaleWithAspectRatio(frame, width, height);
-                idleFrames[i] = frame;
-            }
+        idleFrames = new GreenfootImage[4];
+        for (int i = 0; i < idleFrames.length; i++) {
+            String framePath = characters[characterIndex] + "/idle/" + characterPrefixes[characterIndex] + "_idle_anim_f" + i + ".png";
+            GreenfootImage frame = new GreenfootImage(framePath);
             
-            runningFrames = new GreenfootImage[4];
-            for (int i = 0; i < runningFrames.length; i++) {
-                String framePath = characters[ch] + "/run/" + characterPrefixes[ch] + "_run_anim_f" + i + ".png";
-                GreenfootImage frame = new GreenfootImage(framePath);
-                
-                GameWorld.scaleWithAspectRatio(frame, width, height);
-                runningFrames[i] = frame;
-            }
-            
-            animation.addState(characters[ch] + " idle", idleFrames, 40, "right");
-            animation.addState(characters[ch] + " running", runningFrames, 15, "right");
+            GameWorld.scaleWithAspectRatio(frame, width, height);
+            idleFrames[i] = frame;
         }
+        
+        runningFrames = new GreenfootImage[4];
+        for (int i = 0; i < runningFrames.length; i++) {
+            String framePath = characters[characterIndex] + "/run/" + characterPrefixes[characterIndex] + "_run_anim_f" + i + ".png";
+            GreenfootImage frame = new GreenfootImage(framePath);
+            
+            GameWorld.scaleWithAspectRatio(frame, width, height);
+            runningFrames[i] = frame;
+        }
+            
+        animation = new Animation(this, idleFrames);
+        animation.addState(characters[characterIndex] + " idle", idleFrames, 40, "right");
+        animation.addState(characters[characterIndex] + " running", runningFrames, 15, "right");
+        animation.setState(characters[characterIndex] + " idle");
+        animation.setActiveState(true);
     }
     
     public void setCharacter(int characterIndex) {
         this.characterIndex = characterIndex;
-        animation.setState(characters[characterIndex] + " idle");
-        animation.setActiveState(true);
+        initAnimations();
     }
     
     public void addedToWorld(World w) {

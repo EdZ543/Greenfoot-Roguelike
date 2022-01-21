@@ -69,6 +69,10 @@ public class Animation
         }
     }
     
+    public boolean hasState(String state) {
+        return animationStates.containsKey(state);
+    }
+    
     public void setDir(String dir) {
         this.dir = dir;
     }

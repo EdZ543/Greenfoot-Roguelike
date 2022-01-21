@@ -8,10 +8,11 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class StartWorld extends World
 {
+    public static int playerSelection;
+    
     private GreenfootImage bgImage;
     private Label scoreText;
     private UserInfo user;
-    private int playerSelection;
     private Player player;
     
     /**
@@ -57,7 +58,7 @@ public class StartWorld extends World
         }
         
         if (Greenfoot.isKeyDown("enter")){
-            GameWorld.startOver(playerSelection);
+            GameWorld.startOver();
             Greenfoot.setWorld (new GameWorld());
         }
     }
@@ -69,5 +70,6 @@ public class StartWorld extends World
         playerSelection = (playerSelection + 1) % player.characters.length;
         player.setCharacter(playerSelection);
         user.setInt(0, playerSelection);
+        user.store();
     }
 }
