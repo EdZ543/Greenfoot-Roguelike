@@ -8,69 +8,59 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Player extends Entity
 {
-    public String[] characters;
-    public String[] characterPrefixes;
+    private String[] idlePrefixes = new String[]{"knight/idle/knight_f_idle_anim_f", "female elf/idle/elf_f_idle_anim_f", "male elf/idle/elf_m_idle_anim_f"};
+    private String[] runPrefixes = new String[]{"knight/run/knight_f_run_anim_f", "female elf/run/elf_f_run_anim_f", "male elf/run/elf_m_run_anim_f"};
     
-    private GreenfootImage[] idleFrames;
-    private GreenfootImage[] runningFrames;
     private GreenfootSound[] shootSounds;
+    private int shootSoundsIndex = 0;
     
     private int shootDelay = 20;
     private int shootDelayTimer = 0;
-    private int shootSoundsIndex = 0;
-    private boolean preview = false;
-    private int characterIndex;
+    private boolean previewMode;
     
-    public Player (int width, int height, int characterIndex, boolean preview) {
+    public Player (int width, int height, int characterSelection) {
+        this(width, height, characterSelection, false);
+    }
+    
+    /**
+     * Extra constructor for creating a preview player, e.g. on the start screen
+     */
+    public Player (int width, int height, int characterSelection, boolean previewMode) {
         super(width, height, 5, 100);
-        this.characterIndex = characterIndex;
-        this.preview = preview;
         
+        this.previewMode = previewMode;
+        initSounds();
+        initAnimations(characterSelection);
+    }
+    
+    /**
+     * Returns number of character models available
+     */
+    public int getNumCharacters() {
+        return idlePrefixes.length;
+    }
+    
+    private void initAnimations(int characterSelection) {
+        GreenfootImage[] idleFrames = Animation.generateFrames(4, idlePrefixes[characterSelection], ".png", width, height);
+        GreenfootImage[] runningFrames = Animation.generateFrames(4, runPrefixes[characterSelection], ".png", width, height);
+            
+        animation = new Animation(this, "idle", idleFrames, 40, "right");
+        animation.addState("running", runningFrames, 15, "right");
+        animation.setActiveState(true);
+    }
+    
+    private void initSounds() {
         shootSounds = new GreenfootSound[20];
         for (int i = 0; i < shootSounds.length; i++) {
             shootSounds[i] = new GreenfootSound("bow_fire.wav");
         }
-        
-        setCharacter(characterIndex);
-    }
-    
-    protected void initAnimations() {
-        characters = new String[]{"knight", "female elf", "male elf"};
-        characterPrefixes = new String[]{"knight_f", "elf_f", "elf_m"};
-        
-        idleFrames = new GreenfootImage[4];
-        for (int i = 0; i < idleFrames.length; i++) {
-            String framePath = characters[characterIndex] + "/idle/" + characterPrefixes[characterIndex] + "_idle_anim_f" + i + ".png";
-            GreenfootImage frame = new GreenfootImage(framePath);
-            
-            GameWorld.scaleWithAspectRatio(frame, width, height);
-            idleFrames[i] = frame;
-        }
-        
-        runningFrames = new GreenfootImage[4];
-        for (int i = 0; i < runningFrames.length; i++) {
-            String framePath = characters[characterIndex] + "/run/" + characterPrefixes[characterIndex] + "_run_anim_f" + i + ".png";
-            GreenfootImage frame = new GreenfootImage(framePath);
-            
-            GameWorld.scaleWithAspectRatio(frame, width, height);
-            runningFrames[i] = frame;
-        }
-            
-        animation = new Animation(this, characters[characterIndex] + " idle", idleFrames, 40, "right");
-        animation.addState(characters[characterIndex] + " running", runningFrames, 15, "right");
-        animation.setActiveState(true);
-    }
-    
-    public void setCharacter(int characterIndex) {
-        this.characterIndex = characterIndex;
-        initAnimations();
     }
     
     public void addedToWorld(World w) {
-        if (preview) return;
-        stats = new StatBar​(maxHealth, health, null, 150, 25, 0, Color.GREEN, Color.RED, false);
-        
-        w.addObject(stats, stats.getImage().getWidth() / 2, stats.getImage().getHeight() / 2);
+        if (!previewMode) {
+            stats = new StatBar​(maxHealth, health, null, 150, 25, 0, Color.GREEN, Color.RED, false);
+            w.addObject(stats, stats.getImage().getWidth() / 2, stats.getImage().getHeight() / 2);
+        }
     }
     
     protected void die() {
@@ -84,9 +74,13 @@ public class Player extends Entity
      */
     public void act()
     {
-        // Add your action code here.
         animation.run();
-        if (!preview) checkKeys();
+        
+        // Don't move if in preview mode
+        if (!previewMode) {
+            checkKeys();
+        }
+        
         checkDoor();
     }
     
@@ -109,9 +103,9 @@ public class Player extends Entity
         String key = Greenfoot.getKey();
         
         if (Greenfoot.isKeyDown("W") || Greenfoot.isKeyDown("A") || Greenfoot.isKeyDown("S") || Greenfoot.isKeyDown("D")) {
-            animation.setState(characters[characterIndex] + " running");
+            animation.setState("running");
         } else {
-            animation.setState(characters[characterIndex] + " idle");
+            animation.setState("idle");
         }
         
         if (Greenfoot.isKeyDown("W")){

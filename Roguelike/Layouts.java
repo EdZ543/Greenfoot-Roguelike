@@ -16,7 +16,7 @@
  * ' ': empty tile
  * '^': spike tile
  * '#': wall
- * 'E': goblin
+ * 'G': goblin
  * 'S': skelebro
  * 'B': boss
  * 
@@ -75,7 +75,7 @@ public class Layouts
             "             ",
             "  #       #  ",
             "             ",
-            "     E E     ",
+            "     G G     ",
             "             ",
             "  #       #  ",
             "             ",

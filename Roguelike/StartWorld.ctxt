@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=StartWorld
-comment0.text=\n\ The\ start\ screen\n\ \n\ @author\ Eddie\ Zhuang\n\ @version\ 1.0.0\n
+comment0.text=\n\ The\ start\ screen\!\n\ \n\ @author\ Eddie\ Zhuang\n\ @version\ 1.0.0\n
 comment1.params=
 comment1.target=StartWorld()
 comment1.text=\n\ Constructor\ for\ objects\ of\ class\ StartWorld.\n\ \n
@@ -9,4 +9,7 @@ comment2.target=void\ act()
 comment3.params=
 comment3.target=void\ nextCharacter()
 comment3.text=\n\ Cycles\ through\ character\ selections\n
-numComments=4
+comment4.params=
+comment4.target=void\ addPlayerPreview()
+comment4.text=\n\ Adds\ a\ preview\ of\ the\ player\ selection\n
+numComments=5

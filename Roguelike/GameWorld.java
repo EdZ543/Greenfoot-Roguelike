@@ -52,6 +52,7 @@ public class GameWorld extends World
     private static int curRoomNum;
     private static int startRoomNum = 45;
     private static String enterPos;
+    private static int characterSelection = 0;
     
     private static int[] floorPlan;
     private static int[] roomLayoutPlan;
@@ -81,7 +82,19 @@ public class GameWorld extends World
         roomWorlds[curRoomNum] = this;
     }
     
+    /**
+     * Called when world starts running
+     */    
+    public void started() {
+        // Plays music when unpausing world
+        bgMusic.playLoop();
+    }
+    
+    /**
+     * Called when world is paused or stopped
+     */
     public void stopped() {
+        // Stops music when game is paused or stopped
         bgMusic.stop();
     }
     
@@ -96,6 +109,10 @@ public class GameWorld extends World
         else if(enterPos == "up") addObject(player, player.getX(), offsetY);
         addObject(minimap, getWidth() - minimap.getImage().getWidth() / 2, minimap.getImage().getHeight() / 2);
         addObject(scoreText, scoreText.getImage().getWidth() / 2, getHeight() - scoreText.getImage().getHeight() / 2);
+    }
+    
+    public static void setCharacter(int characterSelection) {
+        GameWorld.characterSelection = characterSelection;
     }
     
     public static void startOver() {
@@ -119,7 +136,7 @@ public class GameWorld extends World
     
         generateMap();
         
-        player = new Player(-1, tileHeight, 0, false);
+        player = new Player(-1, tileHeight, characterSelection);
         minimap = new Minimap(floorPlan, curRoomNum, bossl);
         scoreText = new Label("Score: 0", 50);
         
@@ -286,7 +303,7 @@ public class GameWorld extends World
                 int y = i * tileHeight + tileWidth / 2;
                                     
                 switch (type) {
-                    case 'E': addObject(new Goblin(-1, tileHeight), x, y); addObject(new Floor(tileWidth, tileHeight), x, y); break;
+                    case 'G': addObject(new Goblin(-1, tileHeight), x, y); addObject(new Floor(tileWidth, tileHeight), x, y); break;
                     case ' ': addObject(new Floor(tileWidth, tileHeight), x, y); break;
                     case '#': addObject(new Wall("wall_mid.png", tileWidth, tileHeight, 0), x, y); break;
                     case '^': addObject(new SpikedFloor(tileWidth, tileHeight), x, y);break;
@@ -341,6 +358,8 @@ public class GameWorld extends World
             userInfo.setScore(highScore);
             userInfo.store();
         }
+        
+        bgMusic.stop(); // Stop background music before switching to game over screen
         
         Greenfoot.setWorld(new EndWorld(score, highScore, newHighScore, won));
     }

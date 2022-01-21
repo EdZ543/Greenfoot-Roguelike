@@ -29,8 +29,6 @@ public abstract class Entity extends Actor
         this.speed = speed;
         this.health = health;
         maxHealth = health;
-        
-        initAnimations();
     }
     
     public void turnTowards (Actor a){
@@ -124,6 +122,5 @@ public abstract class Entity extends Actor
         return ret;
     }
     
-    protected abstract void initAnimations();
     protected abstract void die();
 }

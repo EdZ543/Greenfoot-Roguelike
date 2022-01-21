@@ -1,7 +1,7 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * The start screen
+ * The start screen!
  * 
  * @author Eddie Zhuang
  * @version 1.0.0
@@ -44,9 +44,7 @@ public class StartWorld extends World
         
         addObject(scoreText, getWidth() / 2, 325);
         
-        // Add a player object to preview character selection
-        player = new Player(50, -1, playerSelection, true);
-        addObject(player, 293, 443);
+        addPlayerPreview();
     }
     
     public void act () {
@@ -62,18 +60,32 @@ public class StartWorld extends World
         
         // If enter pressed, start game!
         if (Greenfoot.isKeyDown("enter")){
+            GameWorld.setCharacter(playerSelection);
             GameWorld.startOver();
             Greenfoot.setWorld (new GameWorld());
         }
     }
     
-    /*
+    /**
      * Cycles through character selections
      */
     private void nextCharacter() {
-        playerSelection = (playerSelection + 1) % player.characters.length;
-        player.setCharacter(playerSelection);
+        playerSelection = (playerSelection + 1) % player.getNumCharacters();
         user.setInt(0, playerSelection);
-        user.store();
+        user.store(); // Stores selection in user info object
+        
+        addPlayerPreview();
+    }
+    
+    /**
+     * Adds a preview of the player selection
+     */
+    private void addPlayerPreview() {
+        if (player != null) {
+            removeObject(player);    
+        }
+        
+        player = new Player(50, -1, playerSelection, true);
+        addObject(player, 293, 443);
     }
 }
