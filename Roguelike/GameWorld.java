@@ -36,11 +36,10 @@ import java.util.*;
  */
 public class GameWorld extends World
 {
-    // Class Variables / Objects   
-    public static int numTilesX = 15;
-    public static int numTilesY = 9;
-    public static int tileWidth = 64;
-    public static int tileHeight = 64;
+    private static int numTilesX = 15;
+    private static int numTilesY = 9;
+    private static int tileWidth = 64;
+    private static int tileHeight = 64;
     
     private static Player player;
     private static Minimap minimap;
@@ -120,7 +119,7 @@ public class GameWorld extends World
     
         generateMap();
         
-        player = new Player(-1, tileHeight, StartWorld.playerSelection, false);
+        player = new Player(-1, tileHeight, 0, false);
         minimap = new Minimap(floorPlan, curRoomNum, bossl);
         scoreText = new Label("Score: 0", 50);
         

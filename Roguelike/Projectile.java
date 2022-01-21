@@ -1,23 +1,24 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class Projectile here.
+ * The projectile superclass. Contains code common to all projectiles.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Eddie Zhuang 
+ * @version Jan. 21, 2022
  */
 public abstract class Projectile extends Actor
 {
-    protected int speed;
-    protected boolean playerShot;
-    protected int damage;
+    private boolean playerShot;
+    private int speed;
+    private int damage;
     
     public Projectile(int width, int height, boolean playerShot, int rotation, int speed, int damage) {
+        GameWorld.scaleWithAspectRatio(getImage(), width, height);
+        setRotation(rotation);
+        
         this.playerShot = playerShot;
         this.speed = speed;
         this.damage = damage;
-        setRotation(rotation);
-        GameWorld.scaleWithAspectRatio(getImage(), width, height);
     }
     
     /**
@@ -26,9 +27,10 @@ public abstract class Projectile extends Actor
      */
     public void act()
     {
-        // Add your action code here.
+        // move forward
         move(speed);
         
+        // check if hitting player or enemy, depending on who fired this
         if (playerShot) {
             hitEnemy();
         } else {
@@ -39,29 +41,35 @@ public abstract class Projectile extends Actor
             return;
         }
         
-        if (isAtEdge() || isTouching(Wall.class)){ // When I reach the edge, remove me from the World
+        // When I reach the edge or hit a wall, remove me from the World
+        if (isAtEdge() || isTouching(Wall.class)){
             getWorld().removeObject(this);
         } 
     }
 
-    
+    /*
+     * Check if this projectile has hit an enemy
+     */
     protected void hitEnemy () {
         Enemy e = (Enemy)getOneIntersectingObject(Enemy.class);
         if (e != null){
             GameWorld g = (GameWorld)getWorld();
 
-            e.damageMe(damage);
+            e.damageMe(damage); // damage enemy
             g.removeObject(this);
-            g.updateDoors();
+            g.updateDoors(); // if this is the last enemy in the room, unlock the doors
         }
     }
     
+    /*
+     * Check if this projectile has hit a player
+     */
     protected void hitPlayer () {
         Player p = (Player)getOneIntersectingObject(Player.class);
         if (p != null){
             GameWorld g = (GameWorld)getWorld();
 
-            p.damageMe(damage);
+            p.damageMe(damage); // damage player
             g.removeObject(this);
         }
     }

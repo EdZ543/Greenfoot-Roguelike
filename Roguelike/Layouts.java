@@ -1,11 +1,31 @@
 /**
- * Write a description of class Layouts here.
+ * Rooms in this game are created from arrays for convienience. This class stores all of them!
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * Here's what each symbol represents:
+ * 'c': top left/bottom right corner wall
+ * 'C': top right/bottom left corner wall
+ * 'u': top boundary wall
+ * 'd': bottom boundary wall
+ * 'l': left boundary wall
+ * 'r': right boundary wall
+ * 'U': upper door
+ * 'D': lower door
+ * 'L': left door
+ * 'R': right door
+ * 'P': player
+ * ' ': empty tile
+ * '^': spike tile
+ * '#': wall
+ * 'E': goblin
+ * 'S': skelebro
+ * 'B': boss
+ * 
+ * @author Eddie Zhuang
+ * @version 1.0.0
  */
 public class Layouts  
 {
+    // Layout for walls at edge of each level
     static final String[] boundaryLayout = {
         "cuuuuuuUuuuuuuC",
         "l             r",
@@ -18,6 +38,7 @@ public class Layouts
         "CddddddDddddddc",
     };
     
+    // Layout of starting room
     static final String[] startRoomLayout = {
         "             ",
         "             ",
@@ -28,6 +49,7 @@ public class Layouts
         "             ",
     };
     
+    // Layout of boss room
     static final String[] bossRoomLayout = {
         "             ",
         "             ",
@@ -38,6 +60,7 @@ public class Layouts
         "             ",
     };
     
+    // Layouts for all other rooms
     static final String[][] roomLayouts = {
         {
             "             ",

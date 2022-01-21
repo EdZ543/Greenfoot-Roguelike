@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=Minimap
-comment0.text=\n\ Write\ a\ description\ of\ class\ Minimap\ here.\n\ \n\ @author\ (your\ name)\ \n\ @version\ (a\ version\ number\ or\ a\ date)\n
+comment0.text=\n\ The\ minimap\n\ \n\ @author\ (your\ name)\ \n\ @version\ (a\ version\ number\ or\ a\ date)\n
 comment1.params=floorPlan\ curRoomNum\ bossRoomNum
 comment1.target=Minimap(int[],\ int,\ int)
 comment2.params=

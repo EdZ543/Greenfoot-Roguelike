@@ -1,19 +1,17 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class StartWorld here.
+ * The start screen
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Eddie Zhuang
+ * @version 1.0.0
  */
 public class StartWorld extends World
 {
-    public static int playerSelection;
-    
-    private GreenfootImage bgImage;
-    private Label scoreText;
     private UserInfo user;
     private Player player;
+    
+    private int playerSelection;
     
     /**
      * Constructor for objects of class StartWorld.
@@ -21,42 +19,48 @@ public class StartWorld extends World
      */
     public StartWorld()
     {
+        // Initalize world
         super(960, 576, 1);
-        bgImage = new GreenfootImage("welcome.png");
-        setBackground(bgImage);
         
-        String tempText = "STORAGE NOT AVAILABLE. PLEASE ENSURE YOU ARE CONNECTED AND LOGGED IN";
+        // Set epic background image
+        setBackground(new GreenfootImage("welcome.png"));
         
+        // Text showing greeting and high score
+        Label scoreText = new Label("Storage not available, please make sure that you're connected and logged in", 25);
+        
+        // Check if user storage is available
         if (UserInfo.isStorageAvailable()) {
             user = UserInfo.getMyInfo();
         }
+        
+        // Load saved high score or preferences, or defaults if none detected
         if (user != null){
             playerSelection = user.getInt(0);
-            tempText = "WELCOME " + user.getUserName() + "! HIGH SCORE: " + user.getScore();
+            scoreText.setValue("What's up,  " + user.getUserName() + "? Your high score is " + user.getScore() + "!");
         } else {
             playerSelection = 0;
-            tempText = "PLEASE LOG IN TO ENJOY HIGH SCORES AND CLOUD SAVED PREFERENCES!";
+            scoreText.setValue("Log in to save your high scores and settings");
         }
         
-        user.setInt(0, playerSelection);
-        
-        scoreText = new Label(tempText, 25);
         addObject(scoreText, getWidth() / 2, 325);
         
+        // Add a player object to preview character selection
         player = new Player(50, -1, playerSelection, true);
         addObject(player, 293, 443);
     }
     
     public void act () {
+        // If left click detected, change character model
         MouseInfo m = Greenfoot.getMouseInfo();
         if (m != null){
             if (Greenfoot.mouseClicked(null)){ 
-                if (m.getButton() == 1){ // left click
+                if (m.getButton() == 1){ 
                     nextCharacter(); 
                 }
             }
         }
         
+        // If enter pressed, start game!
         if (Greenfoot.isKeyDown("enter")){
             GameWorld.startOver();
             Greenfoot.setWorld (new GameWorld());

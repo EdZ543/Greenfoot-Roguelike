@@ -1,20 +1,21 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class SpikedFloor here.
+ * A floor that damages the player if they step on it
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Eddie Zhuang 
+ * @version Jan. 21, 2022
  */
 public class SpikedFloor extends Floor
 {
     private int damage = 1;
     
-    public SpikedFloor (int tileWidth, int tileHeight) {
-        super(tileWidth, tileHeight);
+    public SpikedFloor (int width, int height) {
+        super(width, height);
     }
     
     public void act() {
+        // Damage player if they step on this floor
         Player p = (Player)getOneIntersectingObject(Player.class);
         if (p != null){
             p.damageMe(damage);

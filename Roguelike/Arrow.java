@@ -1,15 +1,13 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class Bullet here.
+ * The most basic projectile.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Eddie Zhuang
+ * @version Jan. 21, 2022
  */
 public class Arrow extends Projectile
 {
-    private GreenfootImage image;
-    
     public Arrow(boolean playerShot, int rotation) {
         super(50, -1, playerShot, rotation, 10, 10);
     }
