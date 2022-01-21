@@ -91,6 +91,7 @@ public class Boss extends Enemy
             spreadShot();
             chargingTimer = 0;
             animation.setCycleActs(20);
+            move (-speed * 3);
         } else {
             move(speed * 3);
         }
