@@ -8,6 +8,9 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Player extends Entity
 {
+    public String[] characters;
+    public String[] characterPrefixes;
+    
     private GreenfootImage[] idleFrames;
     private GreenfootImage[] runningFrames;
     private GreenfootSound[] shootSounds;
@@ -15,43 +18,59 @@ public class Player extends Entity
     private int shootDelay = 20;
     private int shootDelayTimer = 0;
     private int shootSoundsIndex = 0;
+    private boolean preview = false;
+    private int characterIndex;
     
-    public Player (int width, int height) {
+    public Player (int width, int height, int characterIndex, boolean preview) {
         super(width, height, 5, 100);
+        this.characterIndex = characterIndex;
+        this.preview = preview;
         
         shootSounds = new GreenfootSound[20];
         for (int i = 0; i < shootSounds.length; i++) {
             shootSounds[i] = new GreenfootSound("bow_fire.wav");
         }
+        
+        setCharacter(characterIndex);
     }
     
     protected void initAnimations() {
-        idleFrames = new GreenfootImage[4];
-        for (int i = 0; i < idleFrames.length; i++) {
-            String framePath = "player/idle/knight_f_idle_anim_f" + i + ".png";
-            GreenfootImage frame = new GreenfootImage(framePath);
-            
-            GameWorld.scaleWithAspectRatio(frame, width, height);
-            idleFrames[i] = frame;
-        }
+        characters = new String[]{"knight", "female elf", "male elf"};
+        characterPrefixes = new String[]{"knight_f", "elf_f", "elf_m"};
+        animation = new Animation(this);
         
-        runningFrames = new GreenfootImage[4];
-        for (int i = 0; i < runningFrames.length; i++) {
-            String framePath = "player/run/knight_f_run_anim_f" + i + ".png";
-            GreenfootImage frame = new GreenfootImage(framePath);
+        for (int ch = 0; ch < characters.length; ch++) {
+            idleFrames = new GreenfootImage[4];
+            for (int i = 0; i < idleFrames.length; i++) {
+                String framePath = characters[ch] + "/idle/" + characterPrefixes[ch] + "_idle_anim_f" + i + ".png";
+                GreenfootImage frame = new GreenfootImage(framePath);
+                
+                GameWorld.scaleWithAspectRatio(frame, width, height);
+                idleFrames[i] = frame;
+            }
             
-            GameWorld.scaleWithAspectRatio(frame, width, height);
-            runningFrames[i] = frame;
+            runningFrames = new GreenfootImage[4];
+            for (int i = 0; i < runningFrames.length; i++) {
+                String framePath = characters[ch] + "/run/" + characterPrefixes[ch] + "_run_anim_f" + i + ".png";
+                GreenfootImage frame = new GreenfootImage(framePath);
+                
+                GameWorld.scaleWithAspectRatio(frame, width, height);
+                runningFrames[i] = frame;
+            }
+            
+            animation.addState(characters[ch] + " idle", idleFrames, 40, "right");
+            animation.addState(characters[ch] + " running", runningFrames, 15, "right");
         }
-        
-        animation = new Animation(this, runningFrames);
-        animation.addState("idle", idleFrames, 40, "right");
-        animation.addState("running", runningFrames, 15, "right");
-        animation.setState("idle");
+    }
+    
+    public void setCharacter(int characterIndex) {
+        this.characterIndex = characterIndex;
+        animation.setState(characters[characterIndex] + " idle");
         animation.setActiveState(true);
     }
     
     public void addedToWorld(World w) {
+        if (preview) return;
         stats = new StatBar​(maxHealth, health, null, 150, 25, 0, Color.GREEN, Color.RED, false);
         
         w.addObject(stats, stats.getImage().getWidth() / 2, stats.getImage().getHeight() / 2);
@@ -70,7 +89,7 @@ public class Player extends Entity
     {
         // Add your action code here.
         animation.run();
-        checkKeys();
+        if (!preview) checkKeys();
         checkDoor();
     }
     
@@ -93,9 +112,9 @@ public class Player extends Entity
         String key = Greenfoot.getKey();
         
         if (Greenfoot.isKeyDown("W") || Greenfoot.isKeyDown("A") || Greenfoot.isKeyDown("S") || Greenfoot.isKeyDown("D")) {
-            animation.setState("running");
+            animation.setState(characters[characterIndex] + " running");
         } else {
-            animation.setState("idle");
+            animation.setState(characters[characterIndex] + " idle");
         }
         
         if (Greenfoot.isKeyDown("W")){

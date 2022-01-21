@@ -9,7 +9,14 @@ import java.util.*;
  */
 public class GameWorld extends World
 {
-    // Class Variables / Objects    
+    // Class Variables / Objects   
+    public static int numTilesX = 15;
+    public static int numTilesY = 9;
+    public static int tileWidth = 64;
+    public static int tileHeight = 64;
+    public static int worldWidth = numTilesX * tileWidth;
+    public static int worldHeight = numTilesY * tileHeight;
+    
     private static Player player;
     private static Minimap minimap;
     private static Label scoreText;
@@ -33,13 +40,6 @@ public class GameWorld extends World
     private static boolean started;
     private static int bossl;
     private static boolean placedSpecial;
-    
-    private static int numTilesX = 15;
-    private static int numTilesY = 9;
-    private static int tileWidth = 64;
-    private static int tileHeight = 64;
-    private static int worldWidth = numTilesX * tileWidth;
-    private static int worldHeight = numTilesY * tileHeight;
 
     /**
      * Constructor for objects of class MyWorld.
@@ -74,7 +74,7 @@ public class GameWorld extends World
         addObject(scoreText, scoreText.getImage().getWidth() / 2, getHeight() - scoreText.getImage().getHeight() / 2);
     }
     
-    public static void startOver() {
+    public static void startOver(int playerSelection) {
         score = 0;
         started = false;
         enterPos = "center";
@@ -95,7 +95,7 @@ public class GameWorld extends World
     
         generateMap();
         
-        player = new Player(-1, tileHeight);
+        player = new Player(-1, tileHeight, playerSelection, false);
         minimap = new Minimap(floorPlan, curRoomNum, bossl);
         scoreText = new Label("Score: 0", 50);
         

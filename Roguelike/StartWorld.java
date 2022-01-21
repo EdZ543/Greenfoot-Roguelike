@@ -8,24 +8,66 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class StartWorld extends World
 {
-    private GreenfootImage image;
+    private GreenfootImage bgImage;
+    private Label scoreText;
+    private UserInfo user;
+    private int playerSelection;
+    private Player player;
     
     /**
      * Constructor for objects of class StartWorld.
      * 
      */
     public StartWorld()
-    {    
-        // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(1024, 800, 1); 
-        image = new GreenfootImage("welcome.png");
-        setBackground(image);
+    {
+        super(GameWorld.worldWidth, GameWorld.worldHeight, 1);
+        bgImage = new GreenfootImage("welcome.png");
+        setBackground(bgImage);
+        
+        String tempText = "STORAGE NOT AVAILABLE. PLEASE ENSURE YOU ARE CONNECTED AND LOGGED IN";
+        
+        if (UserInfo.isStorageAvailable()) {
+            user = UserInfo.getMyInfo();
+        }
+        if (user != null){
+            playerSelection = user.getInt(0);
+            tempText = "WELCOME " + user.getUserName() + "! HIGH SCORE: " + user.getScore();
+        } else {
+            playerSelection = 0;
+            tempText = "PLEASE LOG IN TO ENJOY HIGH SCORES AND CLOUD SAVED PREFERENCES!";
+        }
+        
+        user.setInt(0, playerSelection);
+        
+        scoreText = new Label(tempText, 25);
+        addObject(scoreText, getWidth() / 2, 325);
+        
+        player = new Player(50, -1, playerSelection, true);
+        addObject(player, 293, 443);
     }
     
     public void act () {
+        MouseInfo m = Greenfoot.getMouseInfo();
+        if (m != null){
+            if (Greenfoot.mouseClicked(null)){ 
+                if (m.getButton() == 1){ // left click
+                    nextCharacter(); 
+                }
+            }
+        }
+        
         if (Greenfoot.isKeyDown("enter")){
-            GameWorld.startOver();
+            GameWorld.startOver(playerSelection);
             Greenfoot.setWorld (new GameWorld());
         }
+    }
+    
+    /*
+     * Cycles through character selections
+     */
+    private void nextCharacter() {
+        playerSelection = (playerSelection + 1) % player.characters.length;
+        player.setCharacter(playerSelection);
+        user.setInt(0, playerSelection);
     }
 }
