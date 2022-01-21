@@ -1,48 +1,54 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class EndWorld here.
+ * The end screen when you die/win the game!
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Eddie Zhuang
+ * @version 1.0.0
  */
 public class EndWorld extends World
 {
-    private Label titleText;
-    private Label scoreText;
-
     /**
      * Constructor for objects of class EndWorld.
      * 
      */
     public EndWorld(int score, int highScore, boolean newHighScore, boolean won)
     {    
-        // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
+        // Create a new 800 x 800 world
         super(800, 800, 1);
         
+        // Set black background
         setBackground(drawBackground());
         
+        // Set title text based on whether you won or died
+        Label titleText = new Label("", 90);
         if (won) {
-            titleText = new Label("You won, congrats!", 100);
+            titleText.setValue("You won, congrats!");
         } else {
-            titleText = new Label("You died, nice!", 100);
+            titleText.setValue("You died!");
         }
-        addObject(titleText, 400, 50);
+        addObject(titleText, getWidth() / 2, 40);
         
-        scoreText = new Label("Score: " + score, 50);
-        addObject(scoreText, 400, 125);
+        // Add text to let you know your score
+        Label scoreText = new Label("Score: " + score, 40);
+        addObject(scoreText, getWidth() / 2, 100);
             
-        Label highScoreText = new Label("", 50);
+        // Change text based on whether you got a new high score or not
+        Label highScoreText = new Label("", 40);
         if (newHighScore) {
-            highScoreText.setValue("New High Score: " + highScore + "!!");
+            highScoreText.setValue("New High Score: " + highScore + "!");
         } else {
-            highScoreText = new Label("High Score: " + highScore, 50);
+            highScoreText.setValue("High Score: " + highScore);
         }
+        addObject(highScoreText, getWidth() / 2, 130);
         
-        addObject(highScoreText, 400, 175);
+        // Add a scoreboard
+        ScoreBoard scoreBoard = new ScoreBoard(600, 500);
+        addObject(scoreBoard, getWidth() / 2, 450);
         
-        ScoreBoard scoreBoard = new ScoreBoard(600, 600);
-        addObject(scoreBoard, 400, 500);
+        // Let player know that they can press enter to replay
+        Label retryText = new Label("Press enter to play again!", 40);
+        addObject(retryText, getWidth() / 2, getHeight() - 70);
     }
     
     /**

@@ -109,24 +109,18 @@ public abstract class Entity extends Actor
         }
     }
     
-    protected String checkTouching(Class cls) {
-        setLocation(exactX + collisionPrecision, exactY);
-        if (isTouching(cls)) return "left";
-        setLocation(exactX - collisionPrecision, exactY);
+    protected boolean isAdjacentTo(Class cls) {
+        double radians = Math.toRadians(rotation);
+        double dx = Math.cos(radians) * collisionPrecision;
+        double dy = Math.sin(radians) * collisionPrecision;
         
-        setLocation(exactX - collisionPrecision, exactY);
-        if (isTouching(cls)) return "right";
-        setLocation(exactX + collisionPrecision, exactY);
+        boolean ret = false;
         
-        setLocation(exactX, exactY + collisionPrecision);
-        if (isTouching(cls)) return "up";
-        setLocation(exactX, exactY - collisionPrecision);
+        setLocation(exactX + dx, exactY + dy);
+        ret |= isTouching(cls);
+        setLocation(exactX - dx, exactY - dy);
         
-        setLocation(exactX, exactY - collisionPrecision);
-        if (isTouching(cls)) return "down";
-        setLocation(exactX, exactY + collisionPrecision);
-        
-        return "none";
+        return ret;
     }
     
     protected abstract void initAnimations();

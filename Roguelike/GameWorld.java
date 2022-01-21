@@ -2,10 +2,37 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.*;
 
 /**
- * Write a description of class MyWorld here.
+ * ## Credits ##
+ * Dungeon Tileset https://0x72.itch.io/dungeontileset-ii
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * Procedural Map Generation Algorithm by Florian Himsl https://www.boristhebrave.com/2020/09/12/dungeon-generation-in-binding-of-isaac/
+ *
+ * Code from Jordan Cohen:
+ * OOP code from Bug Simulation
+ * Code from Space Demo
+ * Statbar class
+ * 
+ * Code from Danpost:
+ * Animation Support Class, https://www.greenfoot.org/scenarios/14496
+ * Battle (Boss) by BoxCat Games | https://freemusicarchive.org/music/BoxCat_Games Music promoted by https://www.chosic.com/free-music/all/ Creative Commons CC BY 3.0 https://creativecommons.org/licenses/by/3.0/
+ *
+ * Bow sound effect obtained from https://www.zapsplat.com
+ * 
+ * ## Instructions ##
+ * WASD to move, arrow keys to shoot
+ * P to pick up items
+ * 
+ * This is a procedurally generated roguelike.
+ * This means that each run will have a random map and rooms.
+ * It also has permadeath, which means if you die, you start from the beginning!
+ * Walk through doors to progress, you'll have to defeat al enemies in a room to unlock the doors.
+ * Try to get as high a score as possible by collecting coins and defeating enemies.
+ * If you manage to reach the boss room and defeat the boss, you'll beat the game!
+ * 
+ * ## Known bugs/issues ##
+ * 
+ * @author Eddie Zhuang
+ * @version 0.0.1
  */
 public class GameWorld extends World
 {
@@ -14,8 +41,6 @@ public class GameWorld extends World
     public static int numTilesY = 9;
     public static int tileWidth = 64;
     public static int tileHeight = 64;
-    public static int worldWidth = numTilesX * tileWidth;
-    public static int worldHeight = numTilesY * tileHeight;
     
     private static Player player;
     private static Minimap minimap;
@@ -48,7 +73,7 @@ public class GameWorld extends World
     public GameWorld()
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(worldWidth, worldHeight, 1);
+        super(960, 576, 1);
             
         createRoom();
         updateRoom();

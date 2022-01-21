@@ -87,11 +87,10 @@ public class Boss extends Enemy
             player.damageMe(50);
             chargingTimer = 0;
             animation.setCycleActs(20);
-        } else if (checkTouching(Wall.class) != "none") {
+        } else if (isAdjacentTo(Wall.class)) {
             spreadShot();
             chargingTimer = 0;
             animation.setCycleActs(20);
-            move (-speed * 3);
         } else {
             move(speed * 3);
         }

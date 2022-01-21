@@ -21,7 +21,7 @@ public class StartWorld extends World
      */
     public StartWorld()
     {
-        super(GameWorld.worldWidth, GameWorld.worldHeight, 1);
+        super(960, 576, 1);
         bgImage = new GreenfootImage("welcome.png");
         setBackground(bgImage);
         
