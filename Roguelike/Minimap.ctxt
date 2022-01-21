@@ -1,12 +1,15 @@
 #BlueJ class context
 comment0.target=Minimap
-comment0.text=\n\ The\ minimap\n\ \n\ @author\ (your\ name)\ \n\ @version\ (a\ version\ number\ or\ a\ date)\n
+comment0.text=\n\ A\ minimap\ to\ show\ the\ map\ of\ the\ rooms\!\n\ \n\ @author\ Eddie\ Zhuang\n\ @version\ Jan.\ 21,\ 2022\n
 comment1.params=floorPlan\ curRoomNum\ bossRoomNum
 comment1.target=Minimap(int[],\ int,\ int)
 comment2.params=
 comment2.target=void\ scopeMinimap()
+comment2.text=\n\ Gets\ the\ x\ and\ y\ coordinates\ of\ rooms\ at\ edges,\ so\ minimap\ can\ be\ drawn\ without\ empty\ space\n
 comment3.params=
-comment3.target=void\ drawMinimap()
+comment3.target=greenfoot.GreenfootImage\ drawImage()
+comment3.text=\n\ Draws\ the\ minimap\n
 comment4.params=curRoomNum
 comment4.target=void\ updateCurRoomNum(int)
+comment4.text=\n\ Update\ minimap\ when\ player\ enters\ another\ room\n
 numComments=5
