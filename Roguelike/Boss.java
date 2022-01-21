@@ -17,6 +17,7 @@ public class Boss extends Enemy
     private int chargeTimer = chargeDelay;
     private boolean attacking = false;
     private int spawnTimer = 0, shootTimer = 0, chargingTimer = 0;
+    private int chargingSpeed = 15;
     
     public Boss(int width, int height) {
         super(width, height, 5, 200, 69420);
@@ -84,12 +85,12 @@ public class Boss extends Enemy
             player.damageMe(50);
             chargingTimer = 0;
             animation.setCycleActs(20);
-        } else if (isAdjacentTo(Wall.class)) {
+        } else if (isTouching(Wall.class)) {
             spreadShot();
             chargingTimer = 0;
             animation.setCycleActs(20);
         } else {
-            move(speed * 3);
+            moveWithoutCollision(chargingSpeed);
         }
     }
     
@@ -101,21 +102,21 @@ public class Boss extends Enemy
     private void bounceAround() {
         move(speed);
         
-        setLocation(exactX + collisionPrecision, exactY);
+        setLocation(exactX + 1, exactY);
         if (isTouching(Wall.class)) bounce("left");
-        setLocation(exactX - collisionPrecision, exactY);
+        setLocation(exactX - 1, exactY);
         
-        setLocation(exactX - collisionPrecision, exactY);
+        setLocation(exactX - 1, exactY);
         if (isTouching(Wall.class)) bounce("right");
-        setLocation(exactX + collisionPrecision, exactY);
+        setLocation(exactX + 1, exactY);
         
-        setLocation(exactX, exactY + collisionPrecision);
+        setLocation(exactX, exactY + 1);
         if (isTouching(Wall.class)) bounce("up");
-        setLocation(exactX, exactY - collisionPrecision);
+        setLocation(exactX, exactY - 1);
         
-        setLocation(exactX, exactY - collisionPrecision);
+        setLocation(exactX, exactY - 1);
         if (isTouching(Wall.class)) bounce("down");
-        setLocation(exactX, exactY + collisionPrecision);
+        setLocation(exactX, exactY + 1);
     }
     
     private void bounce(String dir) {

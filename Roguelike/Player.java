@@ -8,14 +8,19 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Player extends Entity
 {
+    // File paths to animation frames
     private String[] idlePrefixes = new String[]{"knight/idle/knight_f_idle_anim_f", "female elf/idle/elf_f_idle_anim_f", "male elf/idle/elf_m_idle_anim_f"};
     private String[] runPrefixes = new String[]{"knight/run/knight_f_run_anim_f", "female elf/run/elf_f_run_anim_f", "male elf/run/elf_m_run_anim_f"};
     
+    // Shooting sounds
     private GreenfootSound[] shootSounds;
     private int shootSoundsIndex = 0;
     
     private int shootDelay = 20;
     private int shootDelayTimer = 0;
+    
+    // If true, doesn't spawn health bar and isn't controlled by keys
+    // For previewing player, like on the start screen
     private boolean previewMode;
     
     public Player (int width, int height, int characterSelection) {
@@ -23,7 +28,7 @@ public class Player extends Entity
     }
     
     /**
-     * Extra constructor for creating a preview player, e.g. on the start screen
+     * Extra constructor for creating a preview player
      */
     public Player (int width, int height, int characterSelection, boolean previewMode) {
         super(width, height, 5, 100);
@@ -40,6 +45,9 @@ public class Player extends Entity
         return idlePrefixes.length;
     }
     
+    /**
+     * Initializes animations
+     */
     private void initAnimations(int characterSelection) {
         GreenfootImage[] idleFrames = Animation.generateFrames(4, idlePrefixes[characterSelection], ".png", width, height);
         GreenfootImage[] runningFrames = Animation.generateFrames(4, runPrefixes[characterSelection], ".png", width, height);
@@ -49,6 +57,9 @@ public class Player extends Entity
         animation.setActiveState(true);
     }
     
+    /**
+     * Initializes shooting sounds
+     */
     private void initSounds() {
         shootSounds = new GreenfootSound[20];
         for (int i = 0; i < shootSounds.length; i++) {
@@ -57,15 +68,19 @@ public class Player extends Entity
     }
     
     public void addedToWorld(World w) {
+        // Spawns health bar
         if (!previewMode) {
             stats = new StatBar​(maxHealth, health, null, 150, 25, 0, Color.GREEN, Color.RED, false);
             w.addObject(stats, stats.getImage().getWidth() / 2, stats.getImage().getHeight() / 2);
         }
     }
     
+    /**
+     * Called when player dies
+     */
     protected void die() {
         GameWorld g = (GameWorld)getWorld();
-        g.gameOver(false);
+        g.gameOver(false); // Go to game over screen
     }
     
     /**
@@ -81,18 +96,25 @@ public class Player extends Entity
             checkKeys();
         }
         
+        // Check if entered door
         checkDoor();
     }
     
+    /**
+     * Checks whether player is adjacent to door in direction they're facing
+     */
     private void checkDoor() {
         double radians = Math.toRadians(rotation);
-        int halfWidth = getImage().getWidth() / 2 + (int)Math.ceil(collisionPrecision);
-        int halfHeight = getImage().getHeight() / 2 + (int)Math.ceil(collisionPrecision);
-        int dx = (int)Math.cos(radians) * halfWidth;
-        int dy = (int)Math.sin(radians) * halfHeight;
+        double dx = Math.cos(radians);
+        double dy = Math.sin(radians);
         
-        Door door = (Door)getOneObjectAtOffset(dx, dy, Door.class);
+        int halfWidth = (int)(Math.ceil((double)getImage().getWidth() / 2) + 1);
+        int halfHeight = (int)(Math.ceil((double)getImage().getHeight() / 2) + 1);
         
+        // Checks point adjacent to player in direction they're facing
+        Door door = (Door)getOneObjectAtOffset((int)dx * halfWidth, (int)dy * halfHeight, Door.class);
+        
+        // If door is unlocked, go to next room in door's direction
         if (door != null && !door.isLocked()){
             GameWorld g = (GameWorld)getWorld();
             g.exitRoom(door.getDir());
