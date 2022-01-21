@@ -2,14 +2,15 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.*;
 
 /**
- * Write a description of class Boss here.
+ * The final boss!
+ * Bounces around, periodically firing at the player or spawning minions.
+ * Also sometimes charges at player. If it misses the player and hits a wall, releases arrows all around it.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Eddie Zhuang
+ * @version Jan. 21, 2022
  */
 public class Boss extends Enemy
 {
-    private GreenfootImage runningFrames[];
     private Random random = new Random();
     private int attackDelay = 100;
     private int attackTimer = attackDelay;
@@ -20,9 +21,18 @@ public class Boss extends Enemy
     private int chargingSpeed = 15;
     
     public Boss(int width, int height) {
-        super(width, height, 5, 200, 69420);
+        super(width, height, 5, 250, 200);
         
+        initAnimations();
+        
+        // Rotates boss in random orientation
         setRotation(random.nextInt(360));
+    }
+    
+    private void initAnimations() {
+        GreenfootImage[] runFrames = Animation.generateFrames(4, "boss/run/big_demon_run_anim_f", ".png", width, height);
+        animation = new Animation(this, "running", runFrames, 20, "right");
+        animation.setActiveState(true);
     }
     
     public void act()
@@ -57,19 +67,6 @@ public class Boss extends Enemy
             bounceAround();
             attackTimer--;
         }
-    }
-    
-    protected void initAnimations() {
-        runningFrames = new GreenfootImage[4];
-        for (int i = 0; i < runningFrames.length; i++) {
-            String framePath = "boss/run/big_demon_run_anim_f" + i + ".png";
-            GreenfootImage frame = new GreenfootImage(framePath);
-            GameWorld.scaleWithAspectRatio(frame, width, height);
-            runningFrames[i] = frame;
-        }
-        
-        animation = new Animation(this, "running", runningFrames, 20, "right");
-        animation.setActiveState(true);
     }
     
     private void charge() {

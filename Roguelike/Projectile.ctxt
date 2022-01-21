@@ -1,8 +1,8 @@
 #BlueJ class context
 comment0.target=Projectile
 comment0.text=\n\ The\ projectile\ superclass.\ Contains\ code\ common\ to\ all\ projectiles.\n\ \n\ @author\ Eddie\ Zhuang\ \n\ @version\ Jan.\ 21,\ 2022\n
-comment1.params=width\ height\ playerShot\ rotation\ speed\ damage
-comment1.target=Projectile(int,\ int,\ boolean,\ int,\ int,\ int)
+comment1.params=width\ height\ playerShot\ rotation\ speed\ damage\ soundPath\ soundVolume
+comment1.target=Projectile(int,\ int,\ boolean,\ int,\ int,\ int,\ java.lang.String,\ int)
 comment2.params=
 comment2.target=void\ act()
 comment2.text=\n\ Act\ -\ do\ whatever\ the\ Projectile\ wants\ to\ do.\ This\ method\ is\ called\ whenever\n\ the\ 'Act'\ or\ 'Run'\ button\ gets\ pressed\ in\ the\ environment.\n

@@ -9,6 +9,6 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class Arrow extends Projectile
 {
     public Arrow(boolean playerShot, int rotation) {
-        super(50, -1, playerShot, rotation, 10, 10);
+        super(50, -1, playerShot, rotation, 10, 10, "bow_fire.wav", 100);
     }
 }

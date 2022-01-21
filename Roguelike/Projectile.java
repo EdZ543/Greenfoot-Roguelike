@@ -12,13 +12,18 @@ public abstract class Projectile extends Actor
     private int speed;
     private int damage;
     
-    public Projectile(int width, int height, boolean playerShot, int rotation, int speed, int damage) {
+    public Projectile(int width, int height, boolean playerShot, int rotation, int speed, int damage, String soundPath, int soundVolume) {
         GameWorld.scaleWithAspectRatio(getImage(), width, height);
         setRotation(rotation);
         
         this.playerShot = playerShot;
         this.speed = speed;
         this.damage = damage;
+        
+        // Plays firing sound!
+        GreenfootSound firingSound = new GreenfootSound(soundPath);
+        firingSound.setVolume(soundVolume);
+        firingSound.play();
     }
     
     /**

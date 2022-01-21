@@ -1,14 +1,14 @@
 #BlueJ class context
 comment0.target=Boss
-comment0.text=\n\ Write\ a\ description\ of\ class\ Boss\ here.\n\ \n\ @author\ (your\ name)\ \n\ @version\ (a\ version\ number\ or\ a\ date)\n
+comment0.text=\n\ The\ final\ boss\!\n\ Bounces\ around,\ periodically\ firing\ at\ the\ player\ or\ spawning\ minions.\n\ Also\ sometimes\ charges\ at\ player.\ If\ it\ misses\ the\ player\ and\ hits\ a\ wall,\ releases\ arrows\ all\ around\ it.\n\ \n\ @author\ Eddie\ Zhuang\n\ @version\ Jan.\ 21,\ 2022\n
 comment1.params=width\ height
 comment1.target=Boss(int,\ int)
 comment10.params=
 comment10.target=void\ die()
 comment2.params=
-comment2.target=void\ act()
+comment2.target=void\ initAnimations()
 comment3.params=
-comment3.target=void\ initAnimations()
+comment3.target=void\ act()
 comment4.params=
 comment4.target=void\ charge()
 comment5.params=

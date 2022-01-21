@@ -12,10 +12,6 @@ public class Player extends Entity
     private String[] idlePrefixes = new String[]{"knight/idle/knight_f_idle_anim_f", "female elf/idle/elf_f_idle_anim_f", "male elf/idle/elf_m_idle_anim_f"};
     private String[] runPrefixes = new String[]{"knight/run/knight_f_run_anim_f", "female elf/run/elf_f_run_anim_f", "male elf/run/elf_m_run_anim_f"};
     
-    // Shooting sounds
-    private GreenfootSound[] shootSounds;
-    private int shootSoundsIndex = 0;
-    
     private int shootDelay = 20;
     private int shootDelayTimer = 0;
     
@@ -34,7 +30,7 @@ public class Player extends Entity
         super(width, height, 5, 100);
         
         this.previewMode = previewMode;
-        initSounds();
+
         initAnimations(characterSelection);
     }
     
@@ -55,16 +51,6 @@ public class Player extends Entity
         animation = new Animation(this, "idle", idleFrames, 40, "right");
         animation.addState("running", runningFrames, 15, "right");
         animation.setActiveState(true);
-    }
-    
-    /**
-     * Initializes shooting sounds
-     */
-    private void initSounds() {
-        shootSounds = new GreenfootSound[20];
-        for (int i = 0; i < shootSounds.length; i++) {
-            shootSounds[i] = new GreenfootSound("bow_fire.wav");
-        }
     }
     
     public void addedToWorld(World w) {
@@ -176,8 +162,5 @@ public class Player extends Entity
     private void shoot(int rotation) {
         Arrow arrow = new Arrow(true, rotation);
         getWorld().addObject(arrow, getX(), getY());
-        
-        shootSounds[shootSoundsIndex++].play();
-        shootSoundsIndex %= shootSounds.length;
     }
 }

@@ -11,9 +11,6 @@ public class Skelebro extends Enemy
 {
     private Random random = new Random(); // java randomness for turning randomly
     
-    private GreenfootSound[] shootSounds;
-    private int shootSoundsIndex = 0;
-    
     private int turnFrequency = 50;
     private int turnCountdown = 1;
     private int shotFrequency = 70;
@@ -23,7 +20,6 @@ public class Skelebro extends Enemy
         super(width, height, 2, 30, 60);
         
         initAnimations();
-        initSounds();
     }
     
     /**
@@ -33,13 +29,6 @@ public class Skelebro extends Enemy
         GreenfootImage runningFrames[] = Animation.generateFrames(4, "skelebro/run/skelet_run_anim_f", ".png", width, height);
         animation = new Animation(this, "running", runningFrames, 15, "right");
         animation.setActiveState(true);
-    }
-    
-    private void initSounds() {
-        shootSounds = new GreenfootSound[20];
-        for (int i = 0; i < shootSounds.length; i++) {
-            shootSounds[i] = new GreenfootSound("bow_fire.wav");
-        }
     }
     
     public void act() {
@@ -94,10 +83,6 @@ public class Skelebro extends Enemy
             // Shoot arrow
             Arrow arrow = new Arrow(false, angleToPlayer);
             getWorld().addObject(arrow, getX(), getY());
-            
-            // Play shooting sound
-            shootSounds[shootSoundsIndex++].play();
-            shootSoundsIndex %= shootSounds.length;
         }
     }
 }
