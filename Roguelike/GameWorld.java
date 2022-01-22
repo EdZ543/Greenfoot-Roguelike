@@ -58,8 +58,8 @@ public class GameWorld extends World
     private static int characterSelection = 0;
     
     private static int curRoomNum;
-    private static GameWorld[] roomWorlds;
-    private static int[] roomLayoutPlan;
+    private static GameWorld[] roomWorlds; // Array of room worlds, so they stay the same when returning to them
+    private static String[][] roomLayoutPlan;
 
     /**
      * Constructor for objects of class MyWorld.
@@ -137,7 +137,7 @@ public class GameWorld extends World
         roomWorlds = new GameWorld[101];
         map = new ProceduralMap();
         curRoomNum = map.getStartRoomNum();
-        roomLayoutPlan = new int[map.floorPlanLength()];
+        roomLayoutPlan = new String[map.floorPlanLength()][];
         assignRoomLayouts();
         
         player = new Player(-1, tileHeight, characterSelection);
@@ -145,18 +145,30 @@ public class GameWorld extends World
         scoreText = new Label("Score: 0", 40);
     }
     
+    /**
+     * Assigns a random room layout to each room in the map!
+     */
     private static void assignRoomLayouts() {
+        // Make a randomly shuffled list of all room layout indexes
         List<Integer> randomRooms = new ArrayList();
         for (int i = 0; i < Layouts.roomLayouts.length; i++) {
             randomRooms.add(i);
         }
         Collections.shuffle(randomRooms);
         
+        // Assign each room in the map to a layout
         int randomRoomIndex = 0;
         for (int i = 0; i < map.floorPlanLength(); i++) {
-            if (map.isRoomAt(curRoomNum) && i != map.getStartRoomNum() && i != map.getBossRoomNum()) {
-                roomLayoutPlan[i] = randomRooms.get(randomRoomIndex++);
-                randomRoomIndex %= randomRooms.size();
+            if (map.isRoomAt(curRoomNum)) {
+                if (i == map.getStartRoomNum()) { // Special layout for starting room
+                    roomLayoutPlan[i] = Layouts.startRoomLayout;
+                } else if (i == map.getBossRoomNum()) { // Special layout for boss room
+                    roomLayoutPlan[i] = Layouts.bossRoomLayout;
+                } else {
+                    int index = randomRooms.get(randomRoomIndex++);
+                    roomLayoutPlan[i] = Layouts.roomLayouts[index];
+                    randomRoomIndex %= randomRooms.size();
+                }
             }
         }
     }
@@ -182,16 +194,7 @@ public class GameWorld extends World
      * Generates room using an array
      */
     private void createRoom(){
-        String[] roomLayout = null;
-        
-        if (curRoomNum == map.getStartRoomNum()) {
-            roomLayout = Layouts.startRoomLayout;
-        } else if(curRoomNum == map.getBossRoomNum()) {
-            roomLayout = Layouts.bossRoomLayout;
-        } else {
-            int roomLayoutIndex = roomLayoutPlan[curRoomNum];
-            roomLayout = Layouts.roomLayouts[roomLayoutIndex];
-        }
+        String[] roomLayout = roomLayoutPlan[curRoomNum];
         
         // Draw room boundary
         for(int i = 0; i < numTilesY; i++){
@@ -243,6 +246,9 @@ public class GameWorld extends World
         }
     }
     
+    /**
+     * Exits room when player walks through a door
+     */
     public void exitRoom(String exitPos) {
         if (exitPos == "left") {
             curRoomNum--;
@@ -259,12 +265,13 @@ public class GameWorld extends World
         }
         minimap.updateCurRoomNum(curRoomNum);
         
+        // If we've never been to this room before, create it
         if (roomWorlds[curRoomNum] == null) {
             roomWorlds[curRoomNum] = new GameWorld();
         }
         
         roomWorlds[curRoomNum].updateRoom();
-        Greenfoot.setWorld(roomWorlds[curRoomNum]);
+        Greenfoot.setWorld(roomWorlds[curRoomNum]); // Set world to new room!
     }
     
     /**

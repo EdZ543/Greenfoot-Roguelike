@@ -29,7 +29,7 @@ public class Minimap extends Actor
      * Gets the x and y coordinates of rooms at edges, so minimap can be drawn without empty space
      */
     private void scopeMinimap() {
-        for (int i = 0; i < map.getFloorPlan().length; i++) {
+        for (int i = 0; i < map.floorPlanLength(); i++) {
             if (map.isRoomAt(i)) {
                 int x = i % 10; // x index is represented by ones digit
                 int y = (i - x) / 10; // y index is represented by tens digit
@@ -52,7 +52,7 @@ public class Minimap extends Actor
         // Sets image dimensions to only contain non-empty rooms
         GreenfootImage image = new GreenfootImage(maxX - minX + cellWidth + 1, maxY - minY + cellHeight + 1);
         
-        for (int i = 0; i < map.getFloorPlan().length; i++) {
+        for (int i = 0; i < map.floorPlanLength(); i++) {
             // 0 represents no room at this position, so skip those
             if (map.isRoomAt(i)) {
                 int x = i % 10;
