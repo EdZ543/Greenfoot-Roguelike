@@ -64,22 +64,22 @@ public abstract class Entity extends Actor
     public void move(double distance)
     {
         double radians = Math.toRadians(rotation);
-        double dx = Math.cos(radians) * distance;
-        double dy = Math.sin(radians) * distance;
+        double dx = Math.cos(radians);
+        double dy = Math.sin(radians);
         
-        if (dx != 0){
+        // Move x and y seperately, so enemies don't get stuck to walls
+        // Moves in intervals of 1 for wall collision
+        for (int i = 0; i < distance; i++) {
             setLocation(exactX + dx, exactY);
+            if (isTouching(Wall.class)) { // Wall collision
+                setLocation(exactX - dx, exactY);
+            }
             
-            double signX = dx / Math.abs(dx);
-            while (isTouching(Wall.class)) setLocation(exactX - signX, exactY);
-        }    
-        
-        if (dy != 0){
             setLocation(exactX, exactY + dy);
-            
-            double signY = dy / Math.abs(dy);
-            while (isTouching(Wall.class)) setLocation(exactX, exactY - signY);
-        }
+            if (isTouching(Wall.class)) {
+                setLocation(exactX, exactY - dy);
+            }
+        }   
     }
     
     /**

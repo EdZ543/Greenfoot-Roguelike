@@ -13,7 +13,7 @@ public class Goblin extends Enemy
     private GreenfootSound[] punchSounds;
     private int punchSoundsIndex = 0;
     
-    private int visionRange = 300;
+    private int visionRange = 500;
     private int attackRange = 25;
     private int attackDamage = 10;
     private int punchFrequency = 50; // How often the goblin can punch

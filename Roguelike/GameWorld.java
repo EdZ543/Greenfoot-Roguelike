@@ -36,11 +36,15 @@ import java.util.*;
  */
 public class GameWorld extends World
 {
+    // Static variables, so they can persist across rooms
+    
+    // Game dimensions and sizes
     private static int numTilesX = 15;
     private static int numTilesY = 9;
     private static int tileWidth = 64;
     private static int tileHeight = 64;
     
+    // Actors that persist through rooms
     private static Player player;
     private static Minimap minimap;
     private static Label scoreText;
@@ -50,21 +54,9 @@ public class GameWorld extends World
     private static int score;
     private static int highScore;
     private static int curRoomNum;
-    private static int startRoomNum = 45;
     private static String enterPos;
     private static int characterSelection = 0;
-    
-    private static int[] floorPlan;
-    private static int[] roomLayoutPlan;
-    private static GameWorld[] roomWorlds;
-    private static int roomCount;
-    private static Queue<Integer> cellQueue;
-    private static List<Integer> endRooms;
-    private static int maxRooms = 15;
-    private static int minRooms = 7;
-    private static boolean started;
-    private static int bossl;
-    private static boolean placedSpecial;
+    private GameWorld[] roomWorlds;
 
     /**
      * Constructor for objects of class MyWorld.

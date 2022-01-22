@@ -12,13 +12,17 @@ import java.util.*;
 public class Boss extends Enemy
 {
     private Random random = new Random();
-    private int attackDelay = 100;
-    private int attackTimer = attackDelay;
-    private int chargeDelay = 2;
+    
+    private int betweenAttacksDelay = 100; // Delay between each attack
+    private int betweenAttacksTimer = betweenAttacksDelay;
+    
+    private int chargeDelay = 2; // number of attacks until charge
     private int chargeTimer = chargeDelay;
-    private boolean attacking = false;
-    private int spawnTimer = 0, shootTimer = 0, chargingTimer = 0;
-    private int chargingSpeed = 15;
+    private int chargeSpeed = 15;
+    private int chargeDamage = 50;
+    
+    private int attackTimer = 0; // timer used during all attacks for timing
+    private String curAttack = "none"; // attack currently doing
     
     public Boss(int width, int height) {
         super(width, height, 5, 250, 200);
@@ -29,6 +33,9 @@ public class Boss extends Enemy
         setRotation(random.nextInt(360));
     }
     
+    /**
+     * Initializes animation
+     */
     private void initAnimations() {
         GreenfootImage[] runFrames = Animation.generateFrames(4, "boss/run/big_demon_run_anim_f", ".png", width, height);
         animation = new Animation(this, "running", runFrames, 20, "right");
@@ -39,66 +46,95 @@ public class Boss extends Enemy
     {
         animation.run();
         
-        System.out.println(chargeTimer);
-        
-        if (spawnTimer > 0) {
-            spawnMinions();
-            spawnTimer--;
-        } else if (shootTimer > 0) {
-            megaEpicAttack();
-            shootTimer--;
-        } else if (chargingTimer > 0) {
+        // Calls different methods depending on current attack
+        if (curAttack == "spawning") {
+            spawn();
+        } else if (curAttack == "shooting") {
+            shoot();
+        } else if (curAttack == "charging") {
             charge();
-        } else if (attackTimer == 0) {
-            attackTimer = attackDelay;
-            if (chargeTimer == 0) {
+        } else if (betweenAttacksTimer == 0) {
+            betweenAttacksTimer = betweenAttacksDelay;
+            if (chargeTimer == 0) { // Every chargeDelay attack, the attack will be a charge. If not, it's shooting or spawning minions.
                 chargeTimer = chargeDelay;
+                curAttack = "charging";
                 charge();
             } else {
+                // 37% chance of spawning enemies
+                // 63% chance of shooting
                 int prob = random.nextInt(100);
                 if (prob < 37) {
-                    spawnMinions();
+                    curAttack = "spawning";
+                    spawn();
                 } else {
-                    megaEpicAttack();
+                    curAttack = "shooting";
+                    shoot();
                 }
                 chargeTimer--;
             }
         } else {
             bounceAround();
-            attackTimer--;
+            betweenAttacksTimer--;
         }
     }
     
+    /**
+     * Charge at player!
+     */
     private void charge() {
-        if (chargingTimer == 0) {
-            chargingTimer = 100;
-        } else if (chargingTimer >= 50) {
+        if (attackTimer == 0) { // At start, turn towards player, and start "charging up" (faster running animation)
+            attackTimer = 80;
             Player player = ((GameWorld)getWorld()).getPlayer();
             turnTowards(player);
             animation.setCycleActs(5);
-            chargingTimer--;
-        } else if (isTouching(Player.class)) {
-            Player player = ((GameWorld)getWorld()).getPlayer();
-            player.damageMe(50);
-            chargingTimer = 0;
-            animation.setCycleActs(20);
-        } else if (isTouching(Wall.class)) {
-            spreadShot();
-            chargingTimer = 0;
-            animation.setCycleActs(20);
-        } else {
-            moveWithoutCollision(chargingSpeed);
+        } else if (attackTimer > 1) {
+            attackTimer--;
+        } else { // After 80 runs, start charging at player extra fast!
+            moveWithoutCollision(chargeSpeed);
+            
+            Player p = (Player)getOneIntersectingObject(Player.class);
+            
+            if (p != null) { // If it runs into the player, damage them
+                p.damageMe(chargeDamage);
+                animation.setCycleActs(20);
+                attackTimer = 0;
+                curAttack = "none";
+            } else if (isTouching(Wall.class)) { // If it runs into a wall, let out a huge explosion of arrows!
+                moveWithoutCollision(-chargeSpeed);
+                spreadShot();
+                animation.setCycleActs(20);
+                attackTimer = 0;
+                curAttack = "none";
+            }
         }
     }
     
-    private void spawnMinions() {
-        if (spawnTimer == 0) spawnTimer = 50;
-        else if (spawnTimer == 25) getWorld().addObject(new Goblin(64, -1), getX(), getY());
+    /**
+     * Spawn some goblin minions to help hunt down the player
+     */
+    private void spawn() {
+        if (attackTimer == 0) {
+            attackTimer = 50;
+        } else if (attackTimer == 25) {
+            getWorld().addObject(new Goblin(64, -1), getX() - getImage().getWidth() / 2, getY());
+            getWorld().addObject(new Goblin(64, -1), getX() + getImage().getWidth() / 2, getY());
+            getWorld().addObject(new Goblin(64, -1), getX(), getY() - getImage().getHeight() / 2);
+            getWorld().addObject(new Goblin(64, -1), getX(), getY() + getImage().getHeight() / 2);
+        }
+        
+        attackTimer--;
+        if (attackTimer == 0) {
+            curAttack = "none";
+        }
     }
     
+    /**
+     * Move around and bounce off the walls
+     */
     private void bounceAround() {
         move(speed);
         
+        // Checks which direction to bounce
         setLocation(exactX + 1, exactY);
         if (isTouching(Wall.class)) bounce("left");
         setLocation(exactX - 1, exactY);
@@ -116,6 +152,9 @@ public class Boss extends Enemy
         setLocation(exactX, exactY + 1);
     }
     
+    /**
+     * Depending on the bouncing direction, change angle of rotation accordingly
+     */
     private void bounce(String dir) {
         double radians = Math.toRadians(rotation);
         double cos = Math.cos(radians);
@@ -128,25 +167,45 @@ public class Boss extends Enemy
         setRotation(Math.toDegrees(newRadians));
     }
     
-    private void megaEpicAttack() {
-        if (shootTimer == 0) shootTimer = 50;
-        else if (shootTimer == 25) {
-            Player player = getWorld().getObjects(Player.class).get(0);
-            int angleToPlayer = getAngleTo(player);
-            getWorld().addObject(new HugeBaller(false, angleToPlayer), getX(), getY());
+    /**
+     * Shoot a large projectile at the player!
+     */
+    private void shoot() {
+        if (attackTimer == 0) {
+            attackTimer = 50;
+        }  else if (attackTimer == 25) {
+            List<Player> players = getWorld().getObjects(Player.class);
+            
+            if (!players.isEmpty()) {
+                Player p = players.get(0);
+                int angleToPlayer = getAngleTo(p);
+                checkFacingDir(angleToPlayer);
+                getWorld().addObject(new HugeBaller(false, angleToPlayer), getX(), getY());
+            }
+        }
+        
+        attackTimer--;
+        if (attackTimer == 0) {
+            curAttack = "none";
         }
     }
     
+    /**
+     * Send a wave of arrows all around!
+     */
     private void spreadShot() {
         for (int i = 0; i < 360; i += 45) {
             getWorld().addObject(new Arrow(false, i), getX(), getY());
         }
     }
     
+    /**
+     * Method called when boss is defeated
+     */
     protected void die() {
         GameWorld g = (GameWorld)getWorld();
         g.removeObject(this);
         g.updateScore(pointsValue);
-        g.gameOver(true);
+        g.gameOver(true); // If you beat the boss, you win the game!
     }
 }

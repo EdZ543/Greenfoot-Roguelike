@@ -36,7 +36,7 @@ public class StartWorld extends World
         // Load saved high score or preferences, or defaults if none detected
         if (user != null){
             playerSelection = user.getInt(0);
-            scoreText.setValue("What's up,  " + user.getUserName() + "? Your high score is " + user.getScore() + "!");
+            scoreText.setValue("What's up, " + user.getUserName() + "? Your high score is " + user.getScore() + "!");
         } else {
             playerSelection = 0;
             scoreText.setValue("Log in to save your high scores and settings");
