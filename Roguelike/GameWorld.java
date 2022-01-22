@@ -50,21 +50,23 @@ public class GameWorld extends World
     private static Label scoreText;
     private static UserInfo userInfo;
     private static GreenfootSound bgMusic;
+    private static ProceduralMap map;
     
     private static int score;
     private static int highScore;
-    private static int curRoomNum;
     private static String enterPos;
     private static int characterSelection = 0;
-    private GameWorld[] roomWorlds;
+    
+    private static int curRoomNum;
+    private static GameWorld[] roomWorlds;
+    private static int[] roomLayoutPlan;
 
     /**
      * Constructor for objects of class MyWorld.
      * 
      */
     public GameWorld()
-    {    
-        // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
+    {   
         super(960, 576, 1);
             
         createRoom();
@@ -90,33 +92,39 @@ public class GameWorld extends World
         bgMusic.stop();
     }
     
+    /**
+     * Updates all objects that persist across rooms when re-entering a room
+     */
     public void updateRoom() {
         int offsetX = tileWidth + (int)Math.ceil((double)player.getImage().getWidth() / 2);
         int offsetY = tileHeight + (int)Math.ceil((double)player.getImage().getHeight() / 2);
-        
         if (enterPos == "center") addObject(player, getWidth() / 2, getHeight() / 2);
         else if (enterPos == "right") addObject(player, getWidth() - offsetX, player.getY());
         else if(enterPos == "left") addObject(player, offsetX, player.getY());
         else if(enterPos == "down") addObject(player, player.getX(), getHeight() - offsetY);
         else if(enterPos == "up") addObject(player, player.getX(), offsetY);
+        
         addObject(minimap, getWidth() - minimap.getImage().getWidth() / 2, minimap.getImage().getHeight() / 2);
         addObject(scoreText, scoreText.getImage().getWidth() / 2, getHeight() - scoreText.getImage().getHeight() / 2);
     }
     
+    /**
+     * Change the selected player character
+     */
     public static void setCharacter(int characterSelection) {
         GameWorld.characterSelection = characterSelection;
     }
     
+    /**
+     * Static variables don't change when resetting game, so we have to do it manually
+     */
     public static void startOver() {
         score = 0;
-        started = false;
         enterPos = "center";
         
         bgMusic = new GreenfootSound("BoxCat-Games-Battle-Boss.mp3");
         bgMusic.setVolume(25);
         bgMusic.playLoop();
-        
-        curRoomNum = startRoomNum;
     
         if (UserInfo.isStorageAvailable()) {
             userInfo = UserInfo.getMyInfo();
@@ -125,18 +133,32 @@ public class GameWorld extends World
         if (userInfo != null) {
             highScore = userInfo.getScore();
         }
-    
-        generateMap();
-        
-        player = new Player(-1, tileHeight, characterSelection);
-        minimap = new Minimap(floorPlan, curRoomNum, bossl);
-        scoreText = new Label("Score: 0", 50);
         
         roomWorlds = new GameWorld[101];
+        map = new ProceduralMap();
+        curRoomNum = map.getStartRoomNum();
+        roomLayoutPlan = new int[map.floorPlanLength()];
+        assignRoomLayouts();
+        
+        player = new Player(-1, tileHeight, characterSelection);
+        minimap = new Minimap(map, curRoomNum);
+        scoreText = new Label("Score: 0", 40);
     }
     
-    public Player getPlayer() {
-        return player;
+    private static void assignRoomLayouts() {
+        List<Integer> randomRooms = new ArrayList();
+        for (int i = 0; i < Layouts.roomLayouts.length; i++) {
+            randomRooms.add(i);
+        }
+        Collections.shuffle(randomRooms);
+        
+        int randomRoomIndex = 0;
+        for (int i = 0; i < map.floorPlanLength(); i++) {
+            if (map.isRoomAt(curRoomNum) && i != map.getStartRoomNum() && i != map.getBossRoomNum()) {
+                roomLayoutPlan[i] = randomRooms.get(randomRoomIndex++);
+                randomRoomIndex %= randomRooms.size();
+            }
+        }
     }
     
     /**
@@ -156,116 +178,22 @@ public class GameWorld extends World
         return (float)distance;
     }
     
-    private static void initMap() {
-        started = true;
-        placedSpecial = false;
-        floorPlan = new int[101];
-        for (int i = 0; i <= 100; i++) {
-            floorPlan[i] = 0;
-        }
-        roomCount = 0;
-        cellQueue = new LinkedList<Integer>();
-        endRooms = new LinkedList<Integer>();
-        
-        visit(45);
-    }
-    
-    private static void fillMap() {
-        while (started) {
-            if (cellQueue.size() > 0) {
-                int cell = cellQueue.remove();
-                int x = cell % 10;
-                
-                boolean created = false;
-                if (x > 1) created |= visit(cell - 1);
-                if (x < 9) created |= visit(cell + 1);
-                if (cell > 20) created |= visit(cell - 10);
-                if (cell < 70) created |= visit(cell + 10);
-                
-                if (!created) {
-                    endRooms.add(cell);
-                }
-            } else if (!placedSpecial) {
-                if (roomCount < minRooms) {
-                    initMap();
-                    continue;
-                }
-                
-                placedSpecial = true;
-                bossl = endRooms.remove(endRooms.size() - 1);
-            } else {
-                started = false;
-            }
-        }
-    }
-    
-    private static void assignRoomLayouts() {
-        roomLayoutPlan = new int[101];
-        
-        List<Integer> randomRooms = new ArrayList();
-        for (int i = 0; i < Layouts.roomLayouts.length; i++) {
-            randomRooms.add(i);
-        }
-        Collections.shuffle(randomRooms);
-        
-        int randomRoomIndex = 0;
-        for (int i = 0; i < floorPlan.length; i++) {
-            if (floorPlan[i] == 1 && i != startRoomNum && i != bossl) {
-                roomLayoutPlan[i] = randomRooms.get(randomRoomIndex++);
-                randomRoomIndex %= randomRooms.size();
-            }
-        }
-    }
-    
-    private static void generateMap() {
-        initMap();
-        fillMap();
-        assignRoomLayouts();
-    }
-    
-    private static int neighbourCount(int cell) {
-        return floorPlan[cell - 10] + floorPlan[cell - 1] + floorPlan[cell + 1] + floorPlan[cell + 10];
-    }
-    
-    private static boolean visit(int cell) {
-        if (floorPlan[cell] != 0) {
-            return false;
-        }
-        
-        int neighbours = neighbourCount(cell);
-        
-        if (neighbours > 1) {
-            return false;
-        }
-        
-        if (roomCount >= maxRooms) {
-            return false;
-        }
-        
-        Random random = new Random();
-        if (random.nextBoolean() && cell != 45) {
-            return false;
-        }
-        
-        if (cellQueue != null) cellQueue.add(cell);
-        floorPlan[cell] = 1;
-        roomCount++;
-        
-        return true;
-    }
-    
+    /**
+     * Generates room using an array
+     */
     private void createRoom(){
         String[] roomLayout = null;
         
-        if (curRoomNum == startRoomNum) {
+        if (curRoomNum == map.getStartRoomNum()) {
             roomLayout = Layouts.startRoomLayout;
-        } else if(curRoomNum == bossl) {
+        } else if(curRoomNum == map.getBossRoomNum()) {
             roomLayout = Layouts.bossRoomLayout;
         } else {
             int roomLayoutIndex = roomLayoutPlan[curRoomNum];
             roomLayout = Layouts.roomLayouts[roomLayoutIndex];
         }
         
+        // Draw room boundary
         for(int i = 0; i < numTilesY; i++){
             for(int j = 0; j < numTilesX; j++){
                 char type = Layouts.boundaryLayout[i].charAt(j);
@@ -273,13 +201,13 @@ public class GameWorld extends World
                 int y = i * tileHeight + tileWidth / 2;
                 
                 switch (type) {
-                    case 'L': if (floorPlan[curRoomNum - 1] == 1) addObject(new Door(tileWidth, tileHeight, 270, "left"), x, y);
+                    case 'L': if (map.isRoomLeft(curRoomNum)) addObject(new Door(tileWidth, tileHeight, 270, "left"), x, y);
                     case 'l': addObject(new Wall("boundary-edge.png", tileWidth, tileHeight, 270), x, y); break;
-                    case 'R': if (floorPlan[curRoomNum + 1] == 1) addObject(new Door(tileWidth, tileHeight, 90, "right"), x, y);
+                    case 'R': if (map.isRoomRight(curRoomNum)) addObject(new Door(tileWidth, tileHeight, 90, "right"), x, y);
                     case 'r': addObject(new Wall("boundary-edge.png", tileWidth, tileHeight, 90), x, y); break;
-                    case 'U': if (floorPlan[curRoomNum - 10] == 1)  addObject(new Door(tileWidth, tileHeight, 0, "up"), x, y);
+                    case 'U': if (map.isRoomUp(curRoomNum))  addObject(new Door(tileWidth, tileHeight, 0, "up"), x, y);
                     case 'u': addObject(new Wall("boundary-edge.png", tileWidth, tileHeight, 0), x, y); break;
-                    case 'D': if (floorPlan[curRoomNum + 10] == 1) addObject(new Door(tileWidth, tileHeight, 180, "down"), x, y);
+                    case 'D': if (map.isRoomDown(curRoomNum)) addObject(new Door(tileWidth, tileHeight, 180, "down"), x, y);
                     case 'd': addObject(new Wall("boundary-edge.png", tileWidth, tileHeight, 180), x, y); break;
                     case 'c': addObject(new Wall("boundary-corner.png", tileWidth, tileHeight, 0), x, y); break;
                     case 'C': addObject(new Wall("boundary-corner.png", tileWidth, tileHeight, 90), x, y); break;
@@ -305,6 +233,7 @@ public class GameWorld extends World
             }
         }
         
+        // If there are enemies in the room, lock doors
         if (!getObjects(Enemy.class).isEmpty()) {
             for (Door door : getObjects(Door.class)) {
                 if (door.getDir() != enterPos) {
@@ -338,6 +267,9 @@ public class GameWorld extends World
         Greenfoot.setWorld(roomWorlds[curRoomNum]);
     }
     
+    /**
+     * Ends the game
+     */
     public void gameOver (boolean won) {
         boolean newHighScore = false;
         
@@ -356,6 +288,9 @@ public class GameWorld extends World
         Greenfoot.setWorld(new EndWorld(score, highScore, newHighScore, won));
     }
     
+    /**
+     * Increases score
+     */
     public void updateScore(int scoreChange) {
         score += scoreChange;
         scoreText.setValue("Score: " + score);
@@ -381,6 +316,9 @@ public class GameWorld extends World
         image.scale(width, height);
     }
     
+    /**
+     * If all enemies in a room are defeated, unlocks doors to allow player to progress!
+     */
     public void updateDoors() {
         if (getObjects(Enemy.class).isEmpty()) {
             for (Door door : getObjects(Door.class)) {

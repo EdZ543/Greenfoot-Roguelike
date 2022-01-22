@@ -84,7 +84,7 @@ public class Boss extends Enemy
     private void charge() {
         if (attackTimer == 0) { // At start, turn towards player, and start "charging up" (faster running animation)
             attackTimer = 80;
-            Player player = ((GameWorld)getWorld()).getPlayer();
+            Player player = getWorld().getObjects(Player.class).get(0);
             turnTowards(player);
             animation.setCycleActs(5);
         } else if (attackTimer > 1) {

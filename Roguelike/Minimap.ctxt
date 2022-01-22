@@ -1,8 +1,8 @@
 #BlueJ class context
 comment0.target=Minimap
 comment0.text=\n\ A\ minimap\ to\ show\ the\ map\ of\ the\ rooms\!\n\ \n\ @author\ Eddie\ Zhuang\n\ @version\ Jan.\ 21,\ 2022\n
-comment1.params=floorPlan\ curRoomNum\ bossRoomNum
-comment1.target=Minimap(int[],\ int,\ int)
+comment1.params=map\ curRoomNum
+comment1.target=Minimap(ProceduralMap,\ int)
 comment2.params=
 comment2.target=void\ scopeMinimap()
 comment2.text=\n\ Gets\ the\ x\ and\ y\ coordinates\ of\ rooms\ at\ edges,\ so\ minimap\ can\ be\ drawn\ without\ empty\ space\n

@@ -45,7 +45,7 @@ public class Layouts
         "             ",
         "             ",
         "             ",
-        "          B  ",
+        "             ",
         "             ",
     };
     
@@ -64,18 +64,18 @@ public class Layouts
     static final String[][] roomLayouts = {
         {
             "             ",
+            "^          ^ ",
+            "       ^     ",
+            "  ^          ",
+            "            ^",
             "             ",
-            "   ^     ^   ",
-            "             ",
-            "   ^     ^   ",
-            "             ",
-            "             ",
+            "  ^     ^    ",
         },
         {
             "             ",
             "  #       #  ",
             "             ",
-            "     G G     ",
+            "   G G G G   ",
             "             ",
             "  #       #  ",
             "             ",
