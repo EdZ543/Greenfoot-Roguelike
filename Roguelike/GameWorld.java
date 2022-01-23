@@ -11,6 +11,7 @@ import java.util.*;
  * OOP code from Bug Simulation
  * Code from Space Demo
  * Statbar class
+ * SuperSmoothMover class
  * 
  * Code from Danpost:
  * Animation Support Class, https://www.greenfoot.org/scenarios/14496

@@ -90,7 +90,7 @@ public class Boss extends Enemy
         } else if (attackTimer > 1) {
             attackTimer--;
         } else { // After 80 runs, start charging at player extra fast!
-            moveWithoutCollision(chargeSpeed);
+            move(chargeSpeed);
             
             Player p = (Player)getOneIntersectingObject(Player.class);
             
@@ -100,7 +100,7 @@ public class Boss extends Enemy
                 attackTimer = 0;
                 curAttack = "none";
             } else if (isTouching(Wall.class)) { // If it runs into a wall, let out a huge explosion of arrows!
-                moveWithoutCollision(-chargeSpeed);
+                move(-chargeSpeed);
                 spreadShot();
                 animation.setCycleActs(20);
                 attackTimer = 0;
@@ -135,28 +135,28 @@ public class Boss extends Enemy
         move(speed);
         
         // Checks which direction to bounce
-        setLocation(exactX + 1, exactY);
+        setLocation(getPreciseX() + 1, getPreciseY());
         if (isTouching(Wall.class)) bounce("left");
-        setLocation(exactX - 1, exactY);
+        setLocation(getPreciseX() - 1, getPreciseY());
         
-        setLocation(exactX - 1, exactY);
+        setLocation(getPreciseX() - 1, getPreciseY());
         if (isTouching(Wall.class)) bounce("right");
-        setLocation(exactX + 1, exactY);
+        setLocation(getPreciseX() + 1, getPreciseY());
         
-        setLocation(exactX, exactY + 1);
+        setLocation(getPreciseX(), getPreciseY() + 1);
         if (isTouching(Wall.class)) bounce("up");
-        setLocation(exactX, exactY - 1);
+        setLocation(getPreciseX(), getPreciseY() - 1);
         
-        setLocation(exactX, exactY - 1);
+        setLocation(getPreciseX(), getPreciseY() - 1);
         if (isTouching(Wall.class)) bounce("down");
-        setLocation(exactX, exactY + 1);
+        setLocation(getPreciseX(), getPreciseY() + 1);
     }
     
     /**
      * Depending on the bouncing direction, change angle of rotation accordingly
      */
     private void bounce(String dir) {
-        double radians = Math.toRadians(rotation);
+        double radians = Math.toRadians(getPreciseRotation());
         double cos = Math.cos(radians);
         double sin = Math.sin(radians);
         

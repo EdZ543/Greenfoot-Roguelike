@@ -7,7 +7,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author Eddie Zhuang
  * @version Jan. 21, 2022
  */
-public abstract class Entity extends Actor
+public abstract class Entity extends SuperSmoothMover
 {
     protected Animation animation; // Animation of the entity
     protected StatBar stats; // Statbar of entity
@@ -18,12 +18,6 @@ public abstract class Entity extends Actor
     protected int width;
     protected int height;
     
-    // Variables for making movement and rotation more precise than Greenfoot's default system
-    // Also provides rotation seperate from image rotation, because my sprites aren't meant to rotate
-    protected double exactX;
-    protected double exactY;
-    protected double rotation = 0;
-    
     public Entity(int width, int height, int speed, int health) {
         this.width = width;
         this.height = height;
@@ -33,105 +27,27 @@ public abstract class Entity extends Actor
     }
     
     /**
-     * Turns towards an actor
-     * 
-     * @param a actor to turn towards
-     */
-    public void turnTowards (Actor a){
-        turnTowards (a.getX(), a.getY());
-    }
-    
-    /**
-     * More precise turnTowards method
-     */
-    @Override
-    public void turnTowards (int x, int y){
-        setRotation(Math.toDegrees(Math.atan2(y - getY() , x - getX())));
-    }
-    
-    /**
-     * Overrides to use more precise method
-     */
-    @Override
-    public void move(int distance)
-    {
-        move((double)distance);
-    }
-    
-    /**
      * More precise movement
      */
     public void move(double distance)
     {
-        double radians = Math.toRadians(rotation);
+        double radians = Math.toRadians(getPreciseRotation());
         double dx = Math.cos(radians);
         double dy = Math.sin(radians);
         
         // Move x and y seperately, so enemies don't get stuck to walls
         // Moves in intervals of 1 for wall collision
         for (int i = 0; i < distance; i++) {
-            setLocation(exactX + dx, exactY);
+            setLocation(getPreciseX() + dx, getPreciseY());
             if (isTouching(Wall.class)) { // Wall collision
-                setLocation(exactX - dx, exactY);
+                setLocation(getPreciseX() - dx, getPreciseY());
             }
             
-            setLocation(exactX, exactY + dy);
+            setLocation(getPreciseX(), getPreciseY() + dy);
             if (isTouching(Wall.class)) {
-                setLocation(exactX, exactY - dy);
+                setLocation(getPreciseX(), getPreciseY() - dy);
             }
         }   
-    }
-    
-    /**
-     * Movement but without detecting wall collisions
-     */
-    protected void moveWithoutCollision(double distance) {
-        double radians = Math.toRadians(rotation);
-        double dx = Math.cos(radians) * distance;
-        double dy = Math.sin(radians) * distance;
-        
-        setLocation(exactX + dx, exactY + dy);
-    }
-    
-    /**
-     * Overrides to use more precise rotation method
-     */
-    @Override
-    public void setRotation (int rotation){
-        setRotation((double)rotation);
-    }
-    
-    /**
-     * Rotates, and changes facing direction of image to match
-     */
-    public void setRotation (double rotation){
-        this.rotation = rotation;
-        checkFacingDir(rotation);
-    }
-    
-    @Override
-    public void setLocation(int x, int y) 
-    {
-        exactX = x;
-        exactY = y;
-        super.setLocation(x, y);
-    }
-    
-    /**
-     * Sets location using exact double coordinates
-     */
-    public void setLocation(double x, double y) 
-    {
-        exactX = x;
-        exactY = y;
-        super.setLocation((int) (x + 0.5), (int) (y + 0.5));
-    }
-    
-    /**
-     * Method for getting the angle to a specific actor
-     */
-    protected int getAngleTo (Actor a){
-        return (int) (Math.toDegrees(Math.atan2(a.getY() - getY() , a.getX() - getX())) + 0.5);
     }
     
     /**
@@ -157,6 +73,13 @@ public abstract class Entity extends Actor
         if (health == 0) {
             die();
         }
+    }
+    
+    /**
+     * Method for getting the angle to a specific actor
+     */
+    protected int getAngleTo (Actor a){
+        return (int) (Math.toDegrees(Math.atan2(a.getY() - getY() , a.getX() - getX())) + 0.5);
     }
     
     /**

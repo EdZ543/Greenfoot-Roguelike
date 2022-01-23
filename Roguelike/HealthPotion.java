@@ -6,15 +6,19 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author Eddie Zhuang
  * @version Jan. 21, 2022
  */
-public class HealthPotion extends Actor
+public class HealthPotion extends Item
 {
     private int healthIncrease = 30;
+    private String name;
     
     public HealthPotion(int width, int height) {
-        GameWorld.scaleWithAspectRatio(getImage(), width, height);
+        super(width, height);
     }
     
-    public void use(Player player) {
+    /**
+     * When applied, heal the player
+     */
+    public void apply(Player player) {
         player.heal(healthIncrease);
     }
 }

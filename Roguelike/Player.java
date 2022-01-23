@@ -94,9 +94,13 @@ public class Player extends Entity
      */
     private void checkItem() {
         Chest chest = (Chest)getOneIntersectingObject(Chest.class);
-        
         if (chest != null && chest.isClosed()) {
             chest.open();
+        }
+        
+        Item item = (Item)getOneIntersectingObject(Item.class);
+        if (item != null && Greenfoot.isKeyDown("P")) {
+            item.use(this);
         }
     }
     
@@ -104,7 +108,7 @@ public class Player extends Entity
      * Checks whether player is adjacent to door in direction they're facing
      */
     private void checkDoor() {
-        double radians = Math.toRadians(rotation);
+        double radians = Math.toRadians(getPreciseRotation());
         double dx = Math.cos(radians);
         double dy = Math.sin(radians);
         
@@ -192,5 +196,6 @@ public class Player extends Entity
      */
     public void heal(int healthIncrease) {
         health = Math.min(maxHealth, health + healthIncrease);
+        stats.update(health);
     }
 }
