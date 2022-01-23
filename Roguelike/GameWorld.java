@@ -72,7 +72,6 @@ public class GameWorld extends World
         createRoom();
         updateRoom();
         
-        setPaintOrder(Minimap.class, Label.class, StatBar.class, Projectile.class, Player.class, Enemy.class, Door.class, Wall.class, Floor.class);
         roomWorlds[curRoomNum] = this;
     }
     
@@ -119,6 +118,12 @@ public class GameWorld extends World
      * Static variables don't change when resetting game, so we have to do it manually
      */
     public static void startOver() {
+        map = new ProceduralMap();
+        roomWorlds = new GameWorld[101];
+        curRoomNum = map.getStartRoomNum();
+        roomLayoutPlan = new String[map.floorPlanLength()][];
+        assignRoomLayouts();
+        
         score = 0;
         enterPos = "center";
         
@@ -133,12 +138,6 @@ public class GameWorld extends World
         if (userInfo != null) {
             highScore = userInfo.getScore();
         }
-        
-        roomWorlds = new GameWorld[101];
-        map = new ProceduralMap();
-        curRoomNum = map.getStartRoomNum();
-        roomLayoutPlan = new String[map.floorPlanLength()][];
-        assignRoomLayouts();
         
         player = new Player(-1, tileHeight, characterSelection);
         minimap = new Minimap(map, curRoomNum);
@@ -196,6 +195,20 @@ public class GameWorld extends World
     private void createRoom(){
         String[] roomLayout = roomLayoutPlan[curRoomNum];
         
+        // Draw the floor!
+        for(int i = 1; i < numTilesY - 1; i++){
+            for(int j = 1; j < numTilesX - 1; j++){
+                char type = roomLayout[i - 1].charAt(j - 1);
+                int x = j * tileWidth + tileWidth / 2;
+                int y = i * tileHeight + tileWidth / 2;
+                                    
+                switch (type) {
+                    case '^': addObject(new SpikedFloor(tileWidth, tileHeight), x, y); break;
+                    default: addObject(new Floor(tileWidth, tileHeight), x, y); break;
+                }
+            }
+        }
+        
         // Draw room boundary
         for(int i = 0; i < numTilesY; i++){
             for(int j = 0; j < numTilesX; j++){
@@ -204,16 +217,19 @@ public class GameWorld extends World
                 int y = i * tileHeight + tileWidth / 2;
                 
                 switch (type) {
-                    case 'L': if (map.isRoomLeft(curRoomNum)) addObject(new Door(tileWidth, tileHeight, 270, "left"), x, y);
-                    case 'l': addObject(new Wall("boundary-edge.png", tileWidth, tileHeight, 270), x, y); break;
-                    case 'R': if (map.isRoomRight(curRoomNum)) addObject(new Door(tileWidth, tileHeight, 90, "right"), x, y);
-                    case 'r': addObject(new Wall("boundary-edge.png", tileWidth, tileHeight, 90), x, y); break;
-                    case 'U': if (map.isRoomUp(curRoomNum))  addObject(new Door(tileWidth, tileHeight, 0, "up"), x, y);
-                    case 'u': addObject(new Wall("boundary-edge.png", tileWidth, tileHeight, 0), x, y); break;
-                    case 'D': if (map.isRoomDown(curRoomNum)) addObject(new Door(tileWidth, tileHeight, 180, "down"), x, y);
-                    case 'd': addObject(new Wall("boundary-edge.png", tileWidth, tileHeight, 180), x, y); break;
+                    case 'L': case 'l': addObject(new Wall("boundary-edge.png", tileWidth, tileHeight, 270), x, y); break;
+                    case 'R': case 'r': addObject(new Wall("boundary-edge.png", tileWidth, tileHeight, 90), x, y); break;
+                    case 'U': case 'u': addObject(new Wall("boundary-edge.png", tileWidth, tileHeight, 0), x, y); break;
+                    case 'D': case 'd': addObject(new Wall("boundary-edge.png", tileWidth, tileHeight, 180), x, y); break;
                     case 'c': addObject(new Wall("boundary-corner.png", tileWidth, tileHeight, 0), x, y); break;
                     case 'C': addObject(new Wall("boundary-corner.png", tileWidth, tileHeight, 90), x, y); break;
+                }
+                
+                switch (type) {
+                    case 'L': if (map.isRoomLeft(curRoomNum)) addObject(new Door(tileWidth, tileHeight, 270, "left"), x, y); break;
+                    case 'R': if (map.isRoomRight(curRoomNum)) addObject(new Door(tileWidth, tileHeight, 90, "right"), x, y); break;
+                    case 'U': if (map.isRoomUp(curRoomNum))  addObject(new Door(tileWidth, tileHeight, 0, "up"), x, y); break;
+                    case 'D': if (map.isRoomDown(curRoomNum)) addObject(new Door(tileWidth, tileHeight, 180, "down"), x, y); break;
                 }
             }
         }
@@ -226,12 +242,11 @@ public class GameWorld extends World
                 int y = i * tileHeight + tileWidth / 2;
                                     
                 switch (type) {
-                    case 'G': addObject(new Goblin(-1, tileHeight), x, y); addObject(new Floor(tileWidth, tileHeight), x, y); break;
-                    case ' ': addObject(new Floor(tileWidth, tileHeight), x, y); break;
+                    case 'G': addObject(new Goblin(-1, tileHeight), x, y); break;
                     case '#': addObject(new Wall("wall_mid.png", tileWidth, tileHeight, 0), x, y); break;
-                    case '^': addObject(new SpikedFloor(tileWidth, tileHeight), x, y);break;
-                    case 'B': addObject(new Boss(-1, tileHeight * 2), x, y); addObject(new Floor(tileWidth, tileHeight), x, y); break;
-                    case 'S': addObject(new Skelebro(-1, tileHeight), x, y); addObject(new Floor(tileWidth, tileHeight), x, y); break;
+                    case 'B': addObject(new Boss(-1, tileHeight * 2), x, y); break;
+                    case 'S': addObject(new Skelebro(-1, tileHeight), x, y); break;
+                    case 'C': addObject(new Chest(tileWidth, tileHeight), x, y); break;
                 }
             }
         }

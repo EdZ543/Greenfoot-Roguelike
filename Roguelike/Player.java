@@ -14,6 +14,7 @@ public class Player extends Entity
     
     private int shootDelay = 20;
     private int shootDelayTimer = 0;
+    private String key;
     
     // If true, doesn't spawn health bar and isn't controlled by keys
     // For previewing player, like on the start screen
@@ -77,13 +78,26 @@ public class Player extends Entity
     {
         animation.run();
         
-        // Don't move if in preview mode
-        if (!previewMode) {
-            checkKeys();
-        }
+        if (previewMode) return;
+        
+        key = Greenfoot.getKey();
+        checkMove();
+        checkShoot();
+        checkItem();
         
         // Check if entered door
         checkDoor();
+    }
+    
+    /**
+     * Check for items
+     */
+    private void checkItem() {
+        Chest chest = (Chest)getOneIntersectingObject(Chest.class);
+        
+        if (chest != null) {
+            chest.open();
+        }
     }
     
     /**
@@ -107,9 +121,10 @@ public class Player extends Entity
         }
     }
     
-    private void checkKeys() {
-        String key = Greenfoot.getKey();
-        
+    /**
+     * Check movement keys
+     */
+    private void checkMove() {
         if (Greenfoot.isKeyDown("W") || Greenfoot.isKeyDown("A") || Greenfoot.isKeyDown("S") || Greenfoot.isKeyDown("D")) {
             animation.setState("running");
         } else {
@@ -137,7 +152,12 @@ public class Player extends Entity
             setRotation(0);
             move(speed);
         }
-        
+    }
+    
+    /**
+     * Check arrow keys for shooting
+     */
+    private void checkShoot() {
         if (shootDelayTimer != 0) {
             shootDelayTimer--;
         }
@@ -159,6 +179,9 @@ public class Player extends Entity
         }
     }
     
+    /**
+     * Shoot a projectile in specified direction
+     */
     private void shoot(int rotation) {
         Arrow arrow = new Arrow(true, rotation);
         getWorld().addObject(arrow, getX(), getY());

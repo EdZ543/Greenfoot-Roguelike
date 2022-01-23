@@ -1,0 +1,15 @@
+#BlueJ class context
+comment0.target=Chest
+comment0.text=\n\ A\ chest\ of\ goodies\!\n\ \n\ @author\ Eddie\ Zhuang\n\ @version\ Jan.\ 22,\ 2022\n
+comment1.params=width\ height
+comment1.target=Chest(int,\ int)
+comment2.params=
+comment2.target=void\ act()
+comment2.text=\n\ Act\ -\ do\ whatever\ the\ Chest\ wants\ to\ do.\ This\ method\ is\ called\ whenever\n\ the\ 'Act'\ or\ 'Run'\ button\ gets\ pressed\ in\ the\ environment.\n
+comment3.params=
+comment3.target=void\ releaseItems()
+comment3.text=\n\ Throw\ out\ items\ from\ chest\n
+comment4.params=
+comment4.target=void\ open()
+comment4.text=\n\ Opens\ the\ chest\n
+numComments=5

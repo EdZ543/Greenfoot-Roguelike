@@ -13,12 +13,13 @@ public class ProceduralMap
     private int startRoomNum = 45; // Starting room
     private int bossRoomNum; // Room with boss
     private int[] floorPlan; // Array representing position of rooms
-    private int roomCount = 0; // Number of rooms created so far
+    private int roomCount; // Number of rooms created so far
     private Queue<Integer> cellQueue; // Queue of rooms to visit
     private List<Integer> endRooms; // Rooms with only 1 neighbour, for placing rooms like the boss room
     private int maxRooms = 15; // Max number of rooms allowed
     private int minRooms = 7; // Min number of rooms allowed
     private boolean placedSpecial; // Whether all special rooms have been placed yet
+    private boolean started;
 
     /**
      * Constructor for objects of class ProceduralMap
@@ -94,6 +95,8 @@ public class ProceduralMap
         cellQueue = new LinkedList<Integer>();
         endRooms = new LinkedList<Integer>();
         placedSpecial = false;
+        roomCount = 0;
+        started = true;
     }
     
     /**
@@ -101,7 +104,7 @@ public class ProceduralMap
      */
     private void fillMap() {
         // Generates layout with sort of a breadth-first search
-        while (true) {
+        while (started) {
             if (cellQueue.size() > 0) {
                 int cell = cellQueue.remove();
                 int x = cell % 10;
@@ -127,7 +130,7 @@ public class ProceduralMap
                 placedSpecial = true;
                 bossRoomNum = endRooms.remove(endRooms.size() - 1); // Choose an endroom to place boss room
             } else {
-                break;
+                started = false;
             }
         }
     }

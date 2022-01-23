@@ -60,6 +60,13 @@ public class Animation
     }
     
     /**
+     * Simpler constructor for 
+     */
+    public Animation(Object object, GreenfootImage imgSet[], int acts) {
+        this(object, "", imgSet, acts, "");
+    }
+    
+    /**
      * Adds an animation state
      */
     public void addState(String stateName, GreenfootImage imgSet[], int acts, String originalDir) {
@@ -110,6 +117,14 @@ public class Animation
         }
         
         return frames;
+    }
+    
+    /**
+     * Whether or not it's the end of an animation cycle, for one-time animations
+     */
+    public boolean endOfAnimation() {
+        int outFrame = timer*frames.length/cycleActs;
+        return outFrame == frames.length - 1;
     }
     
     /**
