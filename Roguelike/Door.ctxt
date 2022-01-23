@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=Door
-comment0.text=\n\ A\ door,\ lets\ player\ travel\ to\ different\ rooms\!\n\ \n\ @author\ Eddie\ Zhuang\ \n\ @version\ Jan.\ 21,\ 2022\n
+comment0.text=\r\n\ A\ door,\ lets\ player\ travel\ to\ different\ rooms\!\r\n\ \r\n\ @author\ Eddie\ Zhuang\ \r\n\ @version\ Jan.\ 21,\ 2022\r\n
 comment1.params=width\ height\ rotation\ dir
 comment1.target=Door(int,\ int,\ int,\ java.lang.String)
 comment2.params=

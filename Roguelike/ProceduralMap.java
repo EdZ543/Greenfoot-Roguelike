@@ -27,7 +27,6 @@ public class ProceduralMap
     public ProceduralMap()
     {
         startOver();
-        visit(startRoomNum);
         fillMap();
     }
     
@@ -92,11 +91,17 @@ public class ProceduralMap
      */
     private void startOver() {
         floorPlan = new int[101];
+        for (int i = 0; i < floorPlan.length; i++) {
+            floorPlan[i] = 0;
+        }
+        
         cellQueue = new LinkedList<Integer>();
         endRooms = new LinkedList<Integer>();
         placedSpecial = false;
         roomCount = 0;
         started = true;
+        
+        visit(startRoomNum);
     }
     
     /**

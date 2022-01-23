@@ -6,14 +6,15 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author Eddie Zhuang
  * @version Jan. 21, 2022
  */
-public class HealthPotion extends Actor
+public class HealthPotion extends Physics
 {
-    /**
-     * Act - do whatever the HealthPotion wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
-    public void act()
-    {
-        // Add your action code here.
+    private int healthIncrease = 30;
+    
+    public HealthPotion(int width, int height) {
+        GameWorld.scaleWithAspectRatio(getImage(), width, height);
+    }
+    
+    public void use(Player player) {
+        player.heal(healthIncrease);
     }
 }

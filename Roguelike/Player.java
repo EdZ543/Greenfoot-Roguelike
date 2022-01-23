@@ -6,7 +6,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author Eddie Zhuang
  * @version (a version number or a date)
  */
-public class Player extends Entity
+public class Player extends Physics
 {
     // File paths to animation frames
     private String[] idlePrefixes = new String[]{"knight/idle/knight_f_idle_anim_f", "female elf/idle/elf_f_idle_anim_f", "male elf/idle/elf_m_idle_anim_f"};
@@ -95,7 +95,7 @@ public class Player extends Entity
     private void checkItem() {
         Chest chest = (Chest)getOneIntersectingObject(Chest.class);
         
-        if (chest != null) {
+        if (chest != null && chest.isClosed()) {
             chest.open();
         }
     }
@@ -185,5 +185,12 @@ public class Player extends Entity
     private void shoot(int rotation) {
         Arrow arrow = new Arrow(true, rotation);
         getWorld().addObject(arrow, getX(), getY());
+    }
+    
+    /**
+     * Heals the player!
+     */
+    public void heal(int healthIncrease) {
+        health = Math.min(maxHealth, health + healthIncrease);
     }
 }

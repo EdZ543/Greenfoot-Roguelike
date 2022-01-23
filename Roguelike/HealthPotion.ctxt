@@ -1,7 +1,8 @@
 #BlueJ class context
 comment0.target=HealthPotion
-comment0.text=\n\ A\ potion\ that\ gives\ the\ player\ some\ health.\n\ \n\ @author\ Eddie\ Zhuang\n\ @version\ Jan.\ 21,\ 2022\n
-comment1.params=
-comment1.target=void\ act()
-comment1.text=\n\ Act\ -\ do\ whatever\ the\ HealthPotion\ wants\ to\ do.\ This\ method\ is\ called\ whenever\n\ the\ 'Act'\ or\ 'Run'\ button\ gets\ pressed\ in\ the\ environment.\n
-numComments=2
+comment0.text=\r\n\ A\ potion\ that\ gives\ the\ player\ some\ health.\r\n\ \r\n\ @author\ Eddie\ Zhuang\r\n\ @version\ Jan.\ 21,\ 2022\r\n
+comment1.params=width\ height
+comment1.target=HealthPotion(int,\ int)
+comment2.params=player
+comment2.target=void\ use(Player)
+numComments=3

@@ -1,4 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import java.util.*;
 
 /**
  * A chest of goodies!
@@ -9,7 +10,9 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class Chest extends Actor
 {
     private Animation animation;
+    
     private String state = "closed";
+    private double itemForce = 10; // Force to toss out items at
     
     public Chest(int width, int height) {
         GreenfootImage[] frames = Animation.generateFrames(3, "chest/chest_full_open_anim_f", ".png", width, height);
@@ -39,15 +42,28 @@ public class Chest extends Actor
      * Throw out items from chest
      */
     private void releaseItems() {
+        HealthPotion healthPotion = new HealthPotion(getImage().getWidth() / 2, -1);
+        getWorld().addObject(healthPotion, getX(), getY());
         
+        Random random = new Random();
+        int randomAngle = random.nextInt(360);
+        healthPotion.addForce(randomAngle, itemForce);
     }
     
     /**
      * Opens the chest
      */
     public void open() {
-        if (state == "closed") {
-            state = "opening";
-        }
+        state = "opening";
+        // Play chest opening sound
+        GreenfootSound sound = new GreenfootSound("chest_open.mp3");
+        sound.play();
+    }
+    
+    /**
+     * Returns whether the chest is closed
+     */
+    public boolean isClosed() {
+        return state == "closed";
     }
 }
