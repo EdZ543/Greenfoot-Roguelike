@@ -6,7 +6,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author Eddie Zhuang
  * @version (a version number or a date)
  */
-public class Player extends Physics
+public class Player extends Entity
 {
     // File paths to animation frames
     private String[] idlePrefixes = new String[]{"knight/idle/knight_f_idle_anim_f", "female elf/idle/elf_f_idle_anim_f", "male elf/idle/elf_m_idle_anim_f"};
