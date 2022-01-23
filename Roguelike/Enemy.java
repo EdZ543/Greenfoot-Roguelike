@@ -12,8 +12,8 @@ public abstract class Enemy extends Entity
     // How much points are given for defeating this enemy
     protected int pointsValue;
     
-    public Enemy(int width, int height, int speed, int health, int pointsValue) {
-        super(width, height, speed, health);
+    public Enemy(int width, int height, int health, int pointsValue, double speed, double maxSpeed) {
+        super(width, height, health, speed, maxSpeed);
         this.pointsValue = pointsValue;
     }
     

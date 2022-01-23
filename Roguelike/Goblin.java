@@ -20,7 +20,7 @@ public class Goblin extends Enemy
     private int punchCountdown = 0;
     
     public Goblin(int width, int height) {
-        super(width, height, 1, 30, 16);
+        super(width, height, 30, 16, 0.3, 3.0);
         
         initAnimations();
         initSounds();
@@ -51,6 +51,7 @@ public class Goblin extends Enemy
     
     public void act()
     {
+        applyPhysics();
         animation.run();
         
         // Cooldown so the goblin doesn't punch too often
@@ -94,7 +95,8 @@ public class Goblin extends Enemy
             }
         } else {
             turnTowards(player.getX(), player.getY());
-            move(speed);
+            checkFacingDir(getExactRotation());
+            addForce(speed);
         }
     }
 }

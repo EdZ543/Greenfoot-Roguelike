@@ -11,14 +11,16 @@ public abstract class Projectile extends Actor
     private boolean playerShot;
     private int speed;
     private int damage;
+    private double force;
     
-    public Projectile(int width, int height, boolean playerShot, int rotation, int speed, int damage, String soundPath, int soundVolume) {
+    public Projectile(int width, int height, boolean playerShot, int rotation, int speed, int damage, String soundPath, int soundVolume, double force) {
         GameWorld.scaleWithAspectRatio(getImage(), width, height);
         setRotation(rotation);
         
         this.playerShot = playerShot;
         this.speed = speed;
         this.damage = damage;
+        this.force = force;
         
         // Plays firing sound!
         GreenfootSound firingSound = new GreenfootSound(soundPath);
@@ -61,6 +63,7 @@ public abstract class Projectile extends Actor
             GameWorld g = (GameWorld)getWorld();
 
             e.damageMe(damage); // damage enemy
+            e.setForce(getRotation(), force); // impact enemy
             g.removeObject(this);
             g.updateDoors(); // if this is the last enemy in the room, unlock the doors
         }
@@ -75,6 +78,7 @@ public abstract class Projectile extends Actor
             GameWorld g = (GameWorld)getWorld();
 
             p.damageMe(damage); // damage player
+            p.setForce(getRotation(), force); // impact player
             g.removeObject(this);
         }
     }

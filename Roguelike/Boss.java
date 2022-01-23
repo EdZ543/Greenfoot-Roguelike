@@ -25,7 +25,7 @@ public class Boss extends Enemy
     private String curAttack = "none"; // attack currently doing
     
     public Boss(int width, int height) {
-        super(width, height, 5, 250, 200);
+        super(width, height, 250, 200, 3.0, 5.0);
         
         initAnimations();
         
@@ -44,6 +44,7 @@ public class Boss extends Enemy
     
     public void act()
     {
+        applyPhysics();
         animation.run();
         
         // Calls different methods depending on current attack
@@ -96,6 +97,7 @@ public class Boss extends Enemy
             
             if (p != null) { // If it runs into the player, damage them
                 p.damageMe(chargeDamage);
+                p.setForce(getExactRotation(), 10.0);
                 animation.setCycleActs(20);
                 attackTimer = 0;
                 curAttack = "none";
@@ -116,10 +118,11 @@ public class Boss extends Enemy
         if (attackTimer == 0) {
             attackTimer = 50;
         } else if (attackTimer == 25) {
-            getWorld().addObject(new Goblin(64, -1), getX() - getImage().getWidth() / 2, getY());
-            getWorld().addObject(new Goblin(64, -1), getX() + getImage().getWidth() / 2, getY());
-            getWorld().addObject(new Goblin(64, -1), getX(), getY() - getImage().getHeight() / 2);
-            getWorld().addObject(new Goblin(64, -1), getX(), getY() + getImage().getHeight() / 2);
+            for (int angle = 0; angle < 360; angle += 90) {
+                Goblin goblin = new Goblin(64, 64);
+                getWorld().addObject(goblin, getX(), getY());
+                goblin.setForce(angle, 5.0);
+            }
         }
         
         attackTimer--;
@@ -132,31 +135,31 @@ public class Boss extends Enemy
      * Move around and bounce off the walls
      */
     private void bounceAround() {
-        move(speed);
-        
         // Checks which direction to bounce
-        setLocation(getPreciseX() + 1, getPreciseY());
+        setLocation(getX() + 1, getY());
         if (isTouching(Wall.class)) bounce("left");
-        setLocation(getPreciseX() - 1, getPreciseY());
+        setLocation(getX() - 1, getY());
         
-        setLocation(getPreciseX() - 1, getPreciseY());
+        setLocation(getX() - 1, getY());
         if (isTouching(Wall.class)) bounce("right");
-        setLocation(getPreciseX() + 1, getPreciseY());
+        setLocation(getX() + 1, getY());
         
-        setLocation(getPreciseX(), getPreciseY() + 1);
+        setLocation(getX(), getY() + 1);
         if (isTouching(Wall.class)) bounce("up");
-        setLocation(getPreciseX(), getPreciseY() - 1);
+        setLocation(getX(), getY() - 1);
         
-        setLocation(getPreciseX(), getPreciseY() - 1);
+        setLocation(getX(), getY() - 1);
         if (isTouching(Wall.class)) bounce("down");
-        setLocation(getPreciseX(), getPreciseY() + 1);
+        setLocation(getX(), getY() + 1);
+        
+        addForce(speed);
     }
     
     /**
      * Depending on the bouncing direction, change angle of rotation accordingly
      */
     private void bounce(String dir) {
-        double radians = Math.toRadians(getPreciseRotation());
+        double radians = Math.toRadians(getExactRotation());
         double cos = Math.cos(radians);
         double sin = Math.sin(radians);
         

@@ -7,47 +7,24 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author Eddie Zhuang
  * @version Jan. 21, 2022
  */
-public abstract class Entity extends SuperSmoothMover
+public abstract class Entity extends MomentumMover
 {
     protected Animation animation; // Animation of the entity
     protected StatBar stats; // Statbar of entity
     
     protected int maxHealth;
-    protected int speed;
+    protected double speed;
     protected int health;
     protected int width;
     protected int height;
     
-    public Entity(int width, int height, int speed, int health) {
+    public Entity(int width, int height, int health, double speed, double maxSpeed) {
+        super(0.9, maxSpeed);
         this.width = width;
         this.height = height;
         this.speed = speed;
         this.health = health;
         maxHealth = health;
-    }
-    
-    /**
-     * More precise movement
-     */
-    public void move(double distance)
-    {
-        double radians = Math.toRadians(getPreciseRotation());
-        double dx = Math.cos(radians);
-        double dy = Math.sin(radians);
-        
-        // Move x and y seperately, so enemies don't get stuck to walls
-        // Moves in intervals of 1 for wall collision
-        for (int i = 0; i < distance; i++) {
-            setLocation(getPreciseX() + dx, getPreciseY());
-            if (isTouching(Wall.class)) { // Wall collision
-                setLocation(getPreciseX() - dx, getPreciseY());
-            }
-            
-            setLocation(getPreciseX(), getPreciseY() + dy);
-            if (isTouching(Wall.class)) {
-                setLocation(getPreciseX(), getPreciseY() - dy);
-            }
-        }   
     }
     
     /**

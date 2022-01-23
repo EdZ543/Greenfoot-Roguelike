@@ -28,7 +28,7 @@ public class Player extends Entity
      * Extra constructor for creating a preview player
      */
     public Player (int width, int height, int characterSelection, boolean previewMode) {
-        super(width, height, 5, 100);
+        super(width, height, 100, 2, 6.0);
         
         this.previewMode = previewMode;
 
@@ -77,6 +77,7 @@ public class Player extends Entity
     public void act()
     {
         animation.run();
+        applyPhysics();
         
         if (previewMode) return;
         
@@ -108,7 +109,7 @@ public class Player extends Entity
      * Checks whether player is adjacent to door in direction they're facing
      */
     private void checkDoor() {
-        double radians = Math.toRadians(getPreciseRotation());
+        double radians = Math.toRadians(getExactRotation());
         double dx = Math.cos(radians);
         double dy = Math.sin(radians);
         
@@ -129,32 +130,35 @@ public class Player extends Entity
      * Check movement keys
      */
     private void checkMove() {
-        if (Greenfoot.isKeyDown("W") || Greenfoot.isKeyDown("A") || Greenfoot.isKeyDown("S") || Greenfoot.isKeyDown("D")) {
-            animation.setState("running");
-        } else {
-            animation.setState("idle");
-        }
-        
-        if (Greenfoot.isKeyDown("W")){
+        if (Greenfoot.isKeyDown("W") && Greenfoot.isKeyDown("D")){
+            animation.setDir("right");
+            setRotation(315);
+        } else if (Greenfoot.isKeyDown("D") && Greenfoot.isKeyDown("S")){
+            animation.setDir("right");
+            setRotation(45);
+        } else if (Greenfoot.isKeyDown("S") && Greenfoot.isKeyDown("A")){
+            animation.setDir("left");
+            setRotation(135);
+        } else if (Greenfoot.isKeyDown("A") && Greenfoot.isKeyDown("W")){
+            animation.setDir("left");
+            setRotation(225);
+        } else if (Greenfoot.isKeyDown("W")){
             setRotation(270);
-            move(speed);
-        }
-        
-        if (Greenfoot.isKeyDown("A")){
+        } else if (Greenfoot.isKeyDown("A")){
             animation.setDir("left");
             setRotation(180);
-            move(speed);
-        }
-        
-        if (Greenfoot.isKeyDown("S")){
+        } else if (Greenfoot.isKeyDown("S")){
             setRotation(90);
-            move(speed);
-        }
-        
-        if (Greenfoot.isKeyDown("D")){
+        } else if (Greenfoot.isKeyDown("D")){
             animation.setDir("right");
             setRotation(0);
-            move(speed);
+        }
+        
+        if (Greenfoot.isKeyDown("W") || Greenfoot.isKeyDown("A") || Greenfoot.isKeyDown("S") || Greenfoot.isKeyDown("D")) {
+            animation.setState("running");
+            addForce(speed);
+        } else {
+            animation.setState("idle");
         }
     }
     

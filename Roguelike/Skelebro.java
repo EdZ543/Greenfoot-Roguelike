@@ -17,7 +17,7 @@ public class Skelebro extends Enemy
     private int shotCountdown = shotFrequency;
     
     public Skelebro(int width, int height) {
-        super(width, height, 2, 30, 60);
+        super(width, height, 50, 60, 0.5, 5.0);
         
         initAnimations();
     }
@@ -32,6 +32,8 @@ public class Skelebro extends Enemy
     }
     
     public void act() {
+        applyPhysics();
+        
         // Run animation
         animation.run();
         
@@ -56,7 +58,7 @@ public class Skelebro extends Enemy
         }
         
         // Move in direction currently facing
-        move(speed);
+        addForce(speed);
     }
     
     /**

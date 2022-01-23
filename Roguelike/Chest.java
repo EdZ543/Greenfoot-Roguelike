@@ -12,8 +12,7 @@ public class Chest extends Actor
     private Animation animation;
     
     private String state = "closed";
-    private int itemTossSpeed = 5;
-    private int itemTossDuration = 25;
+    private double itemForce = 10;
     
     public Chest(int width, int height) {
         GreenfootImage[] frames = Animation.generateFrames(3, "chest/chest_full_open_anim_f", ".png", width, height);
@@ -48,7 +47,7 @@ public class Chest extends Actor
         
         Random random = new Random();
         int randomAngle = random.nextInt(360);
-        healthPotion.toss(randomAngle, itemTossSpeed, itemTossDuration);
+        healthPotion.addForce(randomAngle, itemForce);
     }
     
     /**
