@@ -17,6 +17,8 @@ public class Player extends Entity
     private String[] runPrefixes = new String[]{"knight/run/knight_f_run_anim_f", "female elf/run/elf_f_run_anim_f", "male elf/run/elf_m_run_anim_f"};
 
     private String key;
+    private int pickupFrequency = 50; // Makes sure you don't spam picking up weapons
+    private int pickupCountDown = 0;
     
     // If true, doesn't spawn health bar and isn't controlled by keys
     // For previewing player, like on the start screen
@@ -34,7 +36,7 @@ public class Player extends Entity
         
         this.previewMode = previewMode;
         stats = new StatBar​(maxHealth, health, null, 150, 25, 0, Color.GREEN, Color.RED, false);
-        weapon = new Shotgun(this);
+        weapon = new Bow(this);
         promptText = new Label("", 20);
 
         initAnimations(characterSelection);
@@ -94,6 +96,10 @@ public class Player extends Entity
         key = Greenfoot.getKey();
         checkMove();
         checkShoot();
+        
+        if (pickupCountDown > 0) {
+            pickupCountDown--;
+        }
         checkItem();
         
         // Check if entered door
@@ -126,7 +132,8 @@ public class Player extends Entity
         if (focusItem != null) {
             showPrompt(focusItem);
             
-            if (Greenfoot.isKeyDown("P")) {
+            if (Greenfoot.isKeyDown("P") && pickupCountDown == 0) {
+                pickupCountDown = pickupFrequency;
                 focusItem.pickUp(this);
             }
         } else {

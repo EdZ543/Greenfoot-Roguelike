@@ -76,6 +76,7 @@ public class GameWorld extends World
         updateRoom();
         
         roomWorlds[curRoomNum] = this;
+        setPaintOrder(Item.class, Entity.class);
     }
     
     /**
