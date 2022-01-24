@@ -25,7 +25,7 @@ public class Boss extends Enemy
     private String curAttack = "none"; // attack currently doing
     
     public Boss(int width, int height) {
-        super(width, height, 250, 200, 3.0, 5.0);
+        super(width, height, 500, 200, 3.0, 5.0);
         
         initAnimations();
         

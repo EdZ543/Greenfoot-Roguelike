@@ -60,7 +60,7 @@ public class Chest extends Actor
         if (randomWeapon == 0) {
             weapon = new Shotgun(null);
         } else {
-            weapon = new Shotgun(null);
+            weapon = new MagicWand(null);
         }
         
         getWorld().addObject(potion, getX(), getY());

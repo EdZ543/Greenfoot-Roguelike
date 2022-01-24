@@ -8,7 +8,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public abstract class Projectile extends Actor
 {
-    private boolean playerShot;
+    protected boolean playerShot;
     private int speed;
     private int damage;
     private double force;

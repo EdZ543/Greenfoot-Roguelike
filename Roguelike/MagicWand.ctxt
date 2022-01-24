@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=MagicWand
+comment0.text=\n\ Fires\ an\ epic\ homing\ magic\ ball\n\ \n\ @author\ Eddie\ Zhuang\n\ @version\ Jan.\ 24,\ 2022\n
+comment1.params=owner
+comment1.target=MagicWand(greenfoot.Actor)
+comment2.params=angle
+comment2.target=void\ releaseProjectiles(int)
+comment2.text=\n\ Releases\ a\ bow\n
+numComments=3
