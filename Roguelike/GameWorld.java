@@ -146,7 +146,7 @@ public class GameWorld extends World
             highScore = userInfo.getScore();
         }
         
-        player = new Player(-1, tileHeight, characterSelection);
+        player = new Player(-1, tileHeight - 10, characterSelection);
         minimap = new Minimap(map, curRoomNum);
         scoreText = new Label("Score: 0", 40);
     }

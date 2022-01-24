@@ -13,8 +13,7 @@ public class Player extends Entity
     private static Label promptText; // Text prompting player to pick up an item
     
     // File paths to animation frames
-    private String[] idlePrefixes = new String[]{"knight/idle/knight_f_idle_anim_f", "female elf/idle/elf_f_idle_anim_f", "male elf/idle/elf_m_idle_anim_f"};
-    private String[] runPrefixes = new String[]{"knight/run/knight_f_run_anim_f", "female elf/run/elf_f_run_anim_f", "male elf/run/elf_m_run_anim_f"};
+    private String[] framePrefixes = new String[]{"knight/knight", "female elf/elf_female", "male elf/elf_male"};
 
     private String key;
     private int pickupFrequency = 50; // Makes sure you don't spam picking up weapons
@@ -46,15 +45,15 @@ public class Player extends Entity
      * Returns number of character models available
      */
     public int getNumCharacters() {
-        return idlePrefixes.length;
+        return framePrefixes.length;
     }
     
     /**
      * Initializes animations
      */
     private void initAnimations(int characterSelection) {
-        GreenfootImage[] idleFrames = Animation.generateFrames(4, idlePrefixes[characterSelection], ".png", width, height);
-        GreenfootImage[] runningFrames = Animation.generateFrames(4, runPrefixes[characterSelection], ".png", width, height);
+        GreenfootImage[] idleFrames = Animation.generateFrames(0, 4, framePrefixes[characterSelection], ".png", width, height);
+        GreenfootImage[] runningFrames = Animation.generateFrames(4, 4, framePrefixes[characterSelection], ".png", width, height);
             
         animation = new Animation(this, "idle", idleFrames, 40, "right");
         animation.addState("running", runningFrames, 15, "right");

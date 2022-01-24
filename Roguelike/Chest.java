@@ -15,7 +15,7 @@ public class Chest extends Actor
     private double itemForce = 10;
     
     public Chest(int width, int height) {
-        GreenfootImage[] frames = Animation.generateFrames(3, "chest/chest_full_open_anim_f", ".png", width, height);
+        GreenfootImage[] frames = Animation.generateFrames(0, 3, "chest/chest_full_open_anim_f", ".png", width, height);
         animation = new Animation(this, frames, 50);
         animation.setActiveState(true);
         animation.run();
