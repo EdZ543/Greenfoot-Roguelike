@@ -44,10 +44,10 @@ public class Layouts
     static final String[] startRoomLayout = {
         "             ",
         "             ",
-        "    #RRR#    ",
-        "    R S R    ",
-        "    #   #    ",
-        "     ###     ",
+        "             ",
+        "             ",
+        "             ",
+        "             ",
         "             ",
     };
     
@@ -56,7 +56,7 @@ public class Layouts
         "             ",
         "             ",
         "             ",
-        "             ",
+        "      B      ",
         "             ",
         "             ",
         "             ",
@@ -64,6 +64,42 @@ public class Layouts
     
     // Layouts for all other rooms
     static final String[][] roomLayouts = {
+        {
+          "             ",
+            "  G       G  ",
+            "      R      ",
+            "     RNR     ",
+            "      R      ",
+            "  G       G  ",
+            "             ",  
+        },
+        {
+            " SS R      RC",
+            "RRRRRRRRRRRRR",
+            "  R      R   ",
+            "  R  GG  R   ",
+            "  R      RRRR",
+            "RRRRRRRRRR G ",
+            " N R     R G ",
+        },
+        {
+          "             ",
+            "    RRRRR    ",
+            "    RGGGR    ",
+            "    RGCGR    ",
+            "    RGGGR    ",
+            "    RRRRR    ",
+            "             ",  
+        },
+        {
+            "             ",
+            "             ",
+            "    #   #    ",
+            "      S      ",
+            "    #   #    ",
+            "     ###     ",
+            "             ",
+        },
         {
             "             ",
             "             ",
@@ -94,9 +130,9 @@ public class Layouts
         {
             "N           N",
             "             ",
-            "             ",
+            "    #   #    ",
             "      C      ",
-            "             ",
+            "    #   #    ",
             "             ",
             "N           N",
         },

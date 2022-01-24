@@ -9,7 +9,7 @@ import java.util.*;
  */
 public class Necromancer extends Enemy
 {
-    private int shotFrequency = 100;
+    private int shotFrequency = 120;
     private int shotCountdown = shotFrequency;
     
     public Necromancer(int width, int height) {
@@ -23,7 +23,7 @@ public class Necromancer extends Enemy
      */
     private void initAnimations() {
         GreenfootImage[] idleFrames = Animation.generateFrames(0, 4, "necromancer/necromancer_idle_anim_f", ".png", width, height);
-        animation = new Animation(this, idleFrames, 50);
+        animation = new Animation(this, "idle", idleFrames, 50, "right");
         animation.setActiveState(true);
     }
     

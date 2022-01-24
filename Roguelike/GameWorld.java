@@ -135,7 +135,7 @@ public class GameWorld extends World
         assignRoomLayouts();
         
         score = 0;
-        enterPos = "left";
+        enterPos = "center";
         
         bgMusic = new GreenfootSound("BoxCat-Games-Battle-Boss.mp3");
         bgMusic.setVolume(25);
@@ -205,6 +205,9 @@ public class GameWorld extends World
     private void createRoom(){
         String[] roomLayout = roomLayoutPlan[curRoomNum];
         
+        GreenfootImage floorImage = new GreenfootImage("floor_1.png");
+        floorImage.scale(tileWidth, tileHeight);
+        
         // Draw the floor!
         for(int i = 1; i < numTilesY - 1; i++){
             for(int j = 1; j < numTilesX - 1; j++){
@@ -214,7 +217,8 @@ public class GameWorld extends World
                                     
                 switch (type) {
                     case '^': addObject(new SpikedFloor(tileWidth, tileHeight), x, y); break;
-                    default: addObject(new Floor(tileWidth, tileHeight), x, y); break;
+                    default:
+                        getBackground().drawImage(floorImage, x - tileWidth / 2, y - tileWidth / 2);
                 }
             }
         }

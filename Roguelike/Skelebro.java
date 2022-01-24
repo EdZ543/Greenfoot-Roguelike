@@ -13,7 +13,7 @@ public class Skelebro extends Enemy
     
     private int turnFrequency = 50;
     private int turnCountdown = 1;
-    private int shotFrequency = 70;
+    private int shotFrequency = 100;
     private int shotCountdown = shotFrequency;
     
     public Skelebro(int width, int height) {
