@@ -11,9 +11,18 @@ public class MagicBall extends Projectile
 {
     private int homingFrequency = 10;
     private int homingCountdown = 10;
+    private int homingDuration = 0;
     
     public MagicBall(boolean playerShot, int rotation) {
-        super(50, 50, playerShot, rotation, 5, 20, "bow_fire.wav", 100, 5);
+        this(playerShot, rotation, 5, 1000);
+    }
+    
+    /**
+     * More advanced constructor
+     */
+    public MagicBall(boolean playerShot, int rotation, int speed, int homingDuration) {
+        super(40, 40, playerShot, rotation, speed, 20, "bow_fire.wav", 100, 5);
+        this.homingDuration = homingDuration;
     }
     
     /**
@@ -26,8 +35,13 @@ public class MagicBall extends Projectile
             homingCountdown--;
         }
         
+        // Make it so that it stops homing after a while
+        if (homingDuration > 0) {
+            homingDuration--;
+        }
+        
         // Target nearest target every so often
-        if (homingCountdown == 0) {
+        if (homingCountdown == 0 && homingDuration > 0) {
             homingCountdown = homingFrequency;
             
             if (playerShot) {

@@ -105,10 +105,10 @@ public class GameWorld extends World
         int offsetX = tileWidth + (int)Math.ceil((double)player.getImage().getWidth() / 2);
         int offsetY = tileHeight + (int)Math.ceil((double)player.getImage().getHeight() / 2);
         if (enterPos == "center") addObject(player, getWidth() / 2, getHeight() / 2);
-        else if (enterPos == "right") addObject(player, getWidth() - offsetX, player.getY());
-        else if(enterPos == "left") addObject(player, offsetX, player.getY());
-        else if(enterPos == "down") addObject(player, player.getX(), getHeight() - offsetY);
-        else if(enterPos == "up") addObject(player, player.getX(), offsetY);
+        else if (enterPos == "right") addObject(player, getWidth() - offsetX, getHeight() / 2);
+        else if(enterPos == "left") addObject(player, offsetX, getHeight() / 2);
+        else if(enterPos == "down") addObject(player, getWidth() / 2, getHeight() - offsetY);
+        else if(enterPos == "up") addObject(player, getWidth() / 2, offsetY);
         
         addObject(minimap, getWidth() - minimap.getImage().getWidth() / 2, minimap.getImage().getHeight() / 2);
         addObject(scoreText, scoreText.getImage().getWidth() / 2, getHeight() - scoreText.getImage().getHeight() / 2);
@@ -132,7 +132,7 @@ public class GameWorld extends World
         assignRoomLayouts();
         
         score = 0;
-        enterPos = "center";
+        enterPos = "left";
         
         bgMusic = new GreenfootSound("BoxCat-Games-Battle-Boss.mp3");
         bgMusic.setVolume(25);

@@ -9,7 +9,7 @@ import java.util.*;
  */
 public class Necromancer extends Enemy
 {
-    private int shotFrequency = 70;
+    private int shotFrequency = 100;
     private int shotCountdown = shotFrequency;
     
     public Necromancer(int width, int height) {
@@ -53,7 +53,7 @@ public class Necromancer extends Enemy
             Player p = players.get(0);
             int angleToPlayer = getAngleTo(p);
             checkFacingDir(angleToPlayer);
-            getWorld().addObject(new MagicBall(false, angleToPlayer), getX(), getY());
+            getWorld().addObject(new MagicBall(false, angleToPlayer, 2, 100), getX(), getY());
         }
     }
 }
