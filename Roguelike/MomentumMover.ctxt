@@ -46,6 +46,7 @@ comment5.target=void\ setForce(double,\ double)
 comment5.text=\r\n\ Sets\ force\ in\ particular\ direction\r\n
 comment6.params=xSpeed\ ySpeed
 comment6.target=void\ setSpeed(double,\ double)
+comment6.text=\r\n\ Sets\ x\ and\ y\ speed,\ while\ enforcing\ max\ and\ min\ speeds\r\n
 comment7.params=distance
 comment7.target=void\ move(int)
 comment7.text=\r\n\ Move\ forward\ by\ the\ specified\ distance.\r\n\ (Overrides\ the\ method\ in\ Actor).\r\n\ \r\n\ @param\ distance\ \ the\ distance\ to\ move\ in\ the\ current\ facing\ direction\r\n

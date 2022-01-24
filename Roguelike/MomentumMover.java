@@ -81,6 +81,9 @@ public class MomentumMover extends Actor
         setSpeed(dx, dy);
     }
     
+    /**
+     * Sets x and y speed, while enforcing max and min speeds
+     */
     protected void setSpeed(double xSpeed, double ySpeed) {
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;

@@ -19,7 +19,7 @@ public abstract class Entity extends MomentumMover
     protected int height;
     
     public Entity(int width, int height, int health, double speed, double maxSpeed) {
-        super(0.9, maxSpeed);
+        super(0.8, maxSpeed);
         this.width = width;
         this.height = height;
         this.speed = speed;
@@ -57,6 +57,21 @@ public abstract class Entity extends MomentumMover
      */
     protected int getAngleTo (Actor a){
         return (int) (Math.toDegrees(Math.atan2(a.getY() - getY() , a.getX() - getX())) + 0.5);
+    }
+    
+    /**
+     * Heals the entity!
+     */
+    public void heal(int healthIncrease) {
+        health = Math.min(maxHealth, health + healthIncrease);
+        stats.update(health);
+    }
+    
+    /**
+     * Changes speed of entity
+     */
+    public void changeSpeed(double change) {
+        speed
     }
     
     /**

@@ -194,12 +194,4 @@ public class Player extends Entity
         Arrow arrow = new Arrow(true, rotation);
         getWorld().addObject(arrow, getX(), getY());
     }
-    
-    /**
-     * Heals the player!
-     */
-    public void heal(int healthIncrease) {
-        health = Math.min(maxHealth, health + healthIncrease);
-        stats.update(health);
-    }
 }

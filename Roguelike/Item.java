@@ -13,7 +13,7 @@ public abstract class Item extends MomentumMover
     private boolean showingPrompt = false;
     
     public Item(int width, int height) {
-        super(0.8, 5.0);
+        super(0.9, 10.0);
         GameWorld.scaleWithAspectRatio(getImage(), width, height);
     }
     
