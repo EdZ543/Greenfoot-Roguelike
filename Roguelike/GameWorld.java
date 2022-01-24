@@ -19,6 +19,8 @@ import java.util.*;
  *
  * Bow sound effect obtained from https://www.zapsplat.com
  * 
+ * ShotGun Pixel by Fkgame
+ * 
  * ## Instructions ##
  * WASD to move, arrow keys to shoot
  * P to pick up items
@@ -96,6 +98,9 @@ public class GameWorld extends World
      * Updates all objects that persist across rooms when re-entering a room
      */
     public void updateRoom() {
+        // Remove projeciles
+        removeObjects(getObjects(Projectile.class));
+        
         int offsetX = tileWidth + (int)Math.ceil((double)player.getImage().getWidth() / 2);
         int offsetY = tileHeight + (int)Math.ceil((double)player.getImage().getHeight() / 2);
         if (enterPos == "center") addObject(player, getWidth() / 2, getHeight() / 2);

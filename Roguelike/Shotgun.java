@@ -1,19 +1,28 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class Shotgun here.
+ * A weapon that releases a large spread of bullets
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Eddie Zhuang
+ * @version Jan. 24, 2022
  */
-public class Shotgun extends Item
+public class Shotgun extends Weapon
 {
+    private int halfBullets = 5;
+    private int angleOfSpread = 5;
+    
+    public Shotgun(Actor owner) {
+        super(64, -1, 50, owner, 10, "right");
+    }
+    
     /**
-     * Act - do whatever the Shotgun wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
+     * Releases spread of shotgun shells
      */
-    public void act()
-    {
-        // Add your action code here.
+    public void releaseProjectiles(int angle) {
+        for (int i = -halfBullets; i < halfBullets; i++) {
+            int fireAngle = angle + angleOfSpread * i;
+            ShotgunShell shotGunShell = new ShotgunShell(true, fireAngle);
+            getWorld().addObject(shotGunShell, getX(), getY());
+        }
     }
 }

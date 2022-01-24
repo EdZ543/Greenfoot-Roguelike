@@ -1,4 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import java.util.*;
 
 /**
  * The Player class. This is the actor that the user controls.
@@ -8,12 +9,13 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Player extends Entity
 {
+    private static Weapon weapon; // Weapon player is currently holding
+    private static Label promptText; // Text prompting player to pick up an item
+    
     // File paths to animation frames
     private String[] idlePrefixes = new String[]{"knight/idle/knight_f_idle_anim_f", "female elf/idle/elf_f_idle_anim_f", "male elf/idle/elf_m_idle_anim_f"};
     private String[] runPrefixes = new String[]{"knight/run/knight_f_run_anim_f", "female elf/run/elf_f_run_anim_f", "male elf/run/elf_m_run_anim_f"};
-    
-    private int shootDelay = 20;
-    private int shootDelayTimer = 0;
+
     private String key;
     
     // If true, doesn't spawn health bar and isn't controlled by keys
@@ -31,6 +33,9 @@ public class Player extends Entity
         super(width, height, 100, 1, 6.0);
         
         this.previewMode = previewMode;
+        stats = new StatBar​(maxHealth, health, null, 150, 25, 0, Color.GREEN, Color.RED, false);
+        weapon = new Shotgun(this);
+        promptText = new Label("", 20);
 
         initAnimations(characterSelection);
     }
@@ -55,10 +60,15 @@ public class Player extends Entity
     }
     
     public void addedToWorld(World w) {
-        // Spawns health bar
         if (!previewMode) {
-            stats = new StatBar​(maxHealth, health, null, 150, 25, 0, Color.GREEN, Color.RED, false);
+            // Spawns health bar
             w.addObject(stats, stats.getImage().getWidth() / 2, stats.getImage().getHeight() / 2);
+            
+            // Add weapon
+            w.addObject(weapon, getX(), getY());
+            
+            // Add prompt text to world
+            w.addObject(promptText, 0, 0);
         }
     }
     
@@ -90,6 +100,11 @@ public class Player extends Entity
         checkDoor();
     }
     
+    // Make weapon follow player
+    private void weaponFollow() {
+        weapon.setLocation(getX(), getY());
+    }
+    
     /**
      * Check for items
      */
@@ -99,10 +114,39 @@ public class Player extends Entity
             chest.open();
         }
         
-        Item item = (Item)getOneIntersectingObject(Item.class);
-        if (item != null && Greenfoot.isKeyDown("P")) {
-            item.use(this);
+        // If pressing P, pick up nearest item
+        List<Item> items = getIntersectingObjects(Item.class);
+        Item focusItem = null;
+        for (Item item : items) {
+            if (item.getOwner() != this && (focusItem == null || GameWorld.getDistance(this, item) < GameWorld.getDistance(this, focusItem))) {
+                focusItem = item;
+            }
         }
+        
+        if (focusItem != null) {
+            showPrompt(focusItem);
+            
+            if (Greenfoot.isKeyDown("P")) {
+                focusItem.pickUp(this);
+            }
+        } else {
+            hidePrompt();
+        }
+    }
+    
+    /**
+     * Show item pickup prompt
+     */
+    private void showPrompt(Item item) {
+        promptText.setValue("Press P to pick up " + item.getClass().getSimpleName());
+        promptText.setLocation(item.getX(), item.getY() - item.getImage().getHeight() / 2 - getImage().getHeight() / 2); // Display text above item
+    }
+    
+    /**
+     * Hide item pickup prompt
+     */
+    private void hidePrompt() {
+        promptText.setValue("");
     }
     
     /**
@@ -166,24 +210,14 @@ public class Player extends Entity
      * Check arrow keys for shooting
      */
     private void checkShoot() {
-        if (shootDelayTimer != 0) {
-            shootDelayTimer--;
-        }
-        
-        if (shootDelayTimer == 0) {
-            if (Greenfoot.isKeyDown("Up")){
-                shoot(270);
-                shootDelayTimer = shootDelay;
-            } else if (Greenfoot.isKeyDown("Down")){
-                shoot(90);
-                shootDelayTimer = shootDelay;
-            } else if (Greenfoot.isKeyDown("Left")){
-                shoot(180);
-                shootDelayTimer = shootDelay;
-            } else if (Greenfoot.isKeyDown("Right")){
-                shoot(0);
-                shootDelayTimer = shootDelay;
-            }
+        if (Greenfoot.isKeyDown("Up")){
+            weapon.fire(270);
+        } else if (Greenfoot.isKeyDown("Down")){
+            weapon.fire(90);
+        } else if (Greenfoot.isKeyDown("Left")){
+            weapon.fire(180);
+        } else if (Greenfoot.isKeyDown("Right")){
+            weapon.fire(0);
         }
     }
     
@@ -193,5 +227,15 @@ public class Player extends Entity
     private void shoot(int rotation) {
         Arrow arrow = new Arrow(true, rotation);
         getWorld().addObject(arrow, getX(), getY());
+    }
+    
+    /**
+     * Equips new weapon, drops old one
+     */
+    public void equipWeapon(Weapon weapon) {
+        this.weapon.setOwner(null);
+        
+        this.weapon = weapon;
+        this.weapon.setOwner(this);
     }
 }

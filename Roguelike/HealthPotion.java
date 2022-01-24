@@ -6,7 +6,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author Eddie Zhuang
  * @version Jan. 21, 2022
  */
-public class HealthPotion extends Item
+public class HealthPotion extends Potion
 {
     private int healthIncrease = 30;
     private String name;

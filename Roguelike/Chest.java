@@ -42,7 +42,8 @@ public class Chest extends Actor
      * Throw out items from chest
      */
     private void releaseItems() {
-        Item potion, weapon;
+        Potion potion;
+        Weapon weapon;
         
         Random random = new Random();
         int randomPotion = random.nextInt(2);
@@ -57,14 +58,18 @@ public class Chest extends Actor
         
         // Pick a random weapon
         if (randomWeapon == 0) {
-            weapon = new Shotgun(
+            weapon = new Shotgun(null);
         } else {
-            
+            weapon = new Shotgun(null);
         }
         
-        getWorld().addObject(item, getX(), getY());
+        getWorld().addObject(potion, getX(), getY());
         int randomAngle = random.nextInt(360);
-        item.addForce(randomAngle, itemForce);
+        potion.addForce(randomAngle, itemForce);
+        
+        getWorld().addObject(weapon, getX(), getY());
+        randomAngle = random.nextInt(360);
+        weapon.addForce(randomAngle, itemForce);
     }
     
     /**

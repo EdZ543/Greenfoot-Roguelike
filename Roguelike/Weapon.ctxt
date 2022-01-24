@@ -1,0 +1,22 @@
+#BlueJ class context
+comment0.target=Weapon
+comment0.text=\n\ Weapon\ that\ player\ can\ pick\ up\!\n\ \n\ @author\ Eddie\ Zhuang\n\ @version\ Jan.\ 24,\ 2022\n
+comment1.params=width\ height\ fireFrequency\ owner\ recoil\ facingDir
+comment1.target=Weapon(int,\ int,\ int,\ greenfoot.Actor,\ double,\ java.lang.String)
+comment2.params=
+comment2.target=void\ act()
+comment2.text=\n\ Act\ -\ do\ whatever\ the\ Weapon\ wants\ to\ do.\ This\ method\ is\ called\ whenever\n\ the\ 'Act'\ or\ 'Run'\ button\ gets\ pressed\ in\ the\ environment.\n
+comment3.params=
+comment3.target=void\ followOwner()
+comment4.params=angle
+comment4.target=void\ fire(int)
+comment4.text=\n\ Releases\ projectiles\ if\ cooldown\ is\ over\n
+comment5.params=angle
+comment5.target=void\ checkFacingDir(int)
+comment5.text=\n\ Sets\ image\ orientation\ to\ match\ firing\ direction\n
+comment6.params=angle
+comment6.target=void\ releaseProjectiles(int)
+comment7.params=player
+comment7.target=void\ pickUp(Player)
+comment7.text=\n\ When\ picked\ up,\ equip\ player\ with\ this\ weapon\n
+numComments=8

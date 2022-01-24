@@ -6,7 +6,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author Eddie Zhuang 
  * @version Jan. 24, 2022
  */
-public class SpeedPotion extends Item
+public class SpeedPotion extends Potion
 {
     public SpeedPotion(int width, int height) {
         super(width, height);
