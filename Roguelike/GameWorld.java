@@ -21,6 +21,8 @@ import java.util.*;
  * 
  * ShotGun Pixel by Fkgame
  * 
+ * Rock art by FunwithPixels
+ * 
  * ## Instructions ##
  * WASD to move, arrow keys to shoot
  * P to pick up items
@@ -29,7 +31,8 @@ import java.util.*;
  * This means that each run will have a random map and rooms.
  * It also has permadeath, which means if you die, you start from the beginning!
  * Walk through doors to progress, you'll have to defeat al enemies in a room to unlock the doors.
- * Try to get as high a score as possible by collecting coins and defeating enemies.
+ * Try to get as high a score as possible by defeating enemies.
+ * Open chests to get items and weapons.
  * If you manage to reach the boss room and defeat the boss, you'll beat the game!
  * 
  * ## Known bugs/issues ##
@@ -255,6 +258,7 @@ public class GameWorld extends World
                     case 'S': addObject(new Skelebro(-1, tileHeight), x, y); break;
                     case 'C': addObject(new Chest(tileWidth, tileHeight), x, y); break;
                     case 'N': addObject(new Necromancer(-1, tileHeight), x, y); break;
+                    case 'R': addObject(new Rock(tileWidth, tileHeight), x, y); break;
                 }
             }
         }

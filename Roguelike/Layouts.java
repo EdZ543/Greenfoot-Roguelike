@@ -44,8 +44,8 @@ public class Layouts
     static final String[] startRoomLayout = {
         "             ",
         "             ",
-        "    #   #    ",
-        "      S      ",
+        "    #RRR#    ",
+        "    R S R    ",
         "    #   #    ",
         "     ###     ",
         "             ",

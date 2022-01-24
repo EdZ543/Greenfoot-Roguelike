@@ -37,19 +37,24 @@ public abstract class Projectile extends Actor
         // move forward
         move(speed);
         
-        // check if hitting player or enemy, depending on who fired this
-        if (playerShot) {
-            hitEnemy();
-        } else {
-            hitPlayer();
-        }
-        
         if (getWorld() == null) {
             return;
         }
         
-        // When I reach the edge or hit a wall, remove me from the World
-        if (isAtEdge() || isTouching(Wall.class)){
+        boolean hitSomething = false;
+        
+        // check if hitting player or enemy, depending on who fired this
+        if (playerShot) {
+            hitSomething |= hitEnemy();
+        } else {
+            hitSomething |= hitPlayer();
+        }
+        
+        // Check if hits rock
+        hitSomething |= hitRock();
+        
+        // When I reach the edge or hit something, remove me from the World
+        if (hitSomething || isAtEdge() || isTouching(Wall.class)){
             getWorld().removeObject(this);
         } 
     }
@@ -57,29 +62,41 @@ public abstract class Projectile extends Actor
     /*
      * Check if this projectile has hit an enemy
      */
-    protected void hitEnemy () {
+    protected boolean hitEnemy () {
         Enemy e = (Enemy)getOneIntersectingObject(Enemy.class);
         if (e != null){
             GameWorld g = (GameWorld)getWorld();
 
             e.damageMe(damage); // damage enemy
             e.setForce(getRotation(), force); // impact enemy
-            g.removeObject(this);
             g.updateDoors(); // if this is the last enemy in the room, unlock the doors
+            return true;
         }
+        return false;
     }
     
     /*
      * Check if this projectile has hit a player
      */
-    protected void hitPlayer () {
+    protected boolean hitPlayer () {
         Player p = (Player)getOneIntersectingObject(Player.class);
         if (p != null){
-            GameWorld g = (GameWorld)getWorld();
-
             p.damageMe(damage); // damage player
             p.setForce(getRotation(), force); // impact player
-            g.removeObject(this);
+            return true;
         }
+        return false;
+    }
+    
+    /*
+     * Check if this projectile has hit a rock
+     */
+    protected boolean hitRock() {
+        Rock r = (Rock)getOneIntersectingObject(Rock.class);
+        if (r != null) {
+            r.damage();
+            return true;
+        }
+        return false;
     }
 }
