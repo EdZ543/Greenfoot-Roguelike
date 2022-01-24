@@ -71,7 +71,8 @@ public abstract class Entity extends MomentumMover
      * Changes speed of entity
      */
     public void changeSpeed(double change) {
-        speed
+        updateMaxSpeed(change);
+        speed += change;
     }
     
     /**

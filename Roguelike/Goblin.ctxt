@@ -1,20 +1,20 @@
 #BlueJ class context
 comment0.target=Goblin
-comment0.text=\r\n\ Pretty\ much\ the\ base\ enemy.\ Runs\ at\ player\ and\ attacks\ them\ if\ they're\ near.\r\n\ \r\n\ @author\ Eddie\ Zhuang\r\n\ @version\ Jan.\ 21,\ 2022\r\n
+comment0.text=\n\ Pretty\ much\ the\ base\ enemy.\ Runs\ at\ player\ and\ attacks\ them\ if\ they're\ near.\n\ \n\ @author\ Eddie\ Zhuang\n\ @version\ Jan.\ 21,\ 2022\n
 comment1.params=width\ height
 comment1.target=Goblin(int,\ int)
 comment2.params=
 comment2.target=void\ initAnimations()
-comment2.text=\r\n\ Initializes\ animations\r\n
+comment2.text=\n\ Initializes\ animations\n
 comment3.params=
 comment3.target=void\ initSounds()
-comment3.text=\r\n\ Initializes\ sounds\r\n
+comment3.text=\n\ Initializes\ sounds\n
 comment4.params=
 comment4.target=void\ act()
 comment5.params=
 comment5.target=void\ checkPlayer()
-comment5.text=\r\n\ Checks\ if\ player\ is\ in\ range\ of\ vision.\ If\ it\ is,\ charge\ at\ it\r\n
+comment5.text=\n\ Checks\ if\ player\ is\ in\ range\ of\ vision.\ If\ it\ is,\ charge\ at\ it\n
 comment6.params=player
 comment6.target=void\ moveTowardsOrAttackPlayer(Player)
-comment6.text=\r\n\ If\ player\ is\ in\ attack\ range,\ attack\ player.\ If\ not,\ move\ towards\ player.\r\n
+comment6.text=\n\ If\ player\ is\ in\ attack\ range,\ attack\ player.\ If\ not,\ move\ towards\ player.\n
 numComments=7

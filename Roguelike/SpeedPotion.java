@@ -1,14 +1,21 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class SpeedPotion here.
+ * Increases the speed of the player
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Eddie Zhuang 
+ * @version Jan. 24, 2022
  */
 public class SpeedPotion extends Item
 {
+    public SpeedPotion(int width, int height) {
+        super(width, height);
+    }
+    
+    /**
+     * Increases player speed a bit
+     */ 
     protected void apply(Player player) {
-        player.changeSpeed(0.5);
+        player.changeSpeed(1);
     }
 }

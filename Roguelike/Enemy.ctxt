@@ -1,11 +1,11 @@
 #BlueJ class context
 comment0.target=Enemy
-comment0.text=\r\n\ The\ parent\ class\ for\ all\ enemies\!\r\n\ \r\n\ @author\ Eddie\ Zhuang\r\n\ @version\ Jan.\ 21,\ 2022\r\n
+comment0.text=\n\ The\ parent\ class\ for\ all\ enemies\!\n\ \n\ @author\ Eddie\ Zhuang\n\ @version\ Jan.\ 21,\ 2022\n
 comment1.params=width\ height\ health\ pointsValue\ speed\ maxSpeed
 comment1.target=Enemy(int,\ int,\ int,\ int,\ double,\ double)
 comment2.params=w
 comment2.target=void\ addedToWorld(greenfoot.World)
 comment3.params=
 comment3.target=void\ die()
-comment3.text=\r\n\ Implements\ what\ happens\ when\ the\ enemy\ dies\r\n
+comment3.text=\n\ Implements\ what\ happens\ when\ the\ enemy\ dies\n
 numComments=4

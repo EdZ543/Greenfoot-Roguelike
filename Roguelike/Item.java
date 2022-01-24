@@ -53,5 +53,5 @@ public abstract class Item extends MomentumMover
         apply(player);
     }
     
-    public abstract void apply(Player player);
+    protected abstract void apply(Player player);
 }

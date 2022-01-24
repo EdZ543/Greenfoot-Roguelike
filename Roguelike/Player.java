@@ -28,7 +28,7 @@ public class Player extends Entity
      * Extra constructor for creating a preview player
      */
     public Player (int width, int height, int characterSelection, boolean previewMode) {
-        super(width, height, 100, 2, 6.0);
+        super(width, height, 100, 1, 6.0);
         
         this.previewMode = previewMode;
 

@@ -1,19 +1,14 @@
 #BlueJ class context
 comment0.target=Item
-comment0.text=\r\n\ An\ item\ that\ the\ player\ can\ pick\ up\r\n\ \r\n\ @author\ Eddie\ Zhuang\r\n\ @version\ Jan.\ 23,\ 2022\r\n
+comment0.text=\n\ An\ item\ that\ the\ player\ can\ pick\ up\n\ \n\ @author\ Eddie\ Zhuang\n\ @version\ Jan.\ 23,\ 2022\n
 comment1.params=width\ height
 comment1.target=Item(int,\ int)
 comment2.params=
 comment2.target=void\ act()
 comment3.params=
 comment3.target=void\ showPrompt()
-comment3.text=\r\n\ Shows\ prompt\r\n
+comment3.text=\n\ Shows\ prompt\n
 comment4.params=
 comment4.target=void\ hidePrompt()
-comment4.text=\r\n\ Hides\ prompt\r\n
-comment5.params=player
-comment5.target=void\ use(Player)
-comment5.text=\r\n\ If\ used,\ remove\ from\ world\ and\ apply\ effect\ on\ player\r\n
-comment6.params=player
-comment6.target=void\ apply(Player)
-numComments=7
+comment4.text=\n\ Hides\ prompt\n
+numComments=5

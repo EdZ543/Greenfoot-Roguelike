@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=Floor
-comment0.text=\r\n\ Floor.\ This\ is\ floor.\r\n\ \r\n\ @author\ Eddie\ Zhuang\r\n\ @version\ Jan.\ 21,\ 2022\r\n
+comment0.text=\n\ Floor.\ This\ is\ floor.\n\ \n\ @author\ Eddie\ Zhuang\n\ @version\ Jan.\ 21,\ 2022\n
 comment1.params=width\ height
 comment1.target=Floor(int,\ int)
 numComments=2

@@ -27,6 +27,10 @@ public class MomentumMover extends Actor
         this.maxSpeed = maxSpeed;
     }
     
+    public void updateMaxSpeed(double change) {
+        this.maxSpeed += change;
+    }
+    
     /**
      * Called during run to move according to speed
      * Includes wall collision
