@@ -13,7 +13,7 @@ public class MagicBall extends Projectile
     private int homingCountdown = 10;
     
     public MagicBall(boolean playerShot, int rotation) {
-        super(50, 50, playerShot, rotation, 10, 20, "bow_fire.wav", 100, 5);
+        super(50, 50, playerShot, rotation, 5, 20, "bow_fire.wav", 100, 5);
     }
     
     /**

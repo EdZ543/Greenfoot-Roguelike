@@ -19,6 +19,8 @@
  * 'G': goblin
  * 'S': skelebro
  * 'B': boss
+ * 'T': treasure chest
+ * 'N': necromancer
  * 
  * @author Eddie Zhuang
  * @version 1.0.0
@@ -45,7 +47,7 @@ public class Layouts
         "             ",
         "             ",
         "             ",
-        "   C         ",
+        "             ",
         "             ",
     };
     

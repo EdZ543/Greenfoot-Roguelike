@@ -1,9 +1,9 @@
 #BlueJ class context
 comment0.target=SpeedPotion
-comment0.text=\n\ Increases\ the\ speed\ of\ the\ player\n\ \n\ @author\ Eddie\ Zhuang\ \n\ @version\ Jan.\ 24,\ 2022\n
+comment0.text=\r\n\ Increases\ the\ speed\ of\ the\ player\r\n\ \r\n\ @author\ Eddie\ Zhuang\ \r\n\ @version\ Jan.\ 24,\ 2022\r\n
 comment1.params=width\ height
 comment1.target=SpeedPotion(int,\ int)
 comment2.params=player
 comment2.target=void\ apply(Player)
-comment2.text=\n\ Increases\ player\ speed\ a\ bit\n
+comment2.text=\r\n\ Increases\ player\ speed\ a\ bit\r\n
 numComments=3

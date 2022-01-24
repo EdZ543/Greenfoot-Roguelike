@@ -1,22 +1,22 @@
 #BlueJ class context
 comment0.target=Weapon
-comment0.text=\n\ Weapon\ that\ player\ can\ pick\ up\!\n\ \n\ @author\ Eddie\ Zhuang\n\ @version\ Jan.\ 24,\ 2022\n
+comment0.text=\r\n\ Weapon\ that\ player\ can\ pick\ up\!\r\n\ \r\n\ @author\ Eddie\ Zhuang\r\n\ @version\ Jan.\ 24,\ 2022\r\n
 comment1.params=width\ height\ fireFrequency\ owner\ recoil\ facingDir
 comment1.target=Weapon(int,\ int,\ int,\ greenfoot.Actor,\ double,\ java.lang.String)
 comment2.params=
 comment2.target=void\ act()
-comment2.text=\n\ Act\ -\ do\ whatever\ the\ Weapon\ wants\ to\ do.\ This\ method\ is\ called\ whenever\n\ the\ 'Act'\ or\ 'Run'\ button\ gets\ pressed\ in\ the\ environment.\n
+comment2.text=\r\n\ Act\ -\ do\ whatever\ the\ Weapon\ wants\ to\ do.\ This\ method\ is\ called\ whenever\r\n\ the\ 'Act'\ or\ 'Run'\ button\ gets\ pressed\ in\ the\ environment.\r\n
 comment3.params=
 comment3.target=void\ followOwner()
 comment4.params=angle
 comment4.target=void\ fire(int)
-comment4.text=\n\ Releases\ projectiles\ if\ cooldown\ is\ over\n
+comment4.text=\r\n\ Releases\ projectiles\ if\ cooldown\ is\ over\r\n
 comment5.params=angle
 comment5.target=void\ checkFacingDir(int)
-comment5.text=\n\ Sets\ image\ orientation\ to\ match\ firing\ direction\n
+comment5.text=\r\n\ Sets\ image\ orientation\ to\ match\ firing\ direction\r\n
 comment6.params=angle
 comment6.target=void\ releaseProjectiles(int)
 comment7.params=player
 comment7.target=void\ pickUp(Player)
-comment7.text=\n\ When\ picked\ up,\ equip\ player\ with\ this\ weapon\n
+comment7.text=\r\n\ When\ picked\ up,\ equip\ player\ with\ this\ weapon\r\n
 numComments=8

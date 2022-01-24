@@ -254,6 +254,7 @@ public class GameWorld extends World
                     case 'B': addObject(new Boss(-1, tileHeight * 2), x, y); break;
                     case 'S': addObject(new Skelebro(-1, tileHeight), x, y); break;
                     case 'C': addObject(new Chest(tileWidth, tileHeight), x, y); break;
+                    case 'N': addObject(new Necromancer(-1, tileHeight), x, y); break;
                 }
             }
         }

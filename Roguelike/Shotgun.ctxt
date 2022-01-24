@@ -1,9 +1,9 @@
 #BlueJ class context
 comment0.target=Shotgun
-comment0.text=\n\ A\ weapon\ that\ releases\ a\ large\ spread\ of\ bullets\n\ \n\ @author\ Eddie\ Zhuang\n\ @version\ Jan.\ 24,\ 2022\n
+comment0.text=\r\n\ A\ weapon\ that\ releases\ a\ large\ spread\ of\ bullets\r\n\ \r\n\ @author\ Eddie\ Zhuang\r\n\ @version\ Jan.\ 24,\ 2022\r\n
 comment1.params=owner
 comment1.target=Shotgun(greenfoot.Actor)
 comment2.params=angle
 comment2.target=void\ releaseProjectiles(int)
-comment2.text=\n\ Releases\ spread\ of\ shotgun\ shells\n
+comment2.text=\r\n\ Releases\ spread\ of\ shotgun\ shells\r\n
 numComments=3

@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=Item
-comment0.text=\n\ An\ item\ that\ the\ player\ can\ pick\ up\n\ \n\ @author\ Eddie\ Zhuang\n\ @version\ Jan.\ 23,\ 2022\n
+comment0.text=\r\n\ An\ item\ that\ the\ player\ can\ pick\ up\r\n\ \r\n\ @author\ Eddie\ Zhuang\r\n\ @version\ Jan.\ 23,\ 2022\r\n
 comment1.params=width\ height
 comment1.target=Item(int,\ int)
 comment2.params=
@@ -9,8 +9,8 @@ comment3.params=player
 comment3.target=void\ pickUp(Player)
 comment4.params=owner
 comment4.target=void\ setOwner(greenfoot.Actor)
-comment4.text=\n\ Set\ owner,\ for\ dropping\ and\ picking\ up\n
+comment4.text=\r\n\ Set\ owner,\ for\ dropping\ and\ picking\ up\r\n
 comment5.params=
 comment5.target=greenfoot.Actor\ getOwner()
-comment5.text=\n\ Return\ owner\ of\ weapon\n
+comment5.text=\r\n\ Return\ owner\ of\ weapon\r\n
 numComments=6

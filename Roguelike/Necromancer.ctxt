@@ -1,0 +1,15 @@
+#BlueJ class context
+comment0.target=Necromancer
+comment0.text=\r\n\ A\ dangerous\ enemy\ that\ shoots\ deadly\ homing\ magic\ balls\!\r\n\ \r\n\ @author\ Eddie\ Zhuang\r\n\ @version\ Jan.\ 24,\ 2022\r\n
+comment1.params=width\ height
+comment1.target=Necromancer(int,\ int)
+comment2.params=
+comment2.target=void\ initAnimations()
+comment2.text=\r\n\ Initialize\ animations\r\n
+comment3.params=
+comment3.target=void\ act()
+comment3.text=\r\n\ Act\ -\ do\ whatever\ the\ Necromancer\ wants\ to\ do.\ This\ method\ is\ called\ whenever\r\n\ the\ 'Act'\ or\ 'Run'\ button\ gets\ pressed\ in\ the\ environment.\r\n
+comment4.params=
+comment4.target=void\ shoot()
+comment4.text=\r\n\ Fire\ a\ magical\ ball\ at\ the\ player\!\r\n
+numComments=5
