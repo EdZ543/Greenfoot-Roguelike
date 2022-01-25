@@ -37,7 +37,7 @@ public class Boss extends Enemy
      * Initializes animation
      */
     private void initAnimations() {
-        GreenfootImage[] runFrames = Animation.generateFrames(0, 4, "boss/run/big_demon_run_anim_f", ".png");
+        GreenfootImage[] runFrames = Animation.generateFrames(4, 4, "boss/boss", ".png");
         animation = new Animation(this, "running", runFrames, 20, "right");
         animation.setActiveState(true);
     }

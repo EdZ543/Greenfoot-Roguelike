@@ -26,7 +26,7 @@ public class Skelebro extends Enemy
      * Initialize animations
      */
     protected void initAnimations() {
-        GreenfootImage runningFrames[] = Animation.generateFrames(0, 4, "skelebro/run/skelet_run_anim_f", ".png");
+        GreenfootImage runningFrames[] = Animation.generateFrames(4, 4, "skelebro/skelebro", ".png");
         animation = new Animation(this, "running", runningFrames, 15, "right");
         animation.setActiveState(true);
     }

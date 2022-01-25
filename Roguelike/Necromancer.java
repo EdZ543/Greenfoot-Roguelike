@@ -22,7 +22,7 @@ public class Necromancer extends Enemy
      * Initialize animations
      */
     private void initAnimations() {
-        GreenfootImage[] idleFrames = Animation.generateFrames(0, 4, "necromancer/necromancer_idle_anim_f", ".png");
+        GreenfootImage[] idleFrames = Animation.generateFrames(0, 4, "necromancer/necromancer", ".png");
         animation = new Animation(this, "idle", idleFrames, 50, "right");
         animation.setActiveState(true);
     }

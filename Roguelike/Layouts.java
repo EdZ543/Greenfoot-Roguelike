@@ -42,12 +42,12 @@ public class Layouts
     
     // Layout of starting room
     static final String[] startRoomLayout = {
+        "           # ",
+        "   S       N#",
+        "           # ",
         "             ",
-        "             ",
-        "             ",
-        "             ",
-        "             ",
-        "          G  ",
+        "  B          ",
+        "      C   G  ",
         "             ",
     };
     
