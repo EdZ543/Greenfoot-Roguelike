@@ -21,6 +21,14 @@ public class Wall extends Actor
         setImage(drawImage(imagePath));
     }
     
+    /**
+     * Constructor for drawing invisible walls
+     */
+    public Wall (int width, int height) {
+        getImage().scale(width, height);
+        getImage().setTransparency(0);
+    }
+    
     protected GreenfootImage drawImage(String imagePath) {
         GreenfootImage image = new GreenfootImage(imagePath);
         image.scale(width, height);

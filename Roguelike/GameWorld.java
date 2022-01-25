@@ -79,7 +79,8 @@ public class GameWorld extends World
         updateRoom();
         
         roomWorlds[curRoomNum] = this;
-        setPaintOrder(Item.class, Entity.class);
+        
+        setPaintOrder(StatBar.class, Minimap.class, Label.class, Item.class, Entity.class);
     }
     
     /**
@@ -205,23 +206,15 @@ public class GameWorld extends World
     private void createRoom(){
         String[] roomLayout = roomLayoutPlan[curRoomNum];
         
-        GreenfootImage floorImage = new GreenfootImage("floor_1.png");
-        floorImage.scale(tileWidth, tileHeight);
+        GreenfootImage bgImage = new GreenfootImage("room.png");
+        bgImage.scale(getWidth(), getHeight());
+        setBackground(bgImage);
         
-        // Draw the floor!
-        for(int i = 1; i < numTilesY - 1; i++){
-            for(int j = 1; j < numTilesX - 1; j++){
-                char type = roomLayout[i - 1].charAt(j - 1);
-                int x = j * tileWidth + tileWidth / 2;
-                int y = i * tileHeight + tileWidth / 2;
-                                    
-                switch (type) {
-                    case '^': addObject(new SpikedFloor(tileWidth, tileHeight), x, y); break;
-                    default:
-                        getBackground().drawImage(floorImage, x - tileWidth / 2, y - tileWidth / 2);
-                }
-            }
-        }
+        // Add invisible walls for boundaries
+        addObject(new Wall(tileWidth, getHeight()), tileWidth / 2, getHeight() / 2);
+        addObject(new Wall(tileWidth, getHeight()), getWidth() - tileWidth / 2, getHeight() / 2);
+        addObject(new Wall(getWidth(), tileHeight), getWidth() / 2, tileHeight / 2);
+        addObject(new Wall(getWidth(), tileHeight), getWidth() / 2, getHeight() - tileHeight / 2);
         
         // Draw room boundary
         for(int i = 0; i < numTilesY; i++){
@@ -229,15 +222,6 @@ public class GameWorld extends World
                 char type = Layouts.boundaryLayout[i].charAt(j);
                 int x = j * tileWidth + tileWidth / 2;
                 int y = i * tileHeight + tileWidth / 2;
-                
-                switch (type) {
-                    case 'L': case 'l': addObject(new Wall("boundary-edge.png", tileWidth, tileHeight, 270), x, y); break;
-                    case 'R': case 'r': addObject(new Wall("boundary-edge.png", tileWidth, tileHeight, 90), x, y); break;
-                    case 'U': case 'u': addObject(new Wall("boundary-edge.png", tileWidth, tileHeight, 0), x, y); break;
-                    case 'D': case 'd': addObject(new Wall("boundary-edge.png", tileWidth, tileHeight, 180), x, y); break;
-                    case 'c': addObject(new Wall("boundary-corner.png", tileWidth, tileHeight, 0), x, y); break;
-                    case 'C': addObject(new Wall("boundary-corner.png", tileWidth, tileHeight, 90), x, y); break;
-                }
                 
                 switch (type) {
                     case 'L': if (map.isRoomLeft(curRoomNum)) addObject(new Door(tileWidth, tileHeight, 270, "left"), x, y); break;
