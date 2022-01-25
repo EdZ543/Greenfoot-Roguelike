@@ -99,6 +99,15 @@ public class GameWorld extends World
     }
     
     /**
+     * Music keeps going after resetting in Greenfoot Gallery, so this method is called in start world
+     */
+    public static void stopMusic() {
+        if (bgMusic != null) {
+            bgMusic.stop();
+        }
+    }
+    
+    /**
      * Updates all objects that persist across rooms when re-entering a room
      */
     public void updateRoom() {

@@ -22,6 +22,9 @@ public class StartWorld extends World
         // Initalize world
         super(960, 576, 1);
         
+        // Stop background music if still playing
+        GameWorld.stopMusic();
+        
         // Set epic background image
         setBackground(new GreenfootImage("welcome.png"));
         
