@@ -2,8 +2,6 @@
 comment0.target=Rock
 comment0.text=\n\ A\ destructible\ wall\n\ \n\ @author\ Eddie\ Zhuang\n\ @version\ Jan.\ 24,\ 2022\n
 comment1.params=
-comment1.target=Rock()
-comment2.params=
-comment2.target=void\ damage()
-comment2.text=\n\ Damages\ rock\n
-numComments=3
+comment1.target=void\ damage()
+comment1.text=\n\ Damages\ rock\n
+numComments=2

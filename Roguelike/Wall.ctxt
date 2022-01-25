@@ -1,11 +1,9 @@
 #BlueJ class context
 comment0.target=Wall
 comment0.text=\n\ A\ wall.\ Enemies,\ players,\ and\ projectiles\ cannot\ pass\ through\ these.\ Epic.\n\ \n\ @author\ Eddie\ Zhuang\n\ @version\ Jan.\ 21,\ 2022\n
-comment1.params=imagePath\ rotation
-comment1.target=Wall(java.lang.String,\ int)
+comment1.params=
+comment1.target=Wall()
 comment2.params=width\ height
 comment2.target=Wall(int,\ int)
 comment2.text=\n\ Constructor\ for\ drawing\ invisible\ walls\n
-comment3.params=imagePath
-comment3.target=greenfoot.GreenfootImage\ drawImage(java.lang.String)
-numComments=4
+numComments=3

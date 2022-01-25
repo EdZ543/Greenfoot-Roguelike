@@ -240,7 +240,7 @@ public class GameWorld extends World
                 switch (type) {
                     case '^': addObject(new SpikedFloor(), x, y); break;
                     case 'G': addObject(new Goblin(), x, y); break;
-                    case '#': addObject(new Wall("wall_mid.png", 0), x, y); break;
+                    case '#': addObject(new Wall(), x, y); break;
                     case 'B': addObject(new Boss(), x, y); break;
                     case 'S': addObject(new Skelebro(), x, y); break;
                     case 'C': addObject(new Chest(), x, y); break;

@@ -30,8 +30,8 @@ public class Goblin extends Enemy
      * Initializes animations
      */
     private void initAnimations() {
-        GreenfootImage idleFrames[] = Animation.generateFrames(0, 4, "goblin/idle/goblin_idle_anim_f", ".png");
-        GreenfootImage runFrames[] = Animation.generateFrames(0, 4, "goblin/run/goblin_run_anim_f", ".png");
+        GreenfootImage idleFrames[] = Animation.generateFrames(0, 4, "goblin/goblin", ".png");
+        GreenfootImage runFrames[] = Animation.generateFrames(4, 4, "goblin/goblin", ".png");
         
         animation = new Animation(this, "idle", idleFrames, 40, "right");
         animation.addState("running", runFrames, 15, "right");
