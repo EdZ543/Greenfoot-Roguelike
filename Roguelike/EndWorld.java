@@ -15,7 +15,7 @@ public class EndWorld extends World
     public EndWorld(int score, int highScore, boolean newHighScore, boolean won)
     {    
         // Create a new 800 x 800 world
-        super(800, 800, 1);
+        super(960, 576, 1);
         
         // Set black background
         setBackground(drawBackground());
@@ -43,12 +43,12 @@ public class EndWorld extends World
         addObject(highScoreText, getWidth() / 2, 130);
         
         // Add a scoreboard
-        ScoreBoard scoreBoard = new ScoreBoard(600, 500);
-        addObject(scoreBoard, getWidth() / 2, 450);
+        ScoreBoard scoreBoard = new ScoreBoard(getWidth(), 350);
+        addObject(scoreBoard, getWidth() / 2, 350);
         
         // Let player know that they can press enter to replay
-        Label retryText = new Label("Press enter to play again!", 40);
-        addObject(retryText, getWidth() / 2, getHeight() - 70);
+        Label retryText = new Label("Press enter to play again!", 30);
+        addObject(retryText, getWidth() / 2, getHeight() - 20);
     }
     
     /**
