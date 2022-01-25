@@ -11,10 +11,6 @@ public class HealthPotion extends Potion
     private int healthIncrease = 30;
     private String name;
     
-    public HealthPotion(int width, int height) {
-        super(width, height);
-    }
-    
     /**
      * When applied, heal the player
      */

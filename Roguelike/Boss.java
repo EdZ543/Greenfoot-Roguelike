@@ -24,8 +24,8 @@ public class Boss extends Enemy
     private int attackTimer = 0; // timer used during all attacks for timing
     private String curAttack = "none"; // attack currently doing
     
-    public Boss(int width, int height) {
-        super(width, height, 500, 200, 3.0, 5.0);
+    public Boss() {
+        super(500, 200, 3.0, 5.0);
         
         initAnimations();
         
@@ -37,7 +37,7 @@ public class Boss extends Enemy
      * Initializes animation
      */
     private void initAnimations() {
-        GreenfootImage[] runFrames = Animation.generateFrames(0, 4, "boss/run/big_demon_run_anim_f", ".png", width, height);
+        GreenfootImage[] runFrames = Animation.generateFrames(0, 4, "boss/run/big_demon_run_anim_f", ".png");
         animation = new Animation(this, "running", runFrames, 20, "right");
         animation.setActiveState(true);
     }
@@ -119,7 +119,7 @@ public class Boss extends Enemy
             attackTimer = 50;
         } else if (attackTimer == 25) {
             for (int angle = 0; angle < 360; angle += 90) {
-                Goblin goblin = new Goblin(64, 64);
+                Goblin goblin = new Goblin();
                 getWorld().addObject(goblin, getX(), getY());
                 goblin.setForce(angle, 5.0);
             }

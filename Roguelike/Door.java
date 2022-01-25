@@ -8,12 +8,11 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Door extends Wall
 {
-    
     private String dir; // direction the door leads to
     private boolean locked = false; // whether the door is locked or not
     
-    public Door (int width, int height, int rotation, String dir) {
-        super("door-open.png", width, height, rotation);
+    public Door ( int rotation, String dir) {
+        super("door-open.png", rotation);
         this.dir = dir;
     }
     

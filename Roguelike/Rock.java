@@ -11,8 +11,8 @@ public class Rock extends Wall
     private int hits = 4;
     private int transparency = 255;
     
-    public Rock(int width, int height) {
-        super("rock.png", width, height, 0);
+    public Rock() {
+        super("rock.png", 0);
     }
     
     /**

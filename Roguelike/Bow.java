@@ -9,7 +9,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class Bow extends Weapon
 {
     public Bow(Actor owner) {
-        super(-1, 50, 30, owner, 8, "right");
+        super(30, owner, 8, "right");
     }
     
     /**

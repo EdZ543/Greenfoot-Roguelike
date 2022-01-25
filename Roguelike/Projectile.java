@@ -13,8 +13,7 @@ public abstract class Projectile extends Actor
     private int damage;
     private double force;
     
-    public Projectile(int width, int height, boolean playerShot, int rotation, int speed, int damage, String soundPath, int soundVolume, double force) {
-        GameWorld.scaleWithAspectRatio(getImage(), width, height);
+    public Projectile(boolean playerShot, int rotation, int speed, int damage, String soundPath, int soundVolume, double force) {
         setRotation(rotation);
         
         this.playerShot = playerShot;

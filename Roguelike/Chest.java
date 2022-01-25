@@ -14,8 +14,8 @@ public class Chest extends Actor
     private String state = "closed";
     private double itemForce = 10;
     
-    public Chest(int width, int height) {
-        GreenfootImage[] frames = Animation.generateFrames(0, 3, "chest/chest_full_open_anim_f", ".png", width, height);
+    public Chest() {
+        GreenfootImage[] frames = Animation.generateFrames(0, 3, "chest/chest_full_open_anim_f", ".png");
         animation = new Animation(this, frames, 50);
         animation.setActiveState(true);
         animation.run();
@@ -51,9 +51,9 @@ public class Chest extends Actor
         
         // Pick a random potion
         if (randomPotion == 0) {
-            potion = new HealthPotion(getImage().getWidth() / 2, -1);
+            potion = new HealthPotion();
         } else {
-            potion = new SpeedPotion(getImage().getWidth() / 2, -1);
+            potion = new SpeedPotion();
         }
         
         // Pick a random weapon

@@ -19,8 +19,8 @@ public class Goblin extends Enemy
     private int punchFrequency = 50; // How often the goblin can punch
     private int punchCountdown = 0;
     
-    public Goblin(int width, int height) {
-        super(width, height, 30, 16, 0.3, 3.0);
+    public Goblin() {
+        super(30, 16, 0.3, 3.0);
         
         initAnimations();
         initSounds();
@@ -30,8 +30,8 @@ public class Goblin extends Enemy
      * Initializes animations
      */
     private void initAnimations() {
-        GreenfootImage idleFrames[] = Animation.generateFrames(0, 4, "goblin/idle/goblin_idle_anim_f", ".png", width, height);
-        GreenfootImage runFrames[] = Animation.generateFrames(0, 4, "goblin/run/goblin_run_anim_f", ".png", width, height);
+        GreenfootImage idleFrames[] = Animation.generateFrames(0, 4, "goblin/idle/goblin_idle_anim_f", ".png");
+        GreenfootImage runFrames[] = Animation.generateFrames(0, 4, "goblin/run/goblin_run_anim_f", ".png");
         
         animation = new Animation(this, "idle", idleFrames, 40, "right");
         animation.addState("running", runFrames, 15, "right");

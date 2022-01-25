@@ -77,7 +77,6 @@ public class GameWorld extends World
             
         createRoom();
         updateRoom();
-        
         roomWorlds[curRoomNum] = this;
         
         setPaintOrder(StatBar.class, Minimap.class, Label.class, Item.class, Entity.class);
@@ -150,7 +149,7 @@ public class GameWorld extends World
             highScore = userInfo.getScore();
         }
         
-        player = new Player(-1, tileHeight - 10, characterSelection);
+        player = new Player(characterSelection);
         minimap = new Minimap(map, curRoomNum);
         scoreText = new Label("Score: 0", 40);
     }
@@ -207,7 +206,6 @@ public class GameWorld extends World
         String[] roomLayout = roomLayoutPlan[curRoomNum];
         
         GreenfootImage bgImage = new GreenfootImage("room.png");
-        bgImage.scale(getWidth(), getHeight());
         setBackground(bgImage);
         
         // Add invisible walls for boundaries
@@ -224,10 +222,10 @@ public class GameWorld extends World
                 int y = i * tileHeight + tileWidth / 2;
                 
                 switch (type) {
-                    case 'L': if (map.isRoomLeft(curRoomNum)) addObject(new Door(tileWidth, tileHeight, 270, "left"), x, y); break;
-                    case 'R': if (map.isRoomRight(curRoomNum)) addObject(new Door(tileWidth, tileHeight, 90, "right"), x, y); break;
-                    case 'U': if (map.isRoomUp(curRoomNum))  addObject(new Door(tileWidth, tileHeight, 0, "up"), x, y); break;
-                    case 'D': if (map.isRoomDown(curRoomNum)) addObject(new Door(tileWidth, tileHeight, 180, "down"), x, y); break;
+                    case 'L': if (map.isRoomLeft(curRoomNum)) addObject(new Door(270, "left"), x, y); break;
+                    case 'R': if (map.isRoomRight(curRoomNum)) addObject(new Door(90, "right"), x, y); break;
+                    case 'U': if (map.isRoomUp(curRoomNum))  addObject(new Door(0, "up"), x, y); break;
+                    case 'D': if (map.isRoomDown(curRoomNum)) addObject(new Door(180, "down"), x, y); break;
                 }
             }
         }
@@ -240,14 +238,14 @@ public class GameWorld extends World
                 int y = i * tileHeight + tileWidth / 2;
                                     
                 switch (type) {
-                    case '^': addObject(new SpikedFloor(tileWidth, tileHeight), x, y); break;
-                    case 'G': addObject(new Goblin(-1, tileHeight), x, y); break;
-                    case '#': addObject(new Wall("wall_mid.png", tileWidth, tileHeight, 0), x, y); break;
-                    case 'B': addObject(new Boss(-1, tileHeight * 2), x, y); break;
-                    case 'S': addObject(new Skelebro(-1, tileHeight), x, y); break;
-                    case 'C': addObject(new Chest(tileWidth, tileHeight), x, y); break;
-                    case 'N': addObject(new Necromancer(-1, tileHeight), x, y); break;
-                    case 'R': addObject(new Rock(tileWidth, tileHeight), x, y); break;
+                    case '^': addObject(new SpikedFloor(), x, y); break;
+                    case 'G': addObject(new Goblin(), x, y); break;
+                    case '#': addObject(new Wall("wall_mid.png", 0), x, y); break;
+                    case 'B': addObject(new Boss(), x, y); break;
+                    case 'S': addObject(new Skelebro(), x, y); break;
+                    case 'C': addObject(new Chest(), x, y); break;
+                    case 'N': addObject(new Necromancer(), x, y); break;
+                    case 'R': addObject(new Rock(), x, y); break;
                 }
             }
         }
@@ -284,9 +282,10 @@ public class GameWorld extends World
         // If we've never been to this room before, create it
         if (roomWorlds[curRoomNum] == null) {
             roomWorlds[curRoomNum] = new GameWorld();
+        } else {
+            roomWorlds[curRoomNum].updateRoom();
         }
         
-        roomWorlds[curRoomNum].updateRoom();
         Greenfoot.setWorld(roomWorlds[curRoomNum]); // Set world to new room!
     }
     
@@ -318,25 +317,6 @@ public class GameWorld extends World
         score += scoreChange;
         scoreText.setValue("Score: " + score);
         scoreText.setLocation(scoreText.getImage().getWidth() / 2, getHeight() - scoreText.getImage().getHeight() / 2);
-    }
-    
-    /**
-     * Scales image while preserving aspect ratio
-     * 
-     * @param image     image to scale
-     * @param width     if -1, adjust based on aspect ratio and new height
-     * @param height    if -1, adjust based on aspect ratio and new width
-     */
-    public static void scaleWithAspectRatio(GreenfootImage image, int width, int height) {
-        if (width == -1) {
-            float heightToWidth = (float)image.getWidth() / image.getHeight();
-            width = Math.round(height * heightToWidth);
-        } else if (height == -1) {
-            float widthToHeight = (float)image.getHeight() / image.getWidth();
-            height = Math.round(width * widthToHeight);
-        }
-        
-        image.scale(width, height);
     }
     
     /**

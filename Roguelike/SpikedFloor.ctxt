@@ -1,8 +1,6 @@
 #BlueJ class context
 comment0.target=SpikedFloor
-comment0.text=\r\n\ A\ floor\ that\ damages\ the\ player\ if\ they\ step\ on\ it\r\n\ \r\n\ @author\ Eddie\ Zhuang\ \r\n\ @version\ Jan.\ 21,\ 2022\r\n
-comment1.params=width\ height
-comment1.target=SpikedFloor(int,\ int)
-comment2.params=
-comment2.target=void\ act()
-numComments=3
+comment0.text=\n\ A\ floor\ that\ damages\ the\ player\ if\ they\ step\ on\ it\n\ \n\ @author\ Eddie\ Zhuang\ \n\ @version\ Jan.\ 21,\ 2022\n
+comment1.params=
+comment1.target=void\ act()
+numComments=2

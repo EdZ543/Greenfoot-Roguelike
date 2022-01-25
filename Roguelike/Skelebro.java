@@ -16,8 +16,8 @@ public class Skelebro extends Enemy
     private int shotFrequency = 100;
     private int shotCountdown = shotFrequency;
     
-    public Skelebro(int width, int height) {
-        super(width, height, 50, 60, 0.5, 5.0);
+    public Skelebro() {
+        super(50, 60, 0.5, 5.0);
         
         initAnimations();
     }
@@ -26,7 +26,7 @@ public class Skelebro extends Enemy
      * Initialize animations
      */
     protected void initAnimations() {
-        GreenfootImage runningFrames[] = Animation.generateFrames(0, 4, "skelebro/run/skelet_run_anim_f", ".png", width, height);
+        GreenfootImage runningFrames[] = Animation.generateFrames(0, 4, "skelebro/run/skelet_run_anim_f", ".png");
         animation = new Animation(this, "running", runningFrames, 15, "right");
         animation.setActiveState(true);
     }

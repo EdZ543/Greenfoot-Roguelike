@@ -23,15 +23,15 @@ public class Player extends Entity
     // For previewing player, like on the start screen
     private boolean previewMode;
     
-    public Player (int width, int height, int characterSelection) {
-        this(width, height, characterSelection, false);
+    public Player (int characterSelection) {
+        this(characterSelection, false);
     }
     
     /**
      * Extra constructor for creating a preview player
      */
-    public Player (int width, int height, int characterSelection, boolean previewMode) {
-        super(width, height, 100, 1, 6.0);
+    public Player (int characterSelection, boolean previewMode) {
+        super(100, 1, 6.0);
         
         this.previewMode = previewMode;
         stats = new StatBar​(maxHealth, health, null, 150, 25, 0, Color.GREEN, Color.RED, false);
@@ -52,8 +52,8 @@ public class Player extends Entity
      * Initializes animations
      */
     private void initAnimations(int characterSelection) {
-        GreenfootImage[] idleFrames = Animation.generateFrames(0, 4, framePrefixes[characterSelection], ".png", width, height);
-        GreenfootImage[] runningFrames = Animation.generateFrames(4, 4, framePrefixes[characterSelection], ".png", width, height);
+        GreenfootImage[] idleFrames = Animation.generateFrames(0, 4, framePrefixes[characterSelection], ".png");
+        GreenfootImage[] runningFrames = Animation.generateFrames(4, 4, framePrefixes[characterSelection], ".png");
             
         animation = new Animation(this, "idle", idleFrames, 40, "right");
         animation.addState("running", runningFrames, 15, "right");

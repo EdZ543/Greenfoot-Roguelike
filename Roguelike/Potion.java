@@ -1,17 +1,16 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class Potion here.
+ * The potion class, contains code common to all potions
  * 
  * @author (your name) 
  * @version (a version number or a date)
  */
 public abstract class Potion extends Item
 {
-    public Potion(int width, int height) {
-        super(width, height);
-    }
-    
+    /**
+     * When picked up, removes potion, and applies effect on player
+     */
     protected void pickUp(Player player) {
         getWorld().removeObject(this);
         apply(player);

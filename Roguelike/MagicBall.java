@@ -21,7 +21,7 @@ public class MagicBall extends Projectile
      * More advanced constructor
      */
     public MagicBall(boolean playerShot, int rotation, int speed, int homingDuration) {
-        super(40, 40, playerShot, rotation, speed, 20, "bow_fire.wav", 100, 5);
+        super(playerShot, rotation, speed, 20, "bow_fire.wav", 100, 5);
         this.homingDuration = homingDuration;
     }
     

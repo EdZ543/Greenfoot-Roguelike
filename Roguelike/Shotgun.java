@@ -14,7 +14,7 @@ public class Shotgun extends Weapon
     private int soundIndex = 0;
     
     public Shotgun(Actor owner) {
-        super(64, -1, 50, owner, 10, "right");
+        super(50, owner, 10, "right");
         
         // Init gunshot sound
         gunShotSounds = new GreenfootSound[20];

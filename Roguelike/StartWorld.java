@@ -85,7 +85,7 @@ public class StartWorld extends World
             removeObject(player);    
         }
         
-        player = new Player(50, -1, playerSelection, true);
+        player = new Player(playerSelection, true);
         addObject(player, 293, 443);
     }
 }

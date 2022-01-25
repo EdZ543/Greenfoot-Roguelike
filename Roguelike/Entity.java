@@ -15,13 +15,9 @@ public abstract class Entity extends MomentumMover
     protected int maxHealth;
     protected double speed;
     protected int health;
-    protected int width;
-    protected int height;
     
-    public Entity(int width, int height, int health, double speed, double maxSpeed) {
+    public Entity(int health, double speed, double maxSpeed) {
         super(0.8, maxSpeed);
-        this.width = width;
-        this.height = height;
         this.speed = speed;
         this.health = health;
         maxHealth = health;

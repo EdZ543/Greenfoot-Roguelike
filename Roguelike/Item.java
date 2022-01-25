@@ -10,9 +10,8 @@ public abstract class Item extends MomentumMover
 {
     protected Actor owner = null;
     
-    public Item(int width, int height) {
+    public Item() {
         super(0.9, 10.0);
-        GameWorld.scaleWithAspectRatio(getImage(), width, height);
     }
     
     public void act() {

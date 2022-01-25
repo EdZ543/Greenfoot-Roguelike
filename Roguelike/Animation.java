@@ -106,13 +106,12 @@ public class Animation
      * @param height the height of the frames
      * @return an array of GreenfootImage frames
      */
-    public static GreenfootImage[] generateFrames(int startInd, int numFrames, String prefix, String suffix, int width, int height) {
+    public static GreenfootImage[] generateFrames(int startInd, int numFrames, String prefix, String suffix) {
         GreenfootImage[] frames = new GreenfootImage[numFrames];
         
         for (int i = 0; i < numFrames; i++) {
             String framePath = prefix + (i + startInd) + suffix;
             GreenfootImage frame = new GreenfootImage(framePath);
-            GameWorld.scaleWithAspectRatio(frame, width, height);
             frames[i] = frame;
         }
         

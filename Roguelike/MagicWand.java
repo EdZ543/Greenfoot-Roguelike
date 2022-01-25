@@ -9,7 +9,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class MagicWand extends Weapon
 {
     public MagicWand(Actor owner) {
-        super(-1, 64, 40, owner, 5, "right");
+        super(40, owner, 5, "right");
     }
     
     /**

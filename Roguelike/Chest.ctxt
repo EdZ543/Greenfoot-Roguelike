@@ -1,18 +1,18 @@
 #BlueJ class context
 comment0.target=Chest
-comment0.text=\r\n\ A\ chest\ of\ goodies\!\r\n\ \r\n\ @author\ Eddie\ Zhuang\r\n\ @version\ Jan.\ 22,\ 2022\r\n
-comment1.params=width\ height
-comment1.target=Chest(int,\ int)
+comment0.text=\n\ A\ chest\ of\ goodies\!\n\ \n\ @author\ Eddie\ Zhuang\n\ @version\ Jan.\ 22,\ 2022\n
+comment1.params=
+comment1.target=Chest()
 comment2.params=
 comment2.target=void\ act()
-comment2.text=\r\n\ Act\ -\ do\ whatever\ the\ Chest\ wants\ to\ do.\ This\ method\ is\ called\ whenever\r\n\ the\ 'Act'\ or\ 'Run'\ button\ gets\ pressed\ in\ the\ environment.\r\n
+comment2.text=\n\ Act\ -\ do\ whatever\ the\ Chest\ wants\ to\ do.\ This\ method\ is\ called\ whenever\n\ the\ 'Act'\ or\ 'Run'\ button\ gets\ pressed\ in\ the\ environment.\n
 comment3.params=
 comment3.target=void\ releaseItems()
-comment3.text=\r\n\ Throw\ out\ items\ from\ chest\r\n
+comment3.text=\n\ Throw\ out\ items\ from\ chest\n
 comment4.params=
 comment4.target=void\ open()
-comment4.text=\r\n\ Opens\ the\ chest\r\n
+comment4.text=\n\ Opens\ the\ chest\n
 comment5.params=
 comment5.target=boolean\ isClosed()
-comment5.text=\r\n\ Returns\ whether\ the\ chest\ is\ closed\r\n
+comment5.text=\n\ Returns\ whether\ the\ chest\ is\ closed\n
 numComments=6

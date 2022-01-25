@@ -12,8 +12,8 @@ public class Necromancer extends Enemy
     private int shotFrequency = 120;
     private int shotCountdown = shotFrequency;
     
-    public Necromancer(int width, int height) {
-        super(width, height, 100, 100, 0, 10.0);
+    public Necromancer() {
+        super(100, 100, 0, 10.0);
         
         initAnimations();
     }
@@ -22,7 +22,7 @@ public class Necromancer extends Enemy
      * Initialize animations
      */
     private void initAnimations() {
-        GreenfootImage[] idleFrames = Animation.generateFrames(0, 4, "necromancer/necromancer_idle_anim_f", ".png", width, height);
+        GreenfootImage[] idleFrames = Animation.generateFrames(0, 4, "necromancer/necromancer_idle_anim_f", ".png");
         animation = new Animation(this, "idle", idleFrames, 50, "right");
         animation.setActiveState(true);
     }

@@ -13,8 +13,7 @@ public abstract class Weapon extends Item
     private double recoil;
     private String facingDir;
     
-    public Weapon(int width, int height, int fireFrequency, Actor owner, double recoil, String facingDir) {
-        super(width, height);
+    public Weapon(int fireFrequency, Actor owner, double recoil, String facingDir) {
         this.fireFrequency = fireFrequency;
         this.owner = owner;
         this.recoil = recoil;

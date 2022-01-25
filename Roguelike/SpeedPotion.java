@@ -8,10 +8,6 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class SpeedPotion extends Potion
 {
-    public SpeedPotion(int width, int height) {
-        super(width, height);
-    }
-    
     /**
      * Increases player speed a bit
      */ 

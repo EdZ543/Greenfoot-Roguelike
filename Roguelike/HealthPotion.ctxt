@@ -1,9 +1,7 @@
 #BlueJ class context
 comment0.target=HealthPotion
-comment0.text=\r\n\ A\ potion\ that\ gives\ the\ player\ some\ health.\r\n\ \r\n\ @author\ Eddie\ Zhuang\r\n\ @version\ Jan.\ 21,\ 2022\r\n
-comment1.params=width\ height
-comment1.target=HealthPotion(int,\ int)
-comment2.params=player
-comment2.target=void\ apply(Player)
-comment2.text=\r\n\ When\ applied,\ heal\ the\ player\r\n
-numComments=3
+comment0.text=\n\ A\ potion\ that\ gives\ the\ player\ some\ health.\n\ \n\ @author\ Eddie\ Zhuang\n\ @version\ Jan.\ 21,\ 2022\n
+comment1.params=player
+comment1.target=void\ apply(Player)
+comment1.text=\n\ When\ applied,\ heal\ the\ player\n
+numComments=2
