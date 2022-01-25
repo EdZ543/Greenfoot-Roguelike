@@ -1,5 +1,5 @@
 #Greenfoot project file
-class.Arrow.image=weapon_arrow.png
+class.Arrow.image=arrow.png
 class.Boss.image=tux.png
 class.Bow.image=bow.png
 class.Door.image=door.png
@@ -11,7 +11,7 @@ class.MagicWand.image=weapon_green_magic_staff.png
 class.Player.image=robot.png
 class.Rock.image=rock.png
 class.Shotgun.image=shotgun.png
-class.ShotgunShell.image=steel-ball.png
+class.ShotgunShell.image=shotgun_bullet.png
 class.SpeedPotion.image=flask_yellow.png
 class.SpikedFloor.image=spiked_floor.png
 class.Wall.image=wall.png

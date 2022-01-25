@@ -113,8 +113,8 @@ public class GameWorld extends World
         else if(enterPos == "down") addObject(player, getWidth() / 2, getHeight() - offsetY);
         else if(enterPos == "up") addObject(player, getWidth() / 2, offsetY);
         
-        addObject(minimap, getWidth() - minimap.getImage().getWidth() / 2, minimap.getImage().getHeight() / 2);
-        addObject(scoreText, scoreText.getImage().getWidth() / 2, getHeight() - scoreText.getImage().getHeight() / 2);
+        addObject(minimap, getWidth() - minimap.getImage().getWidth() / 2 - 10, minimap.getImage().getHeight() / 2 + 10);
+        addObject(scoreText, scoreText.getImage().getWidth() / 2 + 20, getHeight() - scoreText.getImage().getHeight() / 2 - 10);
     }
     
     /**

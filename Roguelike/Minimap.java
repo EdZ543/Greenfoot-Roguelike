@@ -71,8 +71,7 @@ public class Minimap extends Actor
                 // Indicate the boss room with a little skull icon :)
                 if (i == map.getBossRoomNum()) {
                     GreenfootImage skull = new GreenfootImage("skull.png");
-                    skull.scale(cellWidth, cellHeight);
-                    image.drawImage(skull, posX, posY);
+                    image.drawImage(skull, posX + cellWidth / 2, posY + cellHeight / 2);
                 }
                 
                 // Draw outline
