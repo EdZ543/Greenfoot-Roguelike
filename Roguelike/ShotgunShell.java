@@ -9,6 +9,6 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class ShotgunShell extends Projectile
 {
     public ShotgunShell(boolean playerShot, int rotation) {
-        super(20, 20, playerShot, rotation, 20, 4, "bow_fire.wav", 70, 5);
+        super(20, 20, playerShot, rotation, 20, 4, "bow_fire.wav", 0, 5);
     }
 }
