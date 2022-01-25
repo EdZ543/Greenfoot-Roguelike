@@ -11,6 +11,8 @@ import java.util.*;
  */
 public class Boss extends Enemy
 {
+    // Frames for animation, static so they only need to be generated once
+    private static GreenfootImage runFrames[];
     private Random random = new Random();
     
     private int betweenAttacksDelay = 100; // Delay between each attack
@@ -37,7 +39,10 @@ public class Boss extends Enemy
      * Initializes animation
      */
     private void initAnimations() {
-        GreenfootImage[] runFrames = Animation.generateFrames(4, 4, "boss/boss", ".png");
+        if (runFrames == null) {
+            runFrames = Animation.generateFrames(4, 4, "boss/boss", ".png");
+        }
+        
         animation = new Animation(this, "running", runFrames, 20, "right");
         animation.setActiveState(true);
     }

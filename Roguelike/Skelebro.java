@@ -9,6 +9,9 @@ import java.util.*;
  */
 public class Skelebro extends Enemy
 {
+    // Frames for animation, static so they only need to be generated once
+    private static GreenfootImage runFrames[];
+    
     private Random random = new Random(); // java randomness for turning randomly
     
     private int turnFrequency = 50;
@@ -26,8 +29,11 @@ public class Skelebro extends Enemy
      * Initialize animations
      */
     protected void initAnimations() {
-        GreenfootImage runningFrames[] = Animation.generateFrames(4, 4, "skelebro/skelebro", ".png");
-        animation = new Animation(this, "running", runningFrames, 15, "right");
+        if (runFrames == null) {
+            runFrames = Animation.generateFrames(4, 4, "skelebro/skelebro", ".png");
+        }
+        
+        animation = new Animation(this, "running", runFrames, 15, "right");
         animation.setActiveState(true);
     }
     

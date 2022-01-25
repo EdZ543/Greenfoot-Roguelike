@@ -9,6 +9,10 @@ import java.util.*;
  */
 public class Goblin extends Enemy
 {
+    // Frames for animation, static so they only need to be generated once
+    private static GreenfootImage idleFrames[];
+    private static GreenfootImage runFrames[];
+    
     // Punching sound
     private GreenfootSound[] punchSounds;
     private int punchSoundsIndex = 0;
@@ -30,12 +34,17 @@ public class Goblin extends Enemy
      * Initializes animations
      */
     private void initAnimations() {
-        GreenfootImage idleFrames[] = Animation.generateFrames(0, 4, "goblin/goblin", ".png");
-        GreenfootImage runFrames[] = Animation.generateFrames(4, 4, "goblin/goblin", ".png");
-        
-        animation = new Animation(this, "idle", idleFrames, 40, "right");
-        animation.addState("running", runFrames, 15, "right");
-        animation.setActiveState(true);
+            if (idleFrames == null) {
+                idleFrames = Animation.generateFrames(0, 4, "goblin/goblin", ".png");
+            }
+            
+            if (runFrames == null) {
+                runFrames = Animation.generateFrames(4, 4, "goblin/goblin", ".png");
+            }
+            
+            animation = new Animation(this, "idle", idleFrames, 40, "right");
+            animation.addState("running", runFrames, 15, "right");
+            animation.setActiveState(true);
     }
     
     /**

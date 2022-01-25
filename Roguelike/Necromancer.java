@@ -9,6 +9,9 @@ import java.util.*;
  */
 public class Necromancer extends Enemy
 {
+    // Frames for animation, static so they only need to be generated once
+    private static GreenfootImage idleFrames[];
+    
     private int shotFrequency = 120;
     private int shotCountdown = shotFrequency;
     
@@ -22,7 +25,10 @@ public class Necromancer extends Enemy
      * Initialize animations
      */
     private void initAnimations() {
-        GreenfootImage[] idleFrames = Animation.generateFrames(0, 4, "necromancer/necromancer", ".png");
+        if (idleFrames == null) {
+            idleFrames = Animation.generateFrames(0, 4, "necromancer/necromancer", ".png");
+        }
+        
         animation = new Animation(this, "idle", idleFrames, 50, "right");
         animation.setActiveState(true);
     }

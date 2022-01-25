@@ -9,11 +9,15 @@ import java.util.*;
  */
 public class Player extends Entity
 {
-    private static Weapon weapon; // Weapon player is currently holding
-    private static Label promptText; // Text prompting player to pick up an item
+    // Frames for animation, static so they only need to be generated once
+    private static GreenfootImage idleFrames[][];
+    private static GreenfootImage runFrames[][];
     
     // File paths to animation frames
-    private String[] framePrefixes = new String[]{"knight/knight", "female elf/elf_female", "male elf/elf_male"};
+    private static String[] framePrefixes = new String[]{"knight/knight", "female elf/elf_female", "male elf/elf_male"};
+    
+    private static Weapon weapon; // Weapon player is currently holding
+    private static Label promptText; // Text prompting player to pick up an item
 
     private String key;
     private int pickupFrequency = 50; // Makes sure you don't spam picking up weapons
@@ -52,11 +56,24 @@ public class Player extends Entity
      * Initializes animations
      */
     private void initAnimations(int characterSelection) {
-        GreenfootImage[] idleFrames = Animation.generateFrames(0, 4, framePrefixes[characterSelection], ".png");
-        GreenfootImage[] runningFrames = Animation.generateFrames(4, 4, framePrefixes[characterSelection], ".png");
+        if (idleFrames == null) {
+            idleFrames = new GreenfootImage[getNumCharacters()][];
+        }
+        
+        if (runFrames == null) {
+            runFrames = new GreenfootImage[getNumCharacters()][];
+        }
+        
+        if (idleFrames[characterSelection] == null) {
+            idleFrames[characterSelection] = Animation.generateFrames(0, 4, framePrefixes[characterSelection], ".png");
+        }
+        
+        if (runFrames[characterSelection] == null) {
+            runFrames[characterSelection] = Animation.generateFrames(4, 4, framePrefixes[characterSelection], ".png");
+        }
             
-        animation = new Animation(this, "idle", idleFrames, 40, "right");
-        animation.addState("running", runningFrames, 15, "right");
+        animation = new Animation(this, "idle", idleFrames[characterSelection], 40, "right");
+        animation.addState("running", runFrames[characterSelection], 15, "right");
         animation.setActiveState(true);
     }
     

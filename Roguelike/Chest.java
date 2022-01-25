@@ -9,13 +9,17 @@ import java.util.*;
  */
 public class Chest extends Actor
 {
-    private Animation animation;
+    private static GreenfootImage[] frames;
     
+    private Animation animation;
     private String state = "closed";
     private double itemForce = 10;
     
     public Chest() {
-        GreenfootImage[] frames = Animation.generateFrames(0, 3, "chest/chest", ".png");
+        if (frames == null) {
+            frames = Animation.generateFrames(0, 3, "chest/chest", ".png");
+        }
+        
         animation = new Animation(this, frames, 50);
         animation.setActiveState(true);
         animation.run();
