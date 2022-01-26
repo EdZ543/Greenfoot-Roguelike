@@ -10,19 +10,11 @@ public class Shotgun extends Weapon
 {
     private int halfBullets = 5;
     private int angleOfSpread = 5;
-    private GreenfootSound[] gunShotSounds;
+    private OverlappingSound gunShotSound = new OverlappingSound("shotgun.wav", 90);
     private int soundIndex = 0;
     
     public Shotgun(Actor owner) {
         super(50, owner, 10, "right");
-        
-        // Init gunshot sound
-        gunShotSounds = new GreenfootSound[20];
-        for (int i = 0; i < 20; i++) {
-            GreenfootSound sound = new GreenfootSound("shotgun.wav");
-            sound.setVolume(90);
-            gunShotSounds[i] = sound;
-        }
     }
     
     /**
@@ -36,7 +28,6 @@ public class Shotgun extends Weapon
         }
         
         // Play gunshot sound
-        gunShotSounds[soundIndex].play();
-        soundIndex = (soundIndex + 1) % gunShotSounds.length;
+        gunShotSound.play();
     }
 }

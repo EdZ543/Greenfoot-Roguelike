@@ -14,20 +14,20 @@ public class Goblin extends Enemy
     private static GreenfootImage runFrames[];
     
     // Punching sound
-    private GreenfootSound[] punchSounds;
+    private OverlappingSound punchSound = new OverlappingSound("punch.wav", 80);
     private int punchSoundsIndex = 0;
     
     private int visionRange = 500;
-    private int attackRange = 25;
+    private int attackRange = 30;
     private int attackDamage = 10;
     private int punchFrequency = 50; // How often the goblin can punch
     private int punchCountdown = 0;
+    private double punchForce = 5.0; // Force applied on player when punched
     
     public Goblin() {
         super(30, 16, 0.3, 3.0);
         
         initAnimations();
-        initSounds();
     }
     
     /**
@@ -47,19 +47,7 @@ public class Goblin extends Enemy
             animation.setActiveState(true);
     }
     
-    /**
-     * Initializes sounds
-     */
-    private void initSounds() {
-        punchSounds = new GreenfootSound[20];
-        for (int i = 0; i < punchSounds.length; i++) {
-            punchSounds[i] = new GreenfootSound("punch.wav");
-            punchSounds[i].setVolume(75);
-        }
-    }
-    
-    public void act()
-    {
+    public void act() {
         applyPhysics();
         animation.run();
         
@@ -93,14 +81,10 @@ public class Goblin extends Enemy
         if (GameWorld.getDistance(this, player) <= attackRange) {
             // Damage the player, only if cooldown is over
             if (punchCountdown == 0) {
-                player.damageMe(attackDamage);
-                
-                // Play punching sound
-                punchSounds[punchSoundsIndex++].play();
-                punchSoundsIndex %= punchSounds.length;
-                
-                // Resets cooldown
-                punchCountdown =  punchFrequency;
+                player.damageMe(attackDamage); // Damage player
+                player.setForce(getAngleTo(player), punchForce); // Push player a bit
+                punchSound.play(); // Play punching sound
+                punchCountdown =  punchFrequency; // Reset punching cooldown
             }
         } else {
             turnTowards(player.getX(), player.getY());
