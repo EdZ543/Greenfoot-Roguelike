@@ -1,3 +1,3 @@
 # Greenfoot-Roguelike
 
-A game I'm making for my computer science class :)
+A game I made for my computer science class :)
